@@ -1,7 +1,11 @@
-@use 'variables';
+/* For the Pane background */
+.pane-background {
+  -fx-background-image: url("../images/background.jpg");
+  -fx-background-repeat: repeat;
+  -fx-background-size: 600px 281px;
+}
 
-.root {
-  -fx-font-family: "Lucida Console";
-  //-fx-background-color: variables.$dark-color;
-  //-fx-text-fill: variables.$light-color;
+.overlay {
+  -fx-background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
+  -fx-opacity: 0.8;  /* Semi-transparent overlay */
 }

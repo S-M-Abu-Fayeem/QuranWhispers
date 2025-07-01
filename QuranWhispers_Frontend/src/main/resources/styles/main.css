@@ -1,9 +1,11 @@
-.root {
-  -fx-font-family: "Lucida Console";
+/* For the Pane background */
+.pane-background {
+  -fx-background-image: url("../images/background.jpg");
+  -fx-background-repeat: repeat;
+  -fx-background-size: 600px 281px;
 }
 
-.Label {
-  -fx-alignment: center;
-  -fx-text-alignment: center;
-  -fx-text-fill: #f1c40f;
+.overlay {
+  -fx-background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
+  -fx-opacity: 0.8; /* Semi-transparent overlay */
 }

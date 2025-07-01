@@ -11,6 +11,7 @@ import java.net.URL;
 
 // IMPORT ALL CONTROLLERS HERE
 import controller.EventHandlingController;
+import controller.HomePageController;
 
 
 
@@ -55,11 +56,12 @@ public class MainApp extends Application {
 
         // REGISTER CONTROLLERS
         initController(GlobalState.EVENT_HANDLING_FILE, EventHandlingController.class, sceneController);
+        initController(GlobalState.HOME_PAGE_FILE, HomePageController.class, sceneController);
 
 
 
         // CHOOSE THE INITIAL SCENE
-        sceneController.switchTo(GlobalState.EVENT_HANDLING_FILE);
+        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
 
         // SETUP THE STAGE
         URL iconURL = getClass().getResource("/images/brand.png");
@@ -67,7 +69,7 @@ public class MainApp extends Application {
             stage.getIcons().add(new Image(iconURL.toExternalForm()));
         }
 
-        stage.setTitle("Hello World");
+        stage.setTitle("Quran Whispers");
         stage.show();
     }
 }

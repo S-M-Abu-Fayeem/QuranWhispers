@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.HashMap;
@@ -19,12 +20,17 @@ public class SceneController {
     }
 
     public void addScene(String name, Parent root, Object controller) {
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 1280, 750);
 
         URL cssFile = getClass().getResource("/styles/main.css");
         if (cssFile != null) {
             scene.getStylesheets().add(cssFile.toExternalForm());
         }
+//        System.out.println("CSS lagaisi mama");
+//        for (String fontFamily : Font.getFamilies()) {
+//            System.out.println(fontFamily);
+//        }
+
 
         sceneMap.put(name, scene);
         controllerMap.put(name, controller);
