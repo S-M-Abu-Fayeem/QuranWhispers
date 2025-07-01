@@ -1,0 +1,7 @@
+@use 'variables';
+
+.root {
+  -fx-font-family: "Lucida Console";
+  //-fx-background-color: variables.$dark-color;
+  //-fx-text-fill: variables.$light-color;
+}

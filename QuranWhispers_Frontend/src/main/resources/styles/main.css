@@ -1,0 +1,9 @@
+.root {
+  -fx-font-family: "Lucida Console";
+}
+
+.Label {
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-text-fill: #f1c40f;
+}

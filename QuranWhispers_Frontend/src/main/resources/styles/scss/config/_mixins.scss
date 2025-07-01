@@ -1,0 +1,23 @@
+// ✅ Rounded corners
+@mixin fx-rounded($radius: 8px) {
+  -fx-background-radius: $radius;
+  -fx-border-radius: $radius;
+}
+
+// ✅ Drop shadow
+@mixin fx-shadow($color: rgba(0, 0, 0, 0.2), $radius: 6px) {
+  -fx-effect: dropshadow(gaussian, $color, $radius, 0.2, 0, 2);
+}
+
+// ✅ Font styling
+@mixin fx-font($size: 14px, $weight: normal) {
+  -fx-font-family: $font-family;
+  -fx-font-size: $size;
+  -fx-font-weight: $weight;
+}
+
+// ✅ Spacing (padding/margin shortcut)
+@mixin fx-spacing($padding: 10px, $margin: 10px) {
+  -fx-padding: $padding;
+  margin: $margin; // For external layout engines like VBox/HBox
+}

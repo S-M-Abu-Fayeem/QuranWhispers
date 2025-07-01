@@ -1,0 +1,7 @@
+@use '../config/variables';
+
+.Label {
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-text-fill: variables.$warning-color;
+}
