@@ -5,8 +5,11 @@ import util.GlobalState;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public abstract class BaseController {
@@ -64,9 +67,20 @@ public abstract class BaseController {
         playClickSound();
     }
 
+    public void handleLogoutBtn(MouseEvent e) throws IOException {
+        System.out.println("Logout Pressed");
+        sceneController.switchTo(GlobalState.LANDING_FILE);
+        playClickSound();
+    }
+
     // FOOTER CONTROLS
     public void handleCopyrightText(MouseEvent e) throws IOException {
         System.out.println("Copyright pressed");
+        try {
+            Desktop.getDesktop().browse(new URI(GlobalState.COPYRIGHT_URL));
+        } catch (IOException | URISyntaxException ex) {
+            ex.printStackTrace();
+        }
         playClickSound();
     }
 }

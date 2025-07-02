@@ -10,6 +10,7 @@ import util.GlobalState;
 import java.net.URL;
 
 // IMPORT ALL CONTROLLERS HERE
+import controller.LandingController;
 import controller.HomePageController;
 import controller.LoginController;
 import controller.SignupController;
@@ -56,6 +57,7 @@ public class MainApp extends Application {
         SceneController sceneController = new SceneController(stage);
 
         // REGISTER CONTROLLERS
+        initController(GlobalState.LANDING_FILE, LandingController.class, sceneController);
         initController(GlobalState.HOME_PAGE_FILE, HomePageController.class, sceneController);
         initController(GlobalState.LOGIN_FILE, LoginController.class, sceneController);
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
@@ -63,7 +65,7 @@ public class MainApp extends Application {
 
 
         // CHOOSE THE INITIAL SCENE
-        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
+        sceneController.switchTo(GlobalState.LANDING_FILE);
 
         // SETUP THE STAGE
         URL iconURL = getClass().getResource("/images/brand.png");
