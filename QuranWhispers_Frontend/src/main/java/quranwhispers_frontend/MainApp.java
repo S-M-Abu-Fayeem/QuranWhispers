@@ -10,8 +10,9 @@ import util.GlobalState;
 import java.net.URL;
 
 // IMPORT ALL CONTROLLERS HERE
-import controller.EventHandlingController;
 import controller.HomePageController;
+import controller.LoginController;
+import controller.SignupController;
 
 
 
@@ -55,8 +56,9 @@ public class MainApp extends Application {
         SceneController sceneController = new SceneController(stage);
 
         // REGISTER CONTROLLERS
-        initController(GlobalState.EVENT_HANDLING_FILE, EventHandlingController.class, sceneController);
         initController(GlobalState.HOME_PAGE_FILE, HomePageController.class, sceneController);
+        initController(GlobalState.LOGIN_FILE, LoginController.class, sceneController);
+        initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
 
 
 

@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.input.MouseEvent;
 import util.GlobalState;
 
 import javax.sound.sampled.AudioSystem;
@@ -15,10 +16,6 @@ public abstract class BaseController {
         this.sceneController = controller;
     } // Called in the MainApp
 
-    // ADD MENUBAR NAVIGATION METHODS AND LOGICS HERE
-    public void moveToEventHandling() {
-        sceneController.switchTo(GlobalState.EVENT_HANDLING_FILE);
-    }
 
     // Method to play the sound
     public static void playClickSound() {
@@ -30,5 +27,46 @@ public abstract class BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // NAVBAR CONTROLS
+    public void handleHomeNavlink(MouseEvent e) throws IOException {
+        System.out.println("Home navlink button pressed");
+        playClickSound();
+    }
+    public void handleProfileNavlink(MouseEvent e) throws IOException {
+        System.out.println("Profile navlink button pressed");
+        playClickSound();
+    }
+    public void handleSearchNavlink(MouseEvent e) throws IOException {
+        System.out.println("Search navlink button pressed");
+        playClickSound();
+    }
+    public void handleFavouritesBtn(MouseEvent e) throws IOException {
+        System.out.println("Favourites button pressed");
+        playClickSound();
+    }
+
+    public void handleNotificationBtn(MouseEvent e) throws IOException {
+        System.out.println("Notification button pressed");
+        playClickSound();
+    }
+
+    public void handleJoinNowBtn(MouseEvent e) throws IOException {
+        System.out.println("Join Now button pressed");
+        sceneController.switchTo(GlobalState.LOGIN_FILE);
+        playClickSound();
+    }
+
+    public void handleTitleLink(MouseEvent e) throws IOException {
+        System.out.println("Title pressed");
+        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
+        playClickSound();
+    }
+
+    // FOOTER CONTROLS
+    public void handleCopyrightText(MouseEvent e) throws IOException {
+        System.out.println("Copyright pressed");
+        playClickSound();
     }
 }
