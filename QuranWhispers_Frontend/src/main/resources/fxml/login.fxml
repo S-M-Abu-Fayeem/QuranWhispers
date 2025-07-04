@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -23,7 +24,8 @@
                   <Color opacity="0.4000000059604645" />
                </color>
             </DropShadow>
-         </effect></Rectangle>
+         </effect>
+      </Rectangle>
         <Group fx:id="signupBtn" layoutX="943.0" layoutY="232.0" onMouseClicked="#handleSignupBtn">
            <children>
               <Label alignment="CENTER" layoutX="2.0" layoutY="5.0" prefHeight="30.0" prefWidth="80.0" text="SIGNUP">
@@ -53,26 +55,11 @@
               <Image url="@../images/bismillah.png" />
            </image>
         </ImageView>
-        <Group layoutX="703.0" layoutY="338.0">
-           <children>
-              <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="50.0" stroke="#ff6ec7" strokeType="INSIDE" width="434.0" />
-              <Label fx:id="usernameField" alignment="CENTER" layoutX="32.0" layoutY="10.0" prefHeight="30.0" prefWidth="110.0" text="username" textFill="#8e8e8e">
-                 <font>
-                    <Font name="Century Gothic" size="16.0" />
-                 </font>
-              </Label>
-           </children>
-        </Group>
-        <Group layoutX="702.0" layoutY="379.0">
-           <children>
-              <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="50.0" layoutY="25.0" stroke="#ff6ec7" strokeType="INSIDE" width="434.0" />
-              <Label fx:id="passwordField" alignment="CENTER" layoutX="32.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" text="password" textFill="#8e8e8e">
-                 <font>
-                    <Font name="Century Gothic" size="16.0" />
-                 </font>
-              </Label>
-           </children>
-        </Group>
+      <TextField fx:id="passwordField" layoutX="704.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="password">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </TextField>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="60.0" layoutX="919.0" layoutY="222.0" stroke="BLACK" strokeType="INSIDE" width="2.0" />
         <Group fx:id="continueBtn" layoutX="704.0" layoutY="460.0" onMouseClicked="#handleContinueBtn">
            <children>
@@ -104,5 +91,10 @@
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
+      <TextField fx:id="usernameField" layoutX="704.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="username">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>

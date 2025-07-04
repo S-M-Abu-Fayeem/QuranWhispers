@@ -35,6 +35,7 @@ public abstract class BaseController {
     // NAVBAR CONTROLS
     public void handleHomeNavlink(MouseEvent e) throws IOException {
         System.out.println("Home navlink button pressed");
+        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
         playClickSound();
     }
     public void handleProfileNavlink(MouseEvent e) throws IOException {
@@ -43,6 +44,7 @@ public abstract class BaseController {
     }
     public void handleSearchNavlink(MouseEvent e) throws IOException {
         System.out.println("Search navlink button pressed");
+        sceneController.switchTo(GlobalState.SEARCH_FILE);
         playClickSound();
     }
     public void handleFavouritesBtn(MouseEvent e) throws IOException {

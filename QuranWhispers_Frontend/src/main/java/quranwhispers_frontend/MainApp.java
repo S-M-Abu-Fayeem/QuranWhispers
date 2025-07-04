@@ -11,9 +11,11 @@ import java.net.URL;
 
 // IMPORT ALL CONTROLLERS HERE
 import controller.LandingController;
-import controller.HomePageController;
 import controller.LoginController;
 import controller.SignupController;
+import controller.HomePageController;
+import controller.SearchController;
+import controller.ShareController;
 
 
 
@@ -61,7 +63,7 @@ public class MainApp extends Application {
         initController(GlobalState.HOME_PAGE_FILE, HomePageController.class, sceneController);
         initController(GlobalState.LOGIN_FILE, LoginController.class, sceneController);
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
-
+        initController(GlobalState.SEARCH_FILE, SearchController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE

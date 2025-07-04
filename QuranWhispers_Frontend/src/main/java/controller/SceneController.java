@@ -26,11 +26,6 @@ public class SceneController {
         if (cssFile != null) {
             scene.getStylesheets().add(cssFile.toExternalForm());
         }
-//        System.out.println("CSS lagaisi mama");
-//        for (String fontFamily : Font.getFamilies()) {
-//            System.out.println(fontFamily);
-//        }
-
 
         sceneMap.put(name, scene);
         controllerMap.put(name, controller);

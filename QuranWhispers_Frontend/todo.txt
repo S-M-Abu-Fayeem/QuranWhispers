@@ -1,0 +1,8 @@
+SCSS command
+sass --watch scss/main.scss:main.css --no-source-map
+
+CSS Design
+- Login/Signup Page
+    - TextField
+- Search Page
+    - catagoryListView
