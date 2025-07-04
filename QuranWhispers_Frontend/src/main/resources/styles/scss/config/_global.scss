@@ -6,6 +6,11 @@
 }
 
 .overlay {
-  -fx-background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
-  -fx-opacity: 0.8;  /* Semi-transparent overlay */
+  -fx-background-color: rgba(255, 255, 255, 0.8);
+  -fx-opacity: 0.8;
+}
+
+.overlayUpper {
+  -fx-background-color: rgba(255, 255, 255, 1);
+  -fx-opacity: 0.1;
 }

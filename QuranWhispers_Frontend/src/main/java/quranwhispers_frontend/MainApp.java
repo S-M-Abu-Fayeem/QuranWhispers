@@ -16,6 +16,11 @@ import controller.SignupController;
 import controller.HomePageController;
 import controller.SearchController;
 import controller.ShareController;
+import controller.NotificationController;
+import controller.ProfileController;
+import controller.AdminInsertController;
+import controller.AdminViewController;
+import controller.AdminApproveController;
 
 
 
@@ -64,6 +69,7 @@ public class MainApp extends Application {
         initController(GlobalState.LOGIN_FILE, LoginController.class, sceneController);
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
         initController(GlobalState.SEARCH_FILE, SearchController.class, sceneController);
+        initController(GlobalState.SHARE_FILE, ShareController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE

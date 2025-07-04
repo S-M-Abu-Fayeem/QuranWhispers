@@ -17,59 +17,57 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchController">
    <children>
       <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay"> </Pane>
+      <Group fx:id="addToFavouritesBtn" layoutX="1025.0" layoutY="446.0" onMouseClicked="#handleAddToFavouritesBtn">
          <children>
-            <Group fx:id="addToFavouritesBtn" layoutX="1025.0" layoutY="446.0" onMouseClicked="#handleAddToFavouritesBtn">
-               <children>
-                  <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                  <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/white_heart.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Group>
-            <Group fx:id="recitationViewerBtn" layoutX="1074.0" layoutY="446.0" onMouseClicked="#handleRecitationViewerBtn">
-               <children>
-                  <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/speaker.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Group>
-            <Group fx:id="downloadOfflineBtn" layoutX="1120.0" layoutY="446.0" onMouseClicked="#handleDownloadOfflineBtn">
-               <children>
-                  <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/download.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Group>
-            <Group fx:id="shareOptionsBtn" layoutX="1167.0" layoutY="446.0" onMouseClicked="#handleShareOptionsBtn">
-               <children>
-                  <Circle fill="#ff6ec7" onMouseClicked="#handleShareOptionsBtn" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                  <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/share.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Group>
-            <Group layoutX="687.0" layoutY="421.0">
-               <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="30.0" layoutY="11.0" stroke="#ff6ec7" strokeType="INSIDE" width="208.0" />
-                  <Label fx:id="catagoryField" alignment="CENTER" layoutX="5.0" layoutY="10.0" prefHeight="30.0" prefWidth="198.0" text="Category" textFill="#8e8e8e">
-                     <font>
-                        <Font name="Century Gothic" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Group>
-         </children></Pane>
+            <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/white_heart.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="recitationViewerBtn" layoutX="1074.0" layoutY="446.0" onMouseClicked="#handleRecitationViewerBtn">
+         <children>
+            <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/speaker.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="downloadOfflineBtn" layoutX="1120.0" layoutY="446.0" onMouseClicked="#handleDownloadOfflineBtn">
+         <children>
+            <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/download.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="shareOptionsBtn" layoutX="1167.0" layoutY="446.0" onMouseClicked="#handleShareOptionsBtn">
+         <children>
+            <Circle fill="#ff6ec7" onMouseClicked="#handleShareOptionsBtn" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/share.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group layoutX="687.0" layoutY="421.0">
+         <children>
+            <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="30.0" layoutY="11.0" stroke="#ff6ec7" strokeType="INSIDE" width="208.0" />
+            <Label fx:id="catagoryField" alignment="CENTER" layoutX="5.0" layoutY="10.0" prefHeight="30.0" prefWidth="198.0" text="Category" textFill="#8e8e8e">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
       <Label alignment="CENTER" layoutX="83.0" layoutY="167.0" prefHeight="86.0" prefWidth="512.0" text="Soothing Your Soul ">
          <font>
             <Font name="Segoe UI Black" size="50.0" />

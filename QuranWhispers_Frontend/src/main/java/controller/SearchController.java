@@ -5,18 +5,25 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import util.GlobalState;
 import util.PosterGenerator;
 import javafx.concurrent.Task;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 public class SearchController extends BaseController implements Initializable {
@@ -110,10 +117,46 @@ public class SearchController extends BaseController implements Initializable {
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {
         System.out.println("Download Offline Button pressed");
         playClickSound();
+
+        String sourceImagePath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
+        String destinationFolderPath = GlobalState.DOWNLOAD_FOLDER_PATH;
+        File sourceFile = new File(sourceImagePath);
+        File destinationFolder = new File(destinationFolderPath);
+
+        if (!destinationFolder.exists()) {
+            destinationFolder.mkdirs();
+        }
+
+        String destinationPath = destinationFolderPath + sourceFile.getName();
+        Path destinationFile = Path.of(destinationPath);
+
+        try {
+            // Copy the file from source to destination
+            Files.copy(sourceFile.toPath(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Image copied successfully to: " + destinationPath);
+        } catch (IOException exception) {
+            System.err.println("Error copying file: " + exception.getMessage());
+        }
+
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Download Toaster");
+        alert.setHeaderText("Verse poster offline download was successful");
+        alert.setContentText("Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH);
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            if (Desktop.isDesktopSupported()) {
+                File imageFile = new File(destinationPath);
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(imageFile);
+            } else {
+                System.out.println("Desktop is not supported on your system.");
+            }
+        }
     };
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
+        sceneController.switchTo(GlobalState.SHARE_FILE);
         playClickSound();
     }
 
