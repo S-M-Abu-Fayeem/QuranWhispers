@@ -1,2 +1,2 @@
 # QuranWhispers
-Mood/theme-based verse and recitation searching, with a dedicated admin panel.
+I have changed this file
