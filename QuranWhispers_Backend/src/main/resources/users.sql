@@ -16,12 +16,13 @@ MERGE INTO USERS (username, email, password, is_admin)
     VALUES ('smaf', 'smaf@gmail.com', 264113647, TRUE);
 
 
--- 2. FAV_VERSE table: user's favorite verses with mood
+-- 2. FAV_VERSE table: user's favorite verses with emotion
 CREATE TABLE IF NOT EXISTS FAV_VERSE (
                                          id IDENTITY PRIMARY KEY,
                                          user_id INT,
-                                         mood VARCHAR(255),
-    ayat INT,
+                                         emotion VARCHAR(255),
+                                        theme VARCHAR(255),
+    ayah INT,
     surah VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
     );
@@ -39,17 +40,18 @@ CREATE TABLE IF NOT EXISTS REC_VERSE (
 CREATE TABLE IF NOT EXISTS REC_VERSE_DETAIL (
                                                 id IDENTITY PRIMARY KEY,
                                                 rec_verse_id INT,
-                                                mood VARCHAR(255),
-    ayat INT,
+                                                emotion VARCHAR(255),
+    theme VARCHAR(255),
+    ayah INT,
     surah VARCHAR(255),
     FOREIGN KEY (rec_verse_id) REFERENCES REC_VERSE(id) ON DELETE CASCADE
     );
 
--- 5. MOOD_VERSES table: admin-curated verses for each mood and theme
+-- 5. MOOD_VERSES table: admin-curated verses for each emotion and theme
 CREATE TABLE IF NOT EXISTS MOOD_VERSES (
                                            id IDENTITY PRIMARY KEY,
-                                           mood VARCHAR(255) NOT NULL,
-    ayat INT NOT NULL,
+                                           emotion VARCHAR(255) NOT NULL,
+    ayah INT NOT NULL,
     surah VARCHAR(255) NOT NULL,
     theme VARCHAR(255) NOT NULL
     );
@@ -68,7 +70,6 @@ CREATE TABLE IF NOT EXISTS DUA (
                                    id IDENTITY PRIMARY KEY,
                                    title VARCHAR(255),
     body_english TEXT,
-    body_bangla TEXT,
     body_arabic TEXT
     );
 
@@ -81,19 +82,18 @@ CREATE TABLE IF NOT EXISTS DUA_CACHE (
     );
 
 -- Safe insert for sample Duas
-MERGE INTO DUA (title, body_english, body_bangla, body_arabic)
+MERGE INTO DUA (title, body_english, body_arabic)
     KEY (title)
     VALUES
-    ('Morning Supplication', 'O Allah, guide me this day.', 'হে আল্লাহ, আজকের দিন আমাকে সঠিক পথে চালাও।', 'اللّهُمَّ اهْدِنِي هٰذَا الْيَوْمَ'),
-    ('Evening Supplication', 'Protect me from evil this evening.', 'এই সন্ধ্যায় আমাকে সব অশুভ থেকে রক্ষা কর।', 'اللّهُمَّ احْفَظْنِي مِنَ الشَّرِّ هٰذَا الْمَسَاءِ');
-
+    ('Morning Supplication', 'O Allah, guide me this day.', 'اللّهُمَّ اهْدِنِي هٰذَا الْيَوْمَ'),
+    ('Evening Supplication', 'Protect me from evil this evening.', 'اللّهُمَّ احْفَظْنِي مِنَ الشَّرِّ هٰذَا الْمَسَاءِ');
 
 CREATE TABLE IF NOT EXISTS PendingRecitations (
                                                   id IDENTITY PRIMARY KEY,
                                                   uploader_email VARCHAR(255),
     reciter_name VARCHAR(255),
     surah VARCHAR(255),
-    ayat VARCHAR(50),
+    ayah VARCHAR(50),
     file_name VARCHAR(255),
     audio_data BLOB,
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS Recitations (
                                            uploader_email VARCHAR(255),
     reciter_name VARCHAR(255),
     surah VARCHAR(255),
-    ayat VARCHAR(50),
+    ayah VARCHAR(50),
     file_name VARCHAR(255),
     audio_data BLOB,
     approved_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP

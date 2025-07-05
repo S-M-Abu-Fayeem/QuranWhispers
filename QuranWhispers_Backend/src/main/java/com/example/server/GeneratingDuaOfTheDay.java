@@ -14,7 +14,7 @@ public class GeneratingDuaOfTheDay {
         JsonObject data = new JsonObject();
         try (Connection connection = DriverManager.getConnection(DB_URL)) {
 
-            PreparedStatement check = connection.prepareStatement("SELECT DUA.id, title, body_english, body_bangla, body_arabic, timestamp FROM DUA_CACHE JOIN DUA ON DUA_CACHE.dua_id = DUA.id");
+            PreparedStatement check = connection.prepareStatement("SELECT DUA.id, title, body_english ,body_arabic, timestamp FROM DUA_CACHE JOIN DUA ON DUA_CACHE.dua_id = DUA.id");
             ResultSet rs = check.executeQuery();
             if (rs.next()) {
                 long timestamp = rs.getLong("timestamp");
@@ -23,7 +23,6 @@ public class GeneratingDuaOfTheDay {
                 if (now - timestamp < EXPIRY_DURATION_MS) {
                     data.addProperty("title", rs.getString("title"));
                     data.addProperty("english", rs.getString("body_english"));
-                    data.addProperty("bangla", rs.getString("body_bangla"));
                     data.addProperty("arabic", rs.getString("body_arabic"));
                     data.addProperty("status", "cached");
                     return gson.toJson(data);
@@ -42,14 +41,12 @@ public class GeneratingDuaOfTheDay {
                 insert.executeUpdate();
                 data.addProperty("title", randomDua.getString("title"));
                 data.addProperty("english", randomDua.getString("body_english"));
-                data.addProperty("bangla", randomDua.getString("body_bangla"));
                 data.addProperty("arabic", randomDua.getString("body_arabic"));
-                data.addProperty("status", "new");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            data.addProperty("status", "failed");
+            data.addProperty("status", "500");
         }
 
         return gson.toJson(data);
