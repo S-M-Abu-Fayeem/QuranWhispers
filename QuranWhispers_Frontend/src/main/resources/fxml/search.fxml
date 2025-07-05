@@ -61,7 +61,7 @@
       <Group layoutX="687.0" layoutY="421.0">
          <children>
             <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="30.0" layoutY="11.0" stroke="#ff6ec7" strokeType="INSIDE" width="208.0" />
-            <Label fx:id="catagoryField" alignment="CENTER" layoutX="5.0" layoutY="10.0" prefHeight="30.0" prefWidth="198.0" text="Category" textFill="#8e8e8e">
+            <Label fx:id="categoryField" alignment="CENTER" layoutX="5.0" layoutY="10.0" prefHeight="30.0" prefWidth="198.0" text="Category" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
@@ -211,6 +211,6 @@
             <Font name="Century Gothic" size="24.0" />
          </font>
       </Text>
-      <ListView fx:id="catagoryListView" layoutX="96.0" layoutY="429.0" prefHeight="225.0" prefWidth="346.0" visible="false" />
+      <ListView fx:id="categoryListView" layoutX="96.0" layoutY="429.0" prefHeight="225.0" prefWidth="346.0" visible="false" />
    </children>
 </AnchorPane>

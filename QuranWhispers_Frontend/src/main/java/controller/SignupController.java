@@ -21,7 +21,7 @@ public class SignupController extends BaseController{
 
     public void handleContinueBtn(MouseEvent e) throws IOException {
         System.out.println("Continue button pressed");
-        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
+        sceneController.switchTo(GlobalState.ADMIN_INSERT_FILE);
         playClickSound();
     }
 }

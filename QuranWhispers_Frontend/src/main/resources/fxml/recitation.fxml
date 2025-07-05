@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShareController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecitationController">
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
         <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay"> </Pane>
@@ -94,8 +94,6 @@
                 <Image url="@../images/verse_posters/background.png" />
             </image>
         </ImageView>
-        <Group layoutX="96.0" layoutY="344.0" />
-        <Group layoutX="96.0" layoutY="407.0" />
         <Group fx:id="emotionBtn" layoutX="95.0" layoutY="375.0" onMouseClicked="#handleEmotionBtn">
             <children>
                 <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#ff70c8cc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
@@ -213,32 +211,53 @@
             </font>
         </Text>
         <ListView fx:id="categoryListView" layoutX="96.0" layoutY="429.0" prefHeight="225.0" prefWidth="346.0" visible="false" />
-        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlayUpper"></Pane>
-        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="400.0" layoutX="375.0" layoutY="175.0" smooth="false" stroke="#ff6ec7" strokeType="INSIDE" width="530.0" />
-        <Label alignment="CENTER" layoutX="451.0" layoutY="267.0" prefHeight="86.0" prefWidth="377.0" text="SEND VERSE TO A FRIEND">
-           <font>
-              <Font name="Segoe UI Black" size="25.0" />
-           </font>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlayUpper" />
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="556.0" layoutX="375.0" layoutY="112.0" smooth="false" stroke="#ff6ec7" strokeType="INSIDE" width="530.0" />
+        <Label alignment="CENTER" layoutX="451.0" layoutY="123.0" prefHeight="86.0" prefWidth="377.0" text="AVAILABLE RECITATIONS">
+            <font>
+                <Font name="Segoe UI Black" size="25.0" />
+            </font>
         </Label>
-        <TextField fx:id="receiverUsername" layoutX="422.0" layoutY="353.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="Receiver's username">
-           <font>
-              <Font name="Century Gothic" size="16.0" />
-           </font>
+        <TextField fx:id="filePathField" layoutX="423.0" layoutY="526.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="370.0" promptText="Add Recitation in MP3 Format">
+            <font>
+                <Font name="Century Gothic" size="16.0" />
+            </font>
         </TextField>
-        <Group fx:id="sendBtn" layoutX="422.0" layoutY="409.0" onMouseClicked="#handleSendBtn">
-           <children>
-              <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="50.0" layoutY="25.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
-              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" text="Send" textFill="WHITE">
-                 <font>
-                    <Font name="Segoe UI Black" size="20.0" />
-                 </font>
-              </Label>
-           </children>
-        </Group>
-        <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" layoutX="856.0" layoutY="203.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true">
-           <image>
-              <Image url="@../images/cross.png" />
-           </image>
+        <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" layoutX="869.0" layoutY="128.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/cross.png" />
+            </image>
         </ImageView>
+      <Group fx:id="requestBtn" layoutX="423.0" layoutY="591.0" onMouseClicked="#handleRequestBtn">
+         <children>
+                <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="50.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
+                <Label alignment="CENTER" layoutX="162.0" layoutY="10.0" prefHeight="30.0" prefWidth="110.0" text="Request" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI Black" size="20.0" />
+                    </font>
+                </Label>
+         </children>
+      </Group>
+      <Label alignment="CENTER" layoutX="450.0" layoutY="393.0" prefHeight="86.0" prefWidth="377.0" text="REQUEST RECITATIONS">
+         <font>
+            <Font name="Segoe UI Black" size="25.0" />
+         </font>
+      </Label>
+      <TextField fx:id="recitersNameField" layoutX="423.0" layoutY="464.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="Reciter's Name">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </TextField>
+      <ListView fx:id="recitationListView" layoutX="422.0" layoutY="196.0" prefHeight="200.0" prefWidth="434.0" />
+      <Group fx:id="selectFileBtn" layoutX="809.0" layoutY="531.0" onMouseClicked="#handleSelectFileBtn">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1c1c1ccc" height="50.0" layoutX="-5.0" layoutY="-5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="50.0" />
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/file.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
     </children>
 </AnchorPane>

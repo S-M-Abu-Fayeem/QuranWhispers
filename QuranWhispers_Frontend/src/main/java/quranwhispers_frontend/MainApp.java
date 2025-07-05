@@ -16,6 +16,7 @@ import controller.SignupController;
 import controller.HomePageController;
 import controller.SearchController;
 import controller.ShareController;
+import controller.RecitationController;
 import controller.NotificationController;
 import controller.ProfileController;
 import controller.AdminInsertController;
@@ -70,6 +71,9 @@ public class MainApp extends Application {
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
         initController(GlobalState.SEARCH_FILE, SearchController.class, sceneController);
         initController(GlobalState.SHARE_FILE, ShareController.class, sceneController);
+        initController(GlobalState.RECITATION_FILE, RecitationController.class, sceneController);
+
+        initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE
@@ -82,6 +86,7 @@ public class MainApp extends Application {
         }
 
         stage.setTitle("Quran Whispers");
+        stage.setResizable(false);
         stage.show();
     }
 }

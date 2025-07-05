@@ -27,48 +27,51 @@ import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 public class SearchController extends BaseController implements Initializable {
-    @FXML Label catagoryField;
-    @FXML ListView <String> catagoryListView;
+    @FXML Label categoryField;
+    @FXML ListView <String> categoryListView;
     @FXML Label duaTitle;
     @FXML Text duaArabicBody;
     @FXML Text duaEnglishBody;
     @FXML ImageView versePosterView;
-    String catagoryType;
-    String catagoryName;
+    String categoryType;
+    String categoryName;
 
     // THIS WILL BE FETCHED FROM BACKEND
     int surahNum = 10;
     int ayahNum = 80;
     String[] emotionArray = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
     String[] ThemeArray = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
+    String posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        catagoryListView.setVisible(false);
+        categoryListView.setVisible(false);
 
-        catagoryListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        categoryListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                String currentCatagory = catagoryListView.getSelectionModel().getSelectedItem();
-                catagoryField.setText(currentCatagory);
-                catagoryName = currentCatagory;
-                catagoryListView.setVisible(false);
-                catagoryListView.getItems().clear();
+                categoryName = categoryListView.getSelectionModel().getSelectedItem();
+                categoryField.setText(categoryName);
+                categoryListView.setVisible(false);
+                categoryListView.getItems().clear();
 
                 // Create a new task to generate the poster in the background
                 Task<Void> posterGenerationTask = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        System.out.println("Hello");
-                        PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
+                        File posterFile = new File(posterPath);
+                        if (!posterFile.exists()) {
+                            PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
+                        }
                         return null;
                     }
                 };
 
+
                 // After the task completes, update the image
                 posterGenerationTask.setOnSucceeded(event -> {
                     Platform.runLater(() -> {
-                        File posterFile = new File("src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png");
+                        File posterFile = new File(posterPath);
                         if (posterFile.exists()) {
                             Image poster = new Image(posterFile.toURI().toString());
                             versePosterView.setImage(poster);
@@ -86,21 +89,21 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleEmotionBtn(MouseEvent e) throws IOException {
         System.out.println("Emotion Pressed");
-        catagoryListView.getItems().clear();
+        categoryListView.getItems().clear();
 
-        catagoryType = "Emotion";
-        catagoryListView.getItems().addAll(emotionArray);
-        catagoryListView.setVisible(true);
+        categoryType = "Emotion";
+        categoryListView.getItems().addAll(emotionArray);
+        categoryListView.setVisible(true);
         playClickSound();
     };
 
 
     public void handleThemeBtn(MouseEvent e) throws IOException {
         System.out.println("Theme Btn Pressed");
-        catagoryListView.getItems().clear();
-        catagoryType = "Theme";
-        catagoryListView.getItems().addAll(ThemeArray);
-        catagoryListView.setVisible(true);
+        categoryListView.getItems().clear();
+        categoryType = "Theme";
+        categoryListView.getItems().addAll(ThemeArray);
+        categoryListView.setVisible(true);
         playClickSound();
     };
 
@@ -111,6 +114,8 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
+        RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
+        recitationControllerObj.setupPoster(posterPath, categoryName);
         playClickSound();
     };
 
@@ -118,7 +123,7 @@ public class SearchController extends BaseController implements Initializable {
         System.out.println("Download Offline Button pressed");
         playClickSound();
 
-        String sourceImagePath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
+        String sourceImagePath = posterPath;
         String destinationFolderPath = GlobalState.DOWNLOAD_FOLDER_PATH;
         File sourceFile = new File(sourceImagePath);
         File destinationFolder = new File(destinationFolderPath);
@@ -156,7 +161,8 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
-        sceneController.switchTo(GlobalState.SHARE_FILE);
+        ShareController shareControllerObj = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
+        shareControllerObj.setupPoster(posterPath, categoryName);
         playClickSound();
     }
 

@@ -17,6 +17,7 @@ public class GlobalState {
     public static final String SIGNUP_FILE = "signup";
     public static final String SEARCH_FILE = "search";
     public static final String SHARE_FILE = "share";
+    public static final String RECITATION_FILE = "recitation";
     public static final String NOTIFICATION_FILE = "notification";
     public static final String PROFILE_FILE = "profile";
     public static final String ADMIN_INSERT_FILE = "adminInsert";

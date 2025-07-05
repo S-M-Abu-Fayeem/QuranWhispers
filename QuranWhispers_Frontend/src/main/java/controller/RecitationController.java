@@ -11,11 +11,11 @@ import util.GlobalState;
 import java.io.File;
 import java.io.IOException;
 
-public class ShareController extends SearchController{
-
-    @FXML TextField receiverUsername;
+public class RecitationController extends SearchController{
     @FXML ImageView versePosterView;
     @FXML Label categoryField;
+    @FXML TextField recitersNameField;
+    @FXML TextField filePathField;
 
     public void setupPoster(String posterPath, String categoryName) {
         File posterFile = new File(posterPath);
@@ -35,8 +35,13 @@ public class ShareController extends SearchController{
         sceneController.switchTo(GlobalState.SEARCH_FILE);
     }
 
-    public void handleSendBtn(MouseEvent e) throws IOException {
-        System.out.println("Send Button Pressed");
+    public void handleRequestBtn(MouseEvent e) throws IOException {
+        System.out.println("Request Button Pressed");
+        playClickSound();
+    }
+
+    public void handleSelectFileBtn(MouseEvent e) throws IOException {
+        System.out.println("Select File Btn Pressed");
         playClickSound();
     }
 }

@@ -1,4 +1,10 @@
 package controller;
 
-public class AdminApproveController extends BaseController{
+import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
+
+public class AdminApproveController extends BaseControllerAdmin{
+
+
 }

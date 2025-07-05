@@ -1,4 +1,4 @@
 package controller;
 
-public class AdminViewController extends BaseController{
+public class AdminViewController extends BaseControllerAdmin{
 }
