@@ -29,10 +29,10 @@ public class Login {
                 ResultSet rs = ps.executeQuery();
 
                 //creating json file to send response
-                System.out.println("done");
+               // System.out.println("done");
                 HashingFunction hasFunction = new HashingFunction();
                 int hashValue = hasFunction.getHash(password);
-                data.put("status", "Failed to login");
+                data.put("status", "404");
                 data.put("token", "-1");
 
                 while (rs.next()) {
@@ -41,7 +41,7 @@ public class Login {
                     if (rs.getInt("password") == hashValue) {
 
                         data.put("email", userName);
-                        data.put("status", "Successfully logged in");
+                        data.put("status", "200");
 
                         // creating the token using hashing function , token format = TimeStamp + email -> converted to hashValue
                         LocalDateTime now = LocalDateTime.now();
@@ -71,7 +71,7 @@ public class Login {
                 return gson.toJson(data);
             }
             catch (Exception e) {
-                data.put("status", "User does not exist");
+                data.put("status", "404");
                 return gson.toJson(data);
             }
 
@@ -79,7 +79,7 @@ public class Login {
 
             e.printStackTrace();
         }
-        data.put("status", "Server Error");
+        data.put("status", "500");
         return gson.toJson(data);
     }
 }

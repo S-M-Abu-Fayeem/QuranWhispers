@@ -179,8 +179,8 @@ public class HelloApplication {
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
 
-                            if (tokenValidator.VALIDATE(email, token) && isAdmin.isAdmin(email)) {
-                                // 🔁 Acknowledge header receipt BEFORE reading file
+                            if (tokenValidator.VALIDATE(email, token)) {
+
                                 writer.write("READY_TO_RECEIVE");
                                 writer.newLine();
                                 writer.flush();
@@ -226,11 +226,10 @@ public class HelloApplication {
                             writer.newLine();
                             writer.flush();
                             System.out.println("Receiving done");
-                            continue;  // ✅ Prevent double response
+                            continue;
                         }
 
                         else if (action.equals("listenrecitation")) {
-                            String reciter = json.get("reciter").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
                             TokenValidator tokenValidator = new TokenValidator();
@@ -238,10 +237,12 @@ public class HelloApplication {
 
                             if (tokenValidator.VALIDATE(email, Integer.parseInt(json.get("token").getAsString()))) {
                                 try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                    PreparedStatement ps = conn.prepareStatement("SELECT audio_data FROM Recitations WHERE reciter_name = ? AND surah = ? AND ayah = ? LIMIT 1");
-                                    ps.setString(1, reciter);
-                                    ps.setString(2, surah);
-                                    ps.setString(3, ayah);
+                                    PreparedStatement ps = conn.prepareStatement(
+                                            "SELECT audio_data FROM Recitations WHERE surah = ? AND ayah = ? ORDER BY RAND() LIMIT 1"
+                                    );
+                                    //ps.setString(1, reciter);
+                                    ps.setString(1, surah);
+                                    ps.setString(2, ayah);
                                     ResultSet rs = ps.executeQuery();
 
                                     if (rs.next()) {
@@ -294,7 +295,7 @@ public class HelloApplication {
                             response = adminController.DELETE_VERSE(email, value, emotion, theme, ayah, surah);
                         }
                         else if (action.equals("disapproverecitation")) {
-                            int value = Integer.parseInt(json.get("value").getAsString());
+                            int value = Integer.parseInt(json.get("token").getAsString());
                             String reciterName = json.get("recitername").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
@@ -314,7 +315,7 @@ public class HelloApplication {
                         }
                         else {
                             JsonObject error = new JsonObject();
-                            error.addProperty("status", "Invalid action");
+                            error.addProperty("status", "401");
                             response = gson.toJson(error);
                         }
 
