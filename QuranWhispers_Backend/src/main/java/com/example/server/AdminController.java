@@ -21,18 +21,18 @@ public class AdminController {
                 qs.setString(1, userMail);
                 int check = qs.executeUpdate();
                 if(check > 0) {
-                    data.addProperty("status", "success");
+                    data.addProperty("status", "200");
                 }
                 else{
-                    data.addProperty("status", "failed");
+                    data.addProperty("status", "404");
                 }
             }
             else{
-                data.addProperty("status", "failed");
+                data.addProperty("status", "401");
             }
         }
         catch(Exception e){
-            data.addProperty("status", "failed");
+            data.addProperty("status", "500");
         }
         return gson.toJson(data);
     }
@@ -48,22 +48,22 @@ public class AdminController {
                 qs.setString(1, title);
                 int check = qs.executeUpdate();
                 if(check > 0) {
-                    data.addProperty("status", "success");
+                    data.addProperty("status", "200");
                 }
                 else{
-                    data.addProperty("status", "failed");
+                    data.addProperty("status", "404");
                 }
             }
             else{
-                data.addProperty("status", "failed");
+                data.addProperty("status", "401");
             }
         }
         catch(Exception e){
-            data.addProperty("status", "failed");
+            data.addProperty("status", "500");
         }
         return gson.toJson(data);
     }
-    public String DELETE_VERSE(String email, int valueOfToken, String mood, String theme,String ayat, String surah) {
+    public String DELETE_VERSE(String email, int valueOfToken, String emotion, String theme,String ayah, String surah) {
         TokenValidator tokenValidator = new TokenValidator();
         IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
@@ -71,31 +71,30 @@ public class AdminController {
         data.addProperty("email", email);
         try(Connection connection = DriverManager.getConnection(DB_URL)) {
             if(tokenValidator.VALIDATE(email, valueOfToken) && isAdmin.isAdmin(email)) {
-                PreparedStatement qs = connection.prepareStatement("DELETE FROM MOOD_VERSES WHERE mood = ? AND theme = ? AND ayat = ? AND surah = ?");
-                qs.setString(1, mood);
+                PreparedStatement qs = connection.prepareStatement("DELETE FROM MOOD_VERSES WHERE emotion = ? AND theme = ? AND ayah = ? AND surah = ?");
+                qs.setString(1, emotion);
                 qs.setString(2, theme);
-                qs.setString(3, ayat);
+                qs.setString(3, ayah);
                 qs.setString(4, surah);
-                qs.executeUpdate();
                 int check = qs.executeUpdate();
                 if(check > 0) {
-                    data.addProperty("status", "success");
+                    data.addProperty("status", "200");
                 }
                 else{
-                    data.addProperty("status", "failed");
+                    data.addProperty("status", "404");
                 }
             }
             else{
-                data.addProperty("status", "failed");
+                data.addProperty("status", "401");
             }
         }
         catch(Exception e){
-            data.addProperty("status", "failed");
+            data.addProperty("status", "500");
         }
         return gson.toJson(data);
     }
 
-    public String approveRecitation(String email, int token, String reciterName, String surah, String ayat) {
+    public String approveRecitation(String email, int token, String reciterName, String surah, String ayah) {
         TokenValidator tokenValidator = new TokenValidator();
         IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
@@ -106,11 +105,11 @@ public class AdminController {
             if (tokenValidator.VALIDATE(email, token) && isAdmin.isAdmin(email)) {
                 // Select from PendingRecitations
                 PreparedStatement select = conn.prepareStatement(
-                        "SELECT uploader_email, file_name, audio_data FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayat = ?"
+                        "SELECT uploader_email, file_name, audio_data FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ?"
                 );
                 select.setString(1, reciterName);
                 select.setString(2, surah);
-                select.setString(3, ayat);
+                select.setString(3, ayah);
 
                 ResultSet rs = select.executeQuery();
                 if (rs.next()) {
@@ -120,23 +119,23 @@ public class AdminController {
 
                     // Insert into Recitations
                     PreparedStatement insert = conn.prepareStatement(
-                            "INSERT INTO Recitations (uploader_email, reciter_name, surah, ayat, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
+                            "INSERT INTO Recitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
                     );
                     insert.setString(1, uploader);
                     insert.setString(2, reciterName);
                     insert.setString(3, surah);
-                    insert.setString(4, ayat);
+                    insert.setString(4, ayah);
                     insert.setString(5, fileName);
                     insert.setBlob(6, audioStream);
                     insert.executeUpdate();
 
                     // Delete from PendingRecitations
                     PreparedStatement delete = conn.prepareStatement(
-                            "DELETE FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayat = ? AND file_name = ?"
+                            "DELETE FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ? AND file_name = ?"
                     );
                     delete.setString(1, reciterName);
                     delete.setString(2, surah);
-                    delete.setString(3, ayat);
+                    delete.setString(3, ayah);
                     delete.setString(4, fileName);
                     delete.executeUpdate();
 
@@ -181,7 +180,7 @@ public class AdminController {
         // Choose correct timestamp column
         String timeColumn = table.equalsIgnoreCase("Recitations") ? "approved_time" : "upload_time";
 
-        String query = "SELECT id, uploader_email, reciter_name, surah, ayat, file_name, " + timeColumn + " FROM " + table;
+        String query = "SELECT id, uploader_email, reciter_name, surah, ayah, file_name, " + timeColumn + " FROM " + table;
         System.out.println("extracting ");
         try (PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -193,7 +192,7 @@ public class AdminController {
                 obj.addProperty("uploader_email", rs.getString("uploader_email"));
                 obj.addProperty("reciter_name", rs.getString("reciter_name"));
                 obj.addProperty("surah", rs.getString("surah"));
-                obj.addProperty("ayat", rs.getString("ayat"));
+                obj.addProperty("ayah", rs.getString("ayah"));
                 obj.addProperty("file_name", rs.getString("file_name"));
                 obj.addProperty("timestamp", rs.getString(timeColumn));  // unified key
                 array.add(obj);
@@ -214,7 +213,7 @@ public class AdminController {
             // USERS info
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
-                root.addProperty("status", "failed");
+                root.addProperty("status", "404");
                 return gson.toJson(root);
             }
             JsonArray users = new JsonArray();
@@ -247,7 +246,7 @@ public class AdminController {
             // Approved Recitations (without file_path)
             JsonArray approved = getFilteredRecitations(conn, "Recitations");
             root.add("approved_recitations", approved);
-            root.addProperty("status", "success");
+            root.addProperty("status", "200");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -256,6 +255,72 @@ public class AdminController {
 
         return gson.toJson(root);
     }
+    public String DELETE_APPROVED_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
+        TokenValidator tokenValidator = new TokenValidator();
+        IsAdmin isAdmin = new IsAdmin();
+        Gson gson = new Gson();
+        JsonObject res = new JsonObject();
+        res.addProperty("email", email);
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            if (tokenValidator.VALIDATE(email, token) && isAdmin.isAdmin(email)) {
+                PreparedStatement delete = conn.prepareStatement(
+                        "DELETE FROM Recitations WHERE reciter_name = ? AND surah = ? AND ayah = ?"
+                );
+                delete.setString(1, reciterName);
+                delete.setString(2, surah);
+                delete.setString(3, ayah);
+
+                int count = delete.executeUpdate();
+                if (count > 0) {
+                    res.addProperty("status", "200");
+                } else {
+                    res.addProperty("status", "404");
+                }
+            } else {
+                res.addProperty("status", "401");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.addProperty("status", "500");
+        }
+
+        return gson.toJson(res);
+    }
+    public String DISAPPROVE_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
+        TokenValidator tokenValidator = new TokenValidator();
+        IsAdmin isAdmin = new IsAdmin();
+        Gson gson = new Gson();
+        JsonObject res = new JsonObject();
+        res.addProperty("email", email);
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            if (tokenValidator.VALIDATE(email, token) && isAdmin.isAdmin(email)) {
+                PreparedStatement delete = conn.prepareStatement(
+                        "DELETE FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ?"
+                );
+                delete.setString(1, reciterName);
+                delete.setString(2, surah);
+                delete.setString(3, ayah);
+
+                int count = delete.executeUpdate();
+                if (count > 0) {
+                    res.addProperty("status", "200");
+                } else {
+                    res.addProperty("status", "404");
+                }
+            } else {
+                res.addProperty("status", "401");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.addProperty("status", "500");
+        }
+
+        return gson.toJson(res);
+    }
+
+
 
 
 }

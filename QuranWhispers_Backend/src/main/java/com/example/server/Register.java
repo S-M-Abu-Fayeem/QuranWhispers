@@ -25,7 +25,7 @@ public class Register {
             ResultSet rs = check.executeQuery();
 
             if (rs.next()) {
-                data.put("status", "Email already exists");
+                data.put("status", "401");
                 return gson.toJson(data);
             }
 
@@ -38,12 +38,12 @@ public class Register {
             ps.setInt(3, hashValue);
             ps.executeUpdate();
 
-            data.put("status", "Successfully Registered!");
+            data.put("status", "200");
             return gson.toJson(data);
 
         } catch (Exception e) {
             e.printStackTrace();
-            data.put("status", "Server Error");
+            data.put("status", "500");
             return gson.toJson(data);
         }
     }

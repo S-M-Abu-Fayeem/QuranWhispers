@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 
 public class AddFavVerse {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
-    public String SET(String email,int valueOfToken, String mood, int ayat, String surah){
+    public String SET(String email,int valueOfToken, String emotion,String theme, int ayah, String surah){
         TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
@@ -24,26 +24,35 @@ public class AddFavVerse {
                 ResultSet resultSet = preparedStatement1.executeQuery();
                 if(resultSet.next()) {
                     int UserId = resultSet.getInt("id");
-                    PreparedStatement preparedStatement2 = connection.prepareStatement("INSERT INTO FAV_VERSE (user_id, mood, ayat, surah) VALUES (?, ?, ?, ?)");
+                    PreparedStatement preparedStatement2 = connection.prepareStatement("INSERT INTO FAV_VERSE (user_id, emotion, theme, ayah, surah) VALUES (?, ?,?, ?, ?)");
 
                     preparedStatement2.setInt(1, UserId);
-                    preparedStatement2.setString(2, mood);
-                    preparedStatement2.setInt(3, ayat);
-                    preparedStatement2.setString(4, surah);
+                    preparedStatement2.setString(2, emotion);
+                    preparedStatement2.setString(3,theme);
+                    preparedStatement2.setInt(4, ayah);
+                    preparedStatement2.setString(5, surah);
                     int checker = preparedStatement2.executeUpdate();
-                    if(checker > 0 ) data.addProperty("status", "success");
-                    else data.addProperty("status", "fail");
+                    if(checker > 0 ) {
+                        data.addProperty("status", "200");
+                        PreparedStatement updateSaved = connection.prepareStatement(
+                                "UPDATE USERS SET total_saved_verse = total_saved_verse + 1 WHERE id = ?"
+                        );
+                        updateSaved.setInt(1, UserId);
+                        updateSaved.executeUpdate();
+                    }
+                    else data.addProperty("status", "500");
                 }
                 else{
-                    data.addProperty("Status" , "failed");
+                    data.addProperty("status" , "401");
                 }
             }
             catch(Exception e) {
+                data.addProperty("status" , "500");
                 e.printStackTrace();
             }
         }
         else{
-            data.addProperty("Status" , "failed");
+            data.addProperty("status" , "404");
 
         }
         return gson.toJson(data);

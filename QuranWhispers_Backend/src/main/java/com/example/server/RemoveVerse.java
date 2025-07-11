@@ -10,40 +10,56 @@ import java.sql.ResultSet;
 
 public class RemoveVerse {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
-    public String DELETE(String email,int valueOfToken, String mood, int ayat, String surah) {
+
+    public String DELETE(String email, int valueOfToken, String emotion, String theme, int ayah, String surah) {
         TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
+
         if (tokenValidator.VALIDATE(email, valueOfToken)) {
-
             try (Connection connection = DriverManager.getConnection(DB_URL)) {
+                PreparedStatement getUserId = connection.prepareStatement("SELECT id FROM USERS WHERE email = ?");
+                getUserId.setString(1, email);
+                ResultSet resultSet = getUserId.executeQuery();
 
-                PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT id FROM USERS WHERE email = ?");
-                preparedStatement1.setString(1, email);
-                ResultSet resultSet = preparedStatement1.executeQuery();
                 if (resultSet.next()) {
-                    int UserId = resultSet.getInt("id");
-                    PreparedStatement preparedStatement2 = connection.prepareStatement("DELETE FROM FAV_VERSE WHERE user_id = ? AND mood = ? AND ayat = ? AND surah = ?");
+                    int userId = resultSet.getInt("id");
 
-                    preparedStatement2.setInt(1, UserId);
-                    preparedStatement2.setString(2, mood);
-                    preparedStatement2.setInt(3, ayat);
-                    preparedStatement2.setString(4, surah);
+                    PreparedStatement deleteStmt = connection.prepareStatement(
+                            "DELETE FROM FAV_VERSE WHERE user_id = ? AND emotion = ? AND theme = ? AND ayah = ? AND surah = ?"
+                    );
+                    deleteStmt.setInt(1, userId);
+                    deleteStmt.setString(2, emotion);
+                    deleteStmt.setString(3, theme);
+                    deleteStmt.setInt(4, ayah);
+                    deleteStmt.setString(5, surah);
 
-                    int checker = preparedStatement2.executeUpdate();
-                    if (checker > 0) data.addProperty("status", "success");
-                    else data.addProperty("status", "failed");
+                    int deletedRows = deleteStmt.executeUpdate();
+
+                    if (deletedRows > 0) {
+                        // Decrease total_saved_verse
+                        PreparedStatement updateSavedVerse = connection.prepareStatement(
+                                "UPDATE USERS SET total_saved_verse = total_saved_verse - 1 WHERE id = ? AND total_saved_verse > 0"
+                        );
+                        updateSavedVerse.setInt(1, userId);
+                        updateSavedVerse.executeUpdate();
+
+                        data.addProperty("status", "200");
+                    } else {
+                        data.addProperty("status", "404");
+                    }
                 } else {
-                    data.addProperty("Status", "failed");
+                    data.addProperty("status", "404");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                data.addProperty("status", "500");
             }
         } else {
-            data.addProperty("Status", "failed");
-
+            data.addProperty("status", "401");
         }
+
         return gson.toJson(data);
     }
 }

@@ -43,7 +43,7 @@ public class HelloApplication extends Application {
             Gson gson = new Gson();
 
             while (true) {
-                System.out.println("Choose action: [login/register/getinfo/addtofavourites/rmvfavverse/sendtofriend/getduaoftheday/adddua/addverse/generatemoodbasedverse/generatethemebasedverse/uploadmp3/approverecitation/listenrecitation/getallinfo]");
+                System.out.println("Choose action: [login/register/getinfo/addtofavourites/rmvfavverse/sendtofriend/getduaoftheday/adddua/addverse/generateemotionbasedverse/generatethemebasedverse/uploadmp3/approverecitation/listenrecitation/getallinfo]");
                 String action = scanner.nextLine().trim().toLowerCase();
                 HashMap<String, String> data = new HashMap<>();
 
@@ -74,20 +74,24 @@ public class HelloApplication extends Application {
                     data.put("action", "addtofavourites");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    System.out.print("Enter Mood: ");
-                    data.put("mood", scanner.nextLine());
-                    System.out.print("Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("Enter emotion: ");
+                    data.put("emotion", scanner.nextLine());
+                    System.out.print("theme : ");
+                    data.put("theme", scanner.nextLine());
+                    System.out.print("ayah: ");
+                    data.put("ayah", scanner.nextLine());
                     System.out.print("Surah: ");
                     data.put("surah", scanner.nextLine());
                 } else if (action.equals("rmvfavverse")) {
                     data.put("action", "rmvfavverse");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    System.out.print("Enter Mood: ");
-                    data.put("mood", scanner.nextLine());
-                    System.out.print("Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("Enter emotion: ");
+                    data.put("emotion", scanner.nextLine());
+                    System.out.print("theme : ");
+                    data.put("theme", scanner.nextLine());
+                    System.out.print("ayah: ");
+                    data.put("ayah", scanner.nextLine());
                     System.out.print("Surah: ");
                     data.put("surah", scanner.nextLine());
                 } else if (action.equals("sendtofriend")) {
@@ -96,10 +100,12 @@ public class HelloApplication extends Application {
                     data.put("email", sessionManager.getEmail());
                     System.out.print("Friend Username: ");
                     data.put("friendusername", scanner.nextLine());
-                    System.out.print("Enter Mood: ");
-                    data.put("mood", scanner.nextLine());
-                    System.out.print("Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("Enter emotion: ");
+                    data.put("emotion", scanner.nextLine());
+                    System.out.print("theme : ");
+                    data.put("theme", scanner.nextLine());
+                    System.out.print("ayah: ");
+                    data.put("ayah", scanner.nextLine());
                     System.out.print("Surah: ");
                     data.put("surah", scanner.nextLine());
                 } else if (action.equals("getduaoftheday")) {
@@ -114,28 +120,26 @@ public class HelloApplication extends Application {
                     data.put("title", scanner.nextLine());
                     System.out.print("English Body: ");
                     data.put("englishbody", scanner.nextLine());
-                    System.out.print("Bangla Body: ");
-                    data.put("banglabody", scanner.nextLine());
                     System.out.print("Arabic Body: ");
                     data.put("arabicbody", scanner.nextLine());
                 } else if (action.equals("addverse")) {
                     data.put("action", "addverse");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    System.out.print("Enter Mood: ");
-                    data.put("mood", scanner.nextLine());
+                    System.out.print("Enter emotion: ");
+                    data.put("emotion", scanner.nextLine());
                     System.out.print("Enter Theme: ");
                     data.put("theme", scanner.nextLine());
-                    System.out.print("Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("ayah: ");
+                    data.put("ayah", scanner.nextLine());
                     System.out.print("Surah: ");
                     data.put("surah", scanner.nextLine());
-                } else if (action.equals("generatemoodbasedverse")) {
-                    data.put("action", "generatemoodbasedverse");
+                } else if (action.equals("generateemotionbasedverse")) {
+                    data.put("action", "generateemotionbasedverse");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    System.out.print("Enter Mood: ");
-                    data.put("mood", scanner.nextLine());
+                    System.out.print("Enter emotion: ");
+                    data.put("emotion", scanner.nextLine());
                 } else if (action.equals("generatethemebasedverse")) {
                     data.put("action", "generatethemebasedverse");
                     data.put("token", sessionManager.getToken());
@@ -143,12 +147,6 @@ public class HelloApplication extends Application {
                     System.out.print("Enter Theme: ");
                     data.put("theme", scanner.nextLine());
                 }
-
-
-
-
-
-
                 else if (action.equals("uploadmp3")) {
                     data.put("action", "uploadmp3");
                     data.put("token", sessionManager.getToken());
@@ -160,9 +158,9 @@ public class HelloApplication extends Application {
                         continue;
                     }
                     data.put("filename", mp3File.getName());
-                    data.put("reciter_name", "Qari Mishary2");
-                    data.put("surah", "Al-Fatih2a");
-                    data.put("ayat", "2");
+                    data.put("reciter_name", "Qari Mishary");
+                    data.put("surah", "Al-Fatiha");
+                    data.put("ayah", "1");
                     data.put("filesize", String.valueOf(mp3File.length()));
 
                     String json = gson.toJson(data);
@@ -170,10 +168,20 @@ public class HelloApplication extends Application {
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
 
-                    try (FileInputStream fis = new FileInputStream(mp3File); DataOutputStream dos = new DataOutputStream(socket.getOutputStream())) {
-                        dos.writeLong(mp3File.length());
+                    //  Wait for server to say READY_TO_RECEIVE
+                    String ack = bufferedReader.readLine();
+                    if (!"READY_TO_RECEIVE".equals(ack)) {
+                        System.out.println("Server did not acknowledge. Got: " + ack);
+                        continue;
+                    }
+
+                    FileInputStream fis = new FileInputStream(mp3File);
+                    DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+
+                    try {
                         byte[] buffer = new byte[4096];
                         int read;
+                        dos.writeLong(mp3File.length());
                         while ((read = fis.read(buffer)) != -1) {
                             dos.write(buffer, 0, read);
                         }
@@ -181,16 +189,16 @@ public class HelloApplication extends Application {
                         System.out.println(" MP3 file sent.");
                     } catch (IOException e) {
                         System.out.println(" Error sending file: " + e.getMessage());
+                    } finally {
+                        fis.close();  // only close file stream, NOT socket streams
                     }
 
+
+                    // Read final JSON response from server
+                    String response = bufferedReader.readLine();
+                    System.out.println("Server: " + response);
                     continue;
                 }
-
-
-
-
-
-
 
                 else if (action.equals("approverecitation")) {
                     data.put("action", "approverecitation");
@@ -200,18 +208,18 @@ public class HelloApplication extends Application {
                     data.put("recitername", scanner.nextLine());
                     System.out.print("Enter Surah: ");
                     data.put("surah", scanner.nextLine());
-                    System.out.print("Enter Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("Enter ayah: ");
+                    data.put("ayah", scanner.nextLine());
                 } else if (action.equals("listenrecitation")) {
                     data.put("action", "listenrecitation");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    System.out.print("Enter Reciter Name: ");
-                    data.put("reciter", scanner.nextLine());
+                    //System.out.print("Enter Reciter Name: ");
+                    //data.put("reciter", scanner.nextLine());
                     System.out.print("Enter Surah: ");
                     data.put("surah", scanner.nextLine());
-                    System.out.print("Enter Ayat: ");
-                    data.put("ayat", scanner.nextLine());
+                    System.out.print("Enter ayah: ");
+                    data.put("ayah", scanner.nextLine());
 
                     String json = gson.toJson(data);
                     bufferedWriter.write(json);
@@ -245,7 +253,35 @@ public class HelloApplication extends Application {
                     data.put("action", "getallinfo");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                } else {
+                }else if (action.equals("disapproverecitation")) {
+                    data.put("action", "disapproverecitation");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                    System.out.print("Reciter Name: ");
+                    data.put("recitername", scanner.nextLine());
+                    System.out.print("Surah: ");
+                    data.put("surah", scanner.nextLine());
+                    System.out.print("Ayah: ");
+                    data.put("ayah", scanner.nextLine());
+                }
+                else if (action.equals("deleteapprovedrecitation")) {
+                    data.put("action", "deleteapprovedrecitation");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                    System.out.print("Reciter Name: ");
+                    data.put("recitername", scanner.nextLine());
+                    System.out.print("Surah: ");
+                    data.put("surah", scanner.nextLine());
+                    System.out.print("Ayah: ");
+                    data.put("ayah", scanner.nextLine());
+                }
+                else if(action.equals("logout")) {
+                    data.put("action", "logout");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+
+                else {
                     continue;
                 }
 
@@ -278,3 +314,4 @@ public class HelloApplication extends Application {
         }
     }
 }
+// /Users/fayeem/Downloads/001.mp3
