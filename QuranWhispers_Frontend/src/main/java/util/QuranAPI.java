@@ -14,7 +14,6 @@ public class QuranAPI {
         result.put("surahNum", surahNum);
         result.put("ayahNum", ayahNum);
 
-        // Fetch translations for Bengali, English, and Arabic
         String bengaliData = fetchDataFromAPI(GlobalState.QURAN_BENGALI_EDITION_NAME, surahNum, ayahNum);
         String englishData = fetchDataFromAPI(GlobalState.QURAN_ENGLISH_EDITION_NAME, surahNum, ayahNum);
         String arabicData = fetchDataFromAPI(GlobalState.QURAN_ARABIC_EDITION_NAME, surahNum, ayahNum);
@@ -38,7 +37,7 @@ public class QuranAPI {
             result.put("arabicTranslationText", "Arabic translation not available.");
         }
 
-        return result; // Return the complete JSON object
+        return result;
     }
 
     // Method to fetch data from the API

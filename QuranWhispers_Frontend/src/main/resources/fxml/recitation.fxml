@@ -4,12 +4,14 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -248,7 +250,6 @@
             <Font name="Century Gothic" size="16.0" />
          </font>
       </TextField>
-      <ListView fx:id="recitationListView" layoutX="422.0" layoutY="196.0" prefHeight="200.0" prefWidth="434.0" />
       <Group fx:id="selectFileBtn" layoutX="809.0" layoutY="531.0" onMouseClicked="#handleSelectFileBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1c1c1ccc" height="50.0" layoutX="-5.0" layoutY="-5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="50.0" />
@@ -259,5 +260,10 @@
             </ImageView>
          </children>
       </Group>
+      <ScrollPane layoutX="423.0" layoutY="196.0" prefHeight="190.0" prefWidth="450.0">
+         <content>
+            <VBox fx:id="containerVBox" alignment="CENTER" prefHeight="190.0" prefWidth="430.0" spacing="15.0" />
+         </content>
+      </ScrollPane>
     </children>
 </AnchorPane>

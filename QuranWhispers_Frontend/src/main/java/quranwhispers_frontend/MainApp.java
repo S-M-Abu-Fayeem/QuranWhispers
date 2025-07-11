@@ -19,8 +19,12 @@ import controller.ShareController;
 import controller.RecitationController;
 import controller.NotificationController;
 import controller.ProfileController;
+
 import controller.AdminInsertController;
-import controller.AdminViewController;
+import controller.AdminUserViewController;
+import controller.AdminVerseViewController;
+import controller.AdminRecitationViewController;
+import controller.AdminDuaViewController;
 import controller.AdminApproveController;
 
 
@@ -72,6 +76,8 @@ public class MainApp extends Application {
         initController(GlobalState.SEARCH_FILE, SearchController.class, sceneController);
         initController(GlobalState.SHARE_FILE, ShareController.class, sceneController);
         initController(GlobalState.RECITATION_FILE, RecitationController.class, sceneController);
+        initController(GlobalState.NOTIFICATION_FILE, NotificationController.class, sceneController);
+        initController(GlobalState.PROFILE_FILE, ProfileController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
 

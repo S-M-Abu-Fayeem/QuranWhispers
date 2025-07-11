@@ -6,3 +6,10 @@ CSS Design
     - TextField
 - Search Page
     - catagoryListView
+- Animation / Hover Effect
+
+Features
+- Database Connect
+- Recitation/Share for Notification/Profile
+- Gemini AI connect
+- About Us/Learn More Page

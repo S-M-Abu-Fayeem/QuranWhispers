@@ -1,0 +1,52 @@
+[
+  {
+    "surahNum": 9,
+    "ayahNum": 51,
+    "senderUsername": "user1"
+  },
+  {
+    "surahNum": 108,
+    "ayahNum": 3,
+    "senderUsername": "user2"
+  },
+  {
+    "surahNum": 97,
+    "ayahNum": 5,
+    "senderUsername": "user3"
+  },
+  {
+    "surahNum": 112,
+    "ayahNum": 1,
+    "senderUsername": "user4"
+  },
+  {
+    "surahNum": 112,
+    "ayahNum": 2,
+    "senderUsername": "user5"
+  },
+  {
+    "surahNum": 112,
+    "ayahNum": 3,
+    "senderUsername": "user6"
+  },
+  {
+    "surahNum": 112,
+    "ayahNum": 4,
+    "senderUsername": "user7"
+  },
+  {
+    "surahNum": 103,
+    "ayahNum": 1,
+    "senderUsername": "user8"
+  },
+  {
+    "surahNum": 94,
+    "ayahNum": 6,
+    "senderUsername": "user9"
+  },
+  {
+    "surahNum": 105,
+    "ayahNum": 4,
+    "senderUsername": "user10"
+  }
+]

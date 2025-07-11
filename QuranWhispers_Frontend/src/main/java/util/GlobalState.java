@@ -20,8 +20,12 @@ public class GlobalState {
     public static final String RECITATION_FILE = "recitation";
     public static final String NOTIFICATION_FILE = "notification";
     public static final String PROFILE_FILE = "profile";
+
     public static final String ADMIN_INSERT_FILE = "adminInsert";
-    public static final String ADMIN_VIEW_FILE = "adminView";
+    public static final String ADMIN_USER_VIEW_FILE = "adminUserView";
+    public static final String ADMIN_VERSE_VIEW_FILE = "adminVerseView";
+    public static final String ADMIN_RECITATION_VIEW_FILE = "adminRecitationView";
+    public static final String ADMIN_DUA_VIEW_FILE = "adminDuaView";
     public static final String ADMIN_APPROVE_FILE = "adminApprove";
 
 }

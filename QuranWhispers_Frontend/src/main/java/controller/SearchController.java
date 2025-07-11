@@ -37,10 +37,11 @@ public class SearchController extends BaseController implements Initializable {
     String categoryName;
 
     // THIS WILL BE FETCHED FROM BACKEND
-    int surahNum = 10;
-    int ayahNum = 80;
+    int surahNum = 1;
+    int ayahNum = 2;
     String[] emotionArray = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
     String[] ThemeArray = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
+
     String posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
 
     @Override
@@ -115,7 +116,7 @@ public class SearchController extends BaseController implements Initializable {
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
         RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
-        recitationControllerObj.setupPoster(posterPath, categoryName);
+        recitationControllerObj.setupPage(posterPath, categoryName, surahNum, ayahNum);
         playClickSound();
     };
 

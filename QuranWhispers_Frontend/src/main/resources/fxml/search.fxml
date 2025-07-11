@@ -93,8 +93,6 @@
             <Image url="@../images/verse_posters/background.png" />
          </image>
       </ImageView>
-      <Group layoutX="96.0" layoutY="344.0" />
-      <Group layoutX="96.0" layoutY="407.0" />
       <Group fx:id="emotionBtn" layoutX="95.0" layoutY="375.0" onMouseClicked="#handleEmotionBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#ff70c8cc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />

@@ -40,6 +40,7 @@ public abstract class BaseController {
     }
     public void handleProfileNavlink(MouseEvent e) throws IOException {
         System.out.println("Profile navlink button pressed");
+        sceneController.switchTo(GlobalState.PROFILE_FILE);
         playClickSound();
     }
     public void handleSearchNavlink(MouseEvent e) throws IOException {
@@ -49,11 +50,13 @@ public abstract class BaseController {
     }
     public void handleFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Favourites button pressed");
+        sceneController.switchTo(GlobalState.PROFILE_FILE);
         playClickSound();
     }
 
     public void handleNotificationBtn(MouseEvent e) throws IOException {
         System.out.println("Notification button pressed");
+        sceneController.switchTo(GlobalState.NOTIFICATION_FILE);
         playClickSound();
     }
 

@@ -4,6 +4,7 @@ module org.example.quranwhispers_frontend {
     requires java.desktop;
     requires java.net.http;
     requires org.json;
+    requires javafx.media;
 
 
     opens quranwhispers_frontend to javafx.fxml;
