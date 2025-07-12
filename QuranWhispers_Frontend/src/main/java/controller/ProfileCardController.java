@@ -25,11 +25,15 @@ public class ProfileCardController extends BaseController implements Initializab
     @FXML ImageView versePosterView;
     int surahNum;
     int ayahNum;
+    String emotion;
+    String theme;
     String posterPath;
 
-    public void setProfileInfo(int surahNum, int ayahNum) {
+    public void setProfileInfo(int surahNum, int ayahNum, String emotion, String theme) {
         this.surahNum = surahNum;
         this.ayahNum = ayahNum;
+        this.emotion = emotion;
+        this.theme = theme;
         posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
     }
 

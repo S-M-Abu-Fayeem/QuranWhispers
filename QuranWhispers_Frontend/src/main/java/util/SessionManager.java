@@ -1,21 +1,18 @@
 package util;
 
 public class SessionManager {
-    private String email;
-    private String token;
-    SessionManager() {
-        this.token = "-1";
+    private static String email;
+    private static String token = "-1";
+    static void setEmail(String emailAddress) {
+        SessionManager.email = emailAddress;
     }
-    void setEmail(String email) {
-        this.email = email;
+    static void setToken(String newToken) {
+        SessionManager.token = newToken;
     }
-    void setToken(String token) {
-        this.token = token;
+    public static String getEmail() {
+        return SessionManager.email;
     }
-    public String getEmail() {
-        return email;
-    }
-    public String getToken() {
-        return token;
+    public static String getToken() {
+        return SessionManager.token;
     }
 }

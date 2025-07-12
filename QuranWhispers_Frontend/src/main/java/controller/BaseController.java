@@ -40,12 +40,15 @@ public abstract class BaseController {
     }
     public void handleProfileNavlink(MouseEvent e) throws IOException {
         System.out.println("Profile navlink button pressed");
-        sceneController.switchTo(GlobalState.PROFILE_FILE);
+        ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
+        profileController.setupProfile();
         playClickSound();
     }
     public void handleSearchNavlink(MouseEvent e) throws IOException {
         System.out.println("Search navlink button pressed");
-        sceneController.switchTo(GlobalState.SEARCH_FILE);
+        SearchController searchController = (SearchController) sceneController.switchTo(GlobalState.SEARCH_FILE);
+        searchController.setupListView();
+        searchController.setupDua();
         playClickSound();
     }
     public void handleFavouritesBtn(MouseEvent e) throws IOException {

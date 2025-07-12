@@ -18,6 +18,7 @@ public class LandingController extends BaseController{
                 request.put("email", "ahammad@gmail.com");
                 request.put("username", "ahammad");
 
+
                 JSONObject response = BackendAPI.fetch("register", request);
                 for (String key : response.keySet()) {
                     System.out.println("Key: " + key + " | Value: " + response.get(key));

@@ -28,4 +28,5 @@ public class GlobalState {
     public static final String ADMIN_DUA_VIEW_FILE = "adminDuaView";
     public static final String ADMIN_APPROVE_FILE = "adminApprove";
 
+
 }

@@ -13,10 +13,9 @@ public class BackendAPI {
         OutputStreamWriter outputStreamWriter = null;
         BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
-        SessionManager sessionManager = new SessionManager();
 
         try {
-            socket = new Socket("localhost", 8080);
+            socket = new Socket("172.29.74.104", 42069);
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
 
@@ -39,61 +38,73 @@ public class BackendAPI {
                     data.put("email", request.getString("email"));
                     data.put("password", request.getString("password"));
                     data.put("username", request.getString("username"));
+
                 } else if (action.equals("getinfo")) {
                     data.put("action", "getinfo");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                 } else if (action.equals("addtofavourites")) {
                     data.put("action", "addtofavourites");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
-                    data.put("mood", request.getString("emotion"));
-                    data.put("ayat", request.getString("ayah"));
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
+                    data.put("emotion", request.getString("emotion"));
+                    data.put("theme", request.getString("theme"));
+                    data.put("ayah", request.getString("ayah"));
                     data.put("surah", request.getString("surah"));
                 } else if (action.equals("rmvfavverse")) {
                     data.put("action", "rmvfavverse");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
-                    data.put("mood", request.getString("emotion"));
-                    data.put("ayat", request.getString("ayah"));
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
+                    data.put("emotion", request.getString("emotion"));
+                    data.put("theme", request.getString("theme"));
+                    data.put("ayah", request.getString("ayah"));
                     data.put("surah", request.getString("surah"));
                 } else if (action.equals("sendtofriend")) {
                     data.put("action", "sendtofriend");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                     data.put("friendusername", request.getString("receiver_username"));
-                    data.put("mood", request.getString("emotion"));
-                    data.put("ayat", request.getString("ayah"));
+                    data.put("emotion", request.getString("emotion"));
+                    data.put("theme", request.getString("theme"));
+                    data.put("ayah", request.getString("ayah"));
                     data.put("surah", request.getString("surah"));
                 } else if (action.equals("getduaoftheday")) {
                     data.put("action", "getduaoftheday");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                 } else if (action.equals("adddua")) {
                     data.put("action", "adddua");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                     data.put("title", request.getString("title"));
                     data.put("arabicbody", request.getString("arabicbody"));
                     data.put("englishbody", request.getString("englishbody"));
                 } else if (action.equals("addverse")) {
                     data.put("action", "addverse");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
-                    data.put("mood", request.getString("emotion"));
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
+                    data.put("emotion", request.getString("emotion"));
                     data.put("theme", request.getString("theme"));
-                    data.put("ayat", request.getString("ayah"));
+                    data.put("ayah", request.getString("ayah"));
                     data.put("surah", request.getString("surah"));
-                } else if (action.equals("generatemoodbasedverse")) {
-                    data.put("action", "generatemoodbasedverse");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
-                    data.put("mood", request.getString("emotion"));
+                } else if (action.equals("generateemotionbasedverse")) {
+                    data.put("action", "generateemotionbasedverse");
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
+                    data.put("emotion", request.getString("emotion"));
                 } else if (action.equals("generatethemebasedverse")) {
                     data.put("action", "generatethemebasedverse");
-                    data.put("token", sessionManager.getToken());
-                    data.put("email", sessionManager.getEmail());
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                     data.put("theme", request.getString("theme"));
+                } else if (action.equals("getlist")) {
+                    data.put("action", "getlist");
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
+                } else if (action.equals("getprofileinfo")) {
+                    data.put("action", "getprofileinfo");
+                    data.put("token", SessionManager.getToken());
+                    data.put("email", SessionManager.getEmail());
                 }
 
 
@@ -106,8 +117,8 @@ public class BackendAPI {
 
 //                else if (action.equals("uploadmp3")) {
 //                    data.put("action", "uploadmp3");
-//                    data.put("token", sessionManager.getToken());
-//                    data.put("email", sessionManager.getEmail());
+//                    data.put("token", SessionManager.getToken());
+//                    data.put("email", SessionManager.getEmail());
 //                    System.out.print("Enter full path of MP3 file: ");
 //                    File mp3File = new File(scanner.nextLine());
 //                    if (!mp3File.exists()) {
@@ -141,8 +152,8 @@ public class BackendAPI {
 //                    continue;
 //                } else if (action.equals("approverecitation")) {
 //                    data.put("action", "approverecitation");
-//                    data.put("token", sessionManager.getToken());
-//                    data.put("email", sessionManager.getEmail());
+//                    data.put("token", SessionManager.getToken());
+//                    data.put("email", SessionManager.getEmail());
 //                    System.out.print("Enter reciter name: ");
 //                    data.put("recitername", scanner.nextLine());
 //                    System.out.print("Enter Surah: ");
@@ -151,8 +162,8 @@ public class BackendAPI {
 //                    data.put("ayat", scanner.nextLine());
 //                } else if (action.equals("listenrecitation")) {
 //                    data.put("action", "listenrecitation");
-//                    data.put("token", sessionManager.getToken());
-//                    data.put("email", sessionManager.getEmail());
+//                    data.put("token", SessionManager.getToken());
+//                    data.put("email", SessionManager.getEmail());
 //                    System.out.print("Enter Reciter Name: ");
 //                    data.put("reciter", scanner.nextLine());
 //                    System.out.print("Enter Surah: ");
@@ -190,8 +201,8 @@ public class BackendAPI {
 //                    continue;
 //                } else if (action.equals("getallinfo")) {
 //                    data.put("action", "getallinfo");
-//                    data.put("token", sessionManager.getToken());
-//                    data.put("email", sessionManager.getEmail());
+//                    data.put("token", SessionManager.getToken());
+//                    data.put("email", SessionManager.getEmail());
 //                }
 //
                 else {
@@ -207,8 +218,8 @@ public class BackendAPI {
 
                 JSONObject jsonResponse = new JSONObject(response);
                 if (action.equals("login")) {
-                    sessionManager.setToken(jsonResponse.getString("token"));
-                    sessionManager.setEmail(jsonResponse.getString("email"));
+                    SessionManager.setToken(jsonResponse.getString("token"));
+                    SessionManager.setEmail(jsonResponse.getString("email"));
                 }
                 return jsonResponse;
             }

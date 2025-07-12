@@ -13,9 +13,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import util.BackendAPI;
 import util.GlobalState;
 import util.PosterGenerator;
 import javafx.concurrent.Task;
+import util.SessionManager;
 
 import java.awt.*;
 import java.io.File;
@@ -35,15 +39,87 @@ public class SearchController extends BaseController implements Initializable {
     @FXML ImageView versePosterView;
     String categoryType;
     String categoryName;
+    String emotionName;
+    String themeName;
     boolean categoryListViewVisible = false;
+    boolean isEmotion = false;
 
     // THIS WILL BE FETCHED FROM BACKEND
-    int surahNum = 1;
-    int ayahNum = 2;
-    String[] emotionArray = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
-    String[] ThemeArray = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
+    int surahNum;
+    int ayahNum;
+    String [] emotionArray; // = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
+    String [] themeArray; // = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
 
-    String posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
+    String posterPath;
+
+    public void setupListView() {
+        Task<Void> getListBackendAPITask= new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                for (String key : request.keySet()) {
+                    System.out.println("Key: " + key + " | Value: " + request.get(key));
+                }
+
+                JSONObject response = BackendAPI.fetch("getlist", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Fetch successful");
+                    JSONArray jsonArrayEmotion = response.getJSONArray("emotions");
+                    emotionArray = new String[jsonArrayEmotion.length()];
+
+                    for (int i = 0; i < jsonArrayEmotion.length(); i++) {
+                        emotionArray[i] = jsonArrayEmotion.getString(i);  // Get each string from JSONArray
+                    }
+                    JSONArray jsonArrayTheme = response.getJSONArray("themes");
+                    themeArray = new String[jsonArrayTheme.length()];
+
+                    for (int i = 0; i < jsonArrayTheme.length(); i++) {
+                        themeArray[i] = jsonArrayTheme.getString(i);  // Get each string from JSONArray
+                    }
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(getListBackendAPITask).start();
+    }
+
+    public void setupDua() {
+        Task<Void> getDuaBackendAPITask= new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                for (String key : request.keySet()) {
+                    System.out.println("Key: " + key + " | Value: " + request.get(key));
+                }
+
+                JSONObject response = BackendAPI.fetch("getduaoftheday", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Fetch successful");
+                    System.out.println("Response: " + response.getString("title"));
+                    Platform.runLater(() -> {
+                        System.out.println("Setting up Dua of the Day");
+                        try {
+                            duaTitle.setText(response.getString("title"));
+                            duaArabicBody.setText(response.getString("arabic"));
+                            duaEnglishBody.setText(response.getString("english"));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(getDuaBackendAPITask).start();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,34 +133,70 @@ public class SearchController extends BaseController implements Initializable {
                 categoryListView.setVisible(false);
                 categoryListView.getItems().clear();
 
-                // Create a new task to generate the poster in the background
-                Task<Void> posterGenerationTask = new Task<Void>() {
+                // Fetch the Surah and Ayah numbers based on the selected category
+                Task<Void> getVerseBackendAPITask= new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        File posterFile = new File(posterPath);
-                        if (!posterFile.exists()) {
-                            PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
+                        JSONObject request = new JSONObject();
+                        request.put("email", SessionManager.getEmail());
+                        request.put("token", SessionManager.getToken());
+                        for (String key : request.keySet()) {
+                            System.out.println("Key: " + key + " | Value: " + request.get(key));
+                        }
+
+                        JSONObject response;
+                        if (isEmotion) {
+                            request.put("emotion", categoryName);
+                            response = BackendAPI.fetch("generateemotionbasedverse", request);
+                        } else {
+                            request.put("theme", categoryName);
+                            response = BackendAPI.fetch("generatethemebasedverse", request);
+                        }
+                        if (response.getString("status").equals("200")) {
+                            System.out.println("Fetch successful");
+                            surahNum = response.getInt("surah");
+                            ayahNum = response.getInt("ayah");
+                            emotionName = response.getString("emotion");
+                            themeName = response.getString("theme");
+                        } else {
+                            System.out.println("Fetch failed: " + response.getString("message"));
                         }
                         return null;
                     }
                 };
+                new Thread(getVerseBackendAPITask).start();
 
-
-                // After the task completes, update the image
-                posterGenerationTask.setOnSucceeded(event -> {
-                    Platform.runLater(() -> {
-                        File posterFile = new File(posterPath);
-                        if (posterFile.exists()) {
-                            Image poster = new Image(posterFile.toURI().toString());
-                            versePosterView.setImage(poster);
-                        } else {
-                            System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
+                // Create a new task to generate the poster in the background
+                getVerseBackendAPITask.setOnSucceeded(event -> {
+                    posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
+                    Task<Void> posterGenerationTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            File posterFile = new File(posterPath);
+                            if (!posterFile.exists()) {
+                                PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
+                            }
+                            return null;
                         }
-                    });
-                });
+                    };
 
-                // Start the task in a background thread
-                new Thread(posterGenerationTask).start();
+
+                    // After the task completes, update the image
+                    posterGenerationTask.setOnSucceeded(ev -> {
+                        Platform.runLater(() -> {
+                            File posterFile = new File(posterPath);
+                            if (posterFile.exists()) {
+                                Image poster = new Image(posterFile.toURI().toString());
+                                versePosterView.setImage(poster);
+                            } else {
+                                System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
+                            }
+                        });
+                    });
+
+                    // Start the task in a background thread
+                    new Thread(posterGenerationTask).start();
+                });
             }
         });
     }
@@ -94,9 +206,13 @@ public class SearchController extends BaseController implements Initializable {
         categoryListView.getItems().clear();
 
         categoryType = "Emotion";
+
         categoryListView.getItems().addAll(emotionArray);
         categoryListViewVisible = !categoryListViewVisible;
         categoryListView.setVisible(categoryListViewVisible);
+        if (categoryListViewVisible) {
+            isEmotion = true;
+        }
         playClickSound();
     };
 
@@ -105,14 +221,50 @@ public class SearchController extends BaseController implements Initializable {
         System.out.println("Theme Btn Pressed");
         categoryListView.getItems().clear();
         categoryType = "Theme";
-        categoryListView.getItems().addAll(ThemeArray);
+        categoryListView.getItems().addAll(themeArray);
         categoryListViewVisible = !categoryListViewVisible;
         categoryListView.setVisible(categoryListViewVisible);
+        if (categoryListViewVisible) {
+            isEmotion = false;
+        }
         playClickSound();
     };
 
     public void handleAddToFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Add to Favourites Button Pressed");
+        Task<Void> addFavouriteBackendAPITask= new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put("emotion", emotionName);
+                request.put("theme", themeName);
+                request.put("ayah", String.valueOf(ayahNum));
+                request.put("surah", String.valueOf(surahNum));
+                for (String key : request.keySet()) {
+                    System.out.println("Key: " + key + " | Value: " + request.get(key));
+                }
+
+                JSONObject response = BackendAPI.fetch("addtofavourites", request);
+                System.out.println(response.getString("status"));
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Fetch successful");
+                    Platform.runLater(() -> {
+                        try {
+                            ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
+                            profileController.setupProfile();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(addFavouriteBackendAPITask).start();
         playClickSound();
     };
 
