@@ -24,7 +24,7 @@ public class GeneratingDuaOfTheDay {
                     data.addProperty("title", rs.getString("title"));
                     data.addProperty("english", rs.getString("body_english"));
                     data.addProperty("arabic", rs.getString("body_arabic"));
-                    data.addProperty("status", "cached");
+                    data.addProperty("status", "200");
                     return gson.toJson(data);
                 }
             }

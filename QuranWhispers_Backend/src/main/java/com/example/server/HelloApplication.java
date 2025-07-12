@@ -28,8 +28,11 @@ public class HelloApplication {
         RandomizedSelection randomizedSelection = new RandomizedSelection();
         //AdminController adminController1 = new AdminController();
         LogOut logOut = new LogOut();
+        GetList getList = new GetList();
+        GetProfileInfo getProfileInfo = new GetProfileInfo();
+        GetRecieveInfo getRecieveInfo = new GetRecieveInfo();
 
-        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+        try (ServerSocket serverSocket = new ServerSocket(42069)) {
             System.out.println("Server running.........");
 
             while (true) {
@@ -111,6 +114,7 @@ public class HelloApplication {
                             String verse = json.get("ayah").getAsString();
                             String emotion = json.get("emotion").getAsString();
                             String theme = json.get("theme").getAsString();
+                            System.out.println("done");
                             response = addDua.SET_THEME_MOOD(email,valueOfToken, theme, emotion, Integer.parseInt(verse), surah);
                         }
                         else if(action.equalsIgnoreCase("getduaoftheday")) {
@@ -186,12 +190,14 @@ public class HelloApplication {
                                 writer.flush();
 
                                 try {
-                                    InputStream is = socket.getInputStream();
+                                    DataInputStream dis = new DataInputStream(socket.getInputStream());
+                                    long fileSize = dis.readLong();  // 👈 read the 8-byte long sent by client
+
                                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                     byte[] buffer = new byte[4096];
                                     long bytesReceived = 0;
                                     int read;
-                                    while (bytesReceived < filesize && (read = is.read(buffer)) != -1) {
+                                    while (bytesReceived < fileSize && (read = dis.read(buffer, 0, (int)Math.min(buffer.length, fileSize - bytesReceived))) != -1) {
                                         baos.write(buffer, 0, read);
                                         bytesReceived += read;
                                     }
@@ -256,6 +262,7 @@ public class HelloApplication {
                                         byte[] audioBytes = baos.toByteArray();
 
                                         // Send file size then raw audio bytes
+                                        System.out.println("Sending audio size: " + audioBytes.length);
                                         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
                                         dos.writeLong(audioBytes.length);
                                         dos.write(audioBytes);
@@ -303,7 +310,7 @@ public class HelloApplication {
                             response = adminController.DISAPPROVE_RECITATION(email, value, reciterName, surah, ayah);
                         }
                         else if (action.equals("deleteapprovedrecitation")) {
-                            int value = Integer.parseInt(json.get("value").getAsString());
+                            int value = Integer.parseInt(json.get("token").getAsString());
                             String reciterName = json.get("recitername").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
@@ -312,6 +319,15 @@ public class HelloApplication {
                         }
                         else if(action.equalsIgnoreCase("logout")){
                             response = logOut.Logout(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
+                        }
+                        else if(action.equalsIgnoreCase("getlist")) {
+                            response = getList.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
+                        }
+                        else if(action.equalsIgnoreCase("getprofileinfo")){
+                            response = getProfileInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
+                        }
+                        else if(action.equalsIgnoreCase("getrecieveinfo")){
+                            response = getRecieveInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
                         }
                         else {
                             JsonObject error = new JsonObject();

@@ -250,7 +250,8 @@ public class AdminController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "{\"status\": \"error\"}";
+            root.addProperty("status", "500");
+            return gson.toJson(root);
         }
 
         return gson.toJson(root);

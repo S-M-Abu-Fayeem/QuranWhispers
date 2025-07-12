@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import java.sql.*;
 
-public class UserInfoGetter {
+public class GetProfileInfo {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
     public String GET(String email, int token) {
@@ -18,7 +18,7 @@ public class UserInfoGetter {
             data.addProperty("email", email);
 
             if (!tokenValidator.VALIDATE(email, token)) {
-                data.addProperty("status", "Invalid token");
+                data.addProperty("status", "404");
                 return gson.toJson(data);
             }
 
@@ -29,7 +29,7 @@ public class UserInfoGetter {
             ResultSet userRs = psInfo.executeQuery();
 
             if (!userRs.next()) {
-                data.addProperty("status", "User does not exist");
+                data.addProperty("status", "404");
                 return gson.toJson(data);
             }
 
@@ -40,7 +40,8 @@ public class UserInfoGetter {
 
 
             PreparedStatement psFav = connection.prepareStatement(
-                    "SELECT emotion, ayah, surah FROM FAV_VERSE WHERE user_id = ?");
+                    "SELECT emotion, theme,  ayah, surah, timestamp FROM FAV_VERSE WHERE user_id = ? ORDER BY timestamp DESC"
+            );
             psFav.setInt(1, userId);
             ResultSet favRs = psFav.executeQuery();
 
@@ -48,46 +49,12 @@ public class UserInfoGetter {
             while (favRs.next()) {
                 JsonObject verse = new JsonObject();
                 verse.addProperty("emotion", favRs.getString("emotion"));
+                verse.addProperty("theme", favRs.getString("theme"));
                 verse.addProperty("ayah", favRs.getInt("ayah"));
                 verse.addProperty("surah", favRs.getString("surah"));
                 favArray.add(verse);
             }
             data.add("favourite_verses", favArray);
-
-
-            PreparedStatement psRec = connection.prepareStatement(
-                    "SELECT R.sender_username, R.timestamp, D.emotion, D.theme, D.ayah, D.surah " +
-                            "FROM REC_VERSE R JOIN REC_VERSE_DETAIL D ON R.id = D.rec_verse_id " +
-                            "WHERE R.user_id = ?");
-            psRec.setInt(1, userId);
-            ResultSet recRs = psRec.executeQuery();
-
-            JsonArray recArray = new JsonArray();
-            while (recRs.next()) {
-                JsonObject verse = new JsonObject();
-                verse.addProperty("sender_username", recRs.getString("sender_username"));
-                verse.addProperty("timestamp", recRs.getString("timestamp"));
-                verse.addProperty("emotion", recRs.getString("emotion"));
-                verse.addProperty("theme", recRs.getString("theme"));
-                verse.addProperty("ayah", recRs.getInt("ayah"));
-                verse.addProperty("surah", recRs.getString("surah"));
-                recArray.add(verse);
-            }
-            data.add("received_verses", recArray);
-
-
-            /*JsonArray emotions = new JsonArray();
-            JsonArray themes = new JsonArray();
-            PreparedStatement psMood = connection.prepareStatement(
-                    "SELECT DISTINCT emotion, theme FROM MOOD_VERSES");
-            ResultSet moodRs = psMood.executeQuery();
-            while (moodRs.next()) {
-                emotions.add(moodRs.getString("emotion"));
-                themes.add(moodRs.getString("theme"));
-            }
-            data.add("emotions", emotions);
-            data.add("themes", themes);*/
-
             data.addProperty("status", "200");
 
         } catch (Exception e) {

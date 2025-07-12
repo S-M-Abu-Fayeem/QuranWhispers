@@ -1,4 +1,8 @@
 -- 1. USERS table: stores basic user info and authentication
+--DROP TABLE IF EXISTS REC_VERSE_DETAIL;
+--DROP TABLE IF EXISTS REC_VERSE;
+--DROP TABLE IF EXISTS FAV_VERSE;
+--DROP TABLE IF EXISTS USERS;
 CREATE TABLE IF NOT EXISTS USERS (
                                      id IDENTITY PRIMARY KEY,
                                      username VARCHAR(255) NOT NULL,
@@ -17,13 +21,16 @@ MERGE INTO USERS (username, email, password, is_admin)
 
 
 -- 2. FAV_VERSE table: user's favorite verses with emotion
+--DROP TABLE IF EXISTS FAV_VERSE;
+
 CREATE TABLE IF NOT EXISTS FAV_VERSE (
                                          id IDENTITY PRIMARY KEY,
                                          user_id INT,
                                          emotion VARCHAR(255),
-                                        theme VARCHAR(255),
+    theme VARCHAR(255),
     ayah INT,
     surah VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
     );
 
@@ -32,7 +39,7 @@ CREATE TABLE IF NOT EXISTS REC_VERSE (
                                          id IDENTITY PRIMARY KEY,
                                          user_id INT, -- who received
                                          sender_username VARCHAR(255),
-    timestamp VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
     );
 
@@ -62,7 +69,7 @@ CREATE TABLE IF NOT EXISTS VERSE_MESSAGES (
                                               title_arabic VARCHAR(255) NOT NULL,
     body_arabic TEXT NOT NULL,
     body_english TEXT NOT NULL,
-    timestamp VARCHAR(255) NOT NULL
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
 -- 7. DUA table
@@ -77,7 +84,7 @@ CREATE TABLE IF NOT EXISTS DUA (
 CREATE TABLE IF NOT EXISTS DUA_CACHE (
                                          id IDENTITY PRIMARY KEY,
                                          dua_id INT,
-                                         timestamp BIGINT,
+                                         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                          FOREIGN KEY (dua_id) REFERENCES DUA(id) ON DELETE CASCADE
     );
 
@@ -88,6 +95,7 @@ MERGE INTO DUA (title, body_english, body_arabic)
     ('Morning Supplication', 'O Allah, guide me this day.', 'اللّهُمَّ اهْدِنِي هٰذَا الْيَوْمَ'),
     ('Evening Supplication', 'Protect me from evil this evening.', 'اللّهُمَّ احْفَظْنِي مِنَ الشَّرِّ هٰذَا الْمَسَاءِ');
 
+-- 9. PendingRecitations table
 CREATE TABLE IF NOT EXISTS PendingRecitations (
                                                   id IDENTITY PRIMARY KEY,
                                                   uploader_email VARCHAR(255),
@@ -99,6 +107,7 @@ CREATE TABLE IF NOT EXISTS PendingRecitations (
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
+-- 10. Recitations table
 CREATE TABLE IF NOT EXISTS Recitations (
                                            id IDENTITY PRIMARY KEY,
                                            uploader_email VARCHAR(255),
@@ -109,5 +118,3 @@ CREATE TABLE IF NOT EXISTS Recitations (
     audio_data BLOB,
     approved_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-
-
