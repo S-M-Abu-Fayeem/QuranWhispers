@@ -35,6 +35,7 @@ public class SearchController extends BaseController implements Initializable {
     @FXML ImageView versePosterView;
     String categoryType;
     String categoryName;
+    boolean categoryListViewVisible = false;
 
     // THIS WILL BE FETCHED FROM BACKEND
     int surahNum = 1;
@@ -94,7 +95,8 @@ public class SearchController extends BaseController implements Initializable {
 
         categoryType = "Emotion";
         categoryListView.getItems().addAll(emotionArray);
-        categoryListView.setVisible(true);
+        categoryListViewVisible = !categoryListViewVisible;
+        categoryListView.setVisible(categoryListViewVisible);
         playClickSound();
     };
 
@@ -104,7 +106,8 @@ public class SearchController extends BaseController implements Initializable {
         categoryListView.getItems().clear();
         categoryType = "Theme";
         categoryListView.getItems().addAll(ThemeArray);
-        categoryListView.setVisible(true);
+        categoryListViewVisible = !categoryListViewVisible;
+        categoryListView.setVisible(categoryListViewVisible);
         playClickSound();
     };
 

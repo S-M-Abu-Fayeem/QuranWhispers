@@ -4,12 +4,14 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -17,11 +19,20 @@
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
         <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
-          <Label alignment="CENTER" layoutX="466.0" layoutY="329.0" prefHeight="58.0" prefWidth="348.0" text="Favourite Verses">
-              <font>
-                  <Font name="Segoe UI Black" size="35.0" />
-              </font>
-          </Label>
+        <Label alignment="CENTER" layoutX="466.0" layoutY="317.0" prefHeight="58.0" prefWidth="348.0" text="Favourite Verses">
+            <font>
+                <Font name="Segoe UI Black" size="35.0" />
+            </font>
+        </Label>
+      <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="350.0" layoutX="79.0" layoutY="382.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1139.0">
+         <effect>
+            <DropShadow height="10.75" radius="7.4375">
+               <color>
+                  <Color opacity="0.4000000059604645" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Rectangle>
         <Label layoutX="98.0" layoutY="136.0" prefHeight="58.0" prefWidth="348.0" text="User Profile">
            <font>
               <Font name="Segoe UI Black" size="35.0" />
@@ -91,9 +102,9 @@
               </Label>
            </children>
         </Group>
-        <ScrollPane layoutX="88.0" layoutY="388.0" prefHeight="343.0" prefWidth="1131.0">
+        <ScrollPane layoutX="99.0" layoutY="412.0" prefHeight="300.0" prefWidth="1116.0">
             <content>
-                <FlowPane fx:id="containerFlowPane" alignment="CENTER" columnHalignment="CENTER" hgap="40.0" prefHeight="460.0" prefWidth="1102.0" vgap="40.0" />
+                <FlowPane fx:id="containerFlowPane" alignment="CENTER" columnHalignment="CENTER" hgap="40.0" prefHeight="297.0" prefWidth="1094.0" vgap="40.0" />
             </content>
         </ScrollPane>
         <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
