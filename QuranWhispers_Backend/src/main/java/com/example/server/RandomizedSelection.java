@@ -26,10 +26,12 @@ public class RandomizedSelection {
                 if (rs.next()) {
                     int ayah = rs.getInt("ayah");
                     String surah = rs.getString("surah");
-                    //String theme = rs.getString("theme");
+                    String theme = rs.getString("theme");
+                    data.addProperty("theme", theme);
                     data.addProperty("ayah", ayah);
                     data.addProperty("surah", surah);
                     data.addProperty("status", "200");
+                    data.addProperty("emotion", emotion);
                 }
                 else{
                     data.addProperty("status", "500");
@@ -61,7 +63,10 @@ public class RandomizedSelection {
                 if (rs.next()) {
                     int ayah = rs.getInt("ayah");
                     String surah = rs.getString("surah");
+                    String emotion = rs.getString("emotion");
                     //String theme = rs.getString("theme");
+                    data.addProperty("theme", theme);
+                    data.addProperty("emotion", emotion);
                     data.addProperty("ayah", ayah);
                     data.addProperty("surah", surah);
                     data.addProperty("status", "200");

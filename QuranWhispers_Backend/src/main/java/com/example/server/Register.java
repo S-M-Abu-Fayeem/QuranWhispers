@@ -23,8 +23,11 @@ public class Register {
             PreparedStatement check = connection.prepareStatement("SELECT 1 FROM USERS WHERE email = ?");
             check.setString(1, email);
             ResultSet rs = check.executeQuery();
+            PreparedStatement check2 = connection.prepareStatement("SELECT 1 FROM USERS WHERE username = ? ");
+            check2.setString(1, username);
+            ResultSet rs2 = check2.executeQuery();
 
-            if (rs.next()) {
+            if (rs.next() || rs2.next()) {
                 data.put("status", "401");
                 return gson.toJson(data);
             }
