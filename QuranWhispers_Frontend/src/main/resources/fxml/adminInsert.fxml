@@ -103,7 +103,7 @@
               <Font name="Segoe UI Black" size="20.0" />
            </font>
         </Label>
-        <HBox layoutX="736.0" layoutY="56.0" spacing="32.0">
+        <HBox layoutX="724.0" layoutY="57.0" spacing="32.0">
            <children>
               <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
                  <font>
@@ -135,7 +135,7 @@
                 <Font name="Century Gothic" size="16.0" />
             </font>
         </Label>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1030.0" layoutY="59.0" onMouseClicked="#handleLogoutBtn">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1018.0" layoutY="60.0" onMouseClicked="#handleLogoutBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" layoutY="-12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
             <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" text="Logout">

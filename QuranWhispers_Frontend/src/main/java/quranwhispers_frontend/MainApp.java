@@ -21,11 +21,11 @@ import controller.NotificationController;
 import controller.ProfileController;
 
 import controller.AdminInsertController;
+import controller.AdminApproveController;
 import controller.AdminUserViewController;
 import controller.AdminVerseViewController;
 import controller.AdminRecitationViewController;
 import controller.AdminDuaViewController;
-import controller.AdminApproveController;
 
 
 
@@ -80,6 +80,7 @@ public class MainApp extends Application {
         initController(GlobalState.PROFILE_FILE, ProfileController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
+        initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE

@@ -46,3 +46,34 @@
   -fx-opacity: 0; /* hide arrows */
 }
 
+.scroll-pane-admin {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.scroll-pane-admin .viewport {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical {
+  -fx-padding: 0;
+  -fx-pref-width: 8px;
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .track {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .thumb {
+  -fx-background-color: rgb(0, 0, 0); /* pink */
+  -fx-background-insets: 0;
+  -fx-background-radius: 4px;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .increment-button,
+.scroll-pane-admin .scroll-bar:vertical .decrement-button {
+  -fx-padding: 0;
+  -fx-opacity: 0; /* hide arrows */
+}
+

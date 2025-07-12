@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="44.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminApproveCardController">
+   <children>
+      <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#000000e5" height="42.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1030.0" />
+      <Label fx:id="surahNumField" alignment="CENTER" layoutX="55.0" layoutY="12.0" text="22" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="123.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="235.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="443.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="678.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="786.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="914.0" layoutY="2.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Label fx:id="ayahNumField" alignment="CENTER" layoutX="174.0" layoutY="12.0" text="06" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="requestorUsernameField" alignment="CENTER" layoutX="252.0" layoutY="12.0" prefHeight="20.0" prefWidth="174.0" text="ahammadshawki8" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="reciterNameField" alignment="CENTER" layoutX="450.0" layoutY="12.0" prefHeight="20.0" prefWidth="223.0" text="Mishary Alafasy" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="reciteBtn" fitHeight="20.0" fitWidth="20.0" layoutX="723.0" layoutY="12.0" onMouseClicked="#handleReciteBtn" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/speaker.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="approveBtn" fitHeight="20.0" fitWidth="20.0" layoutX="845.0" layoutY="12.0" onMouseClicked="#handleApproveBtn" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/tick.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="declineBtn" fitHeight="20.0" fitWidth="20.0" layoutX="961.0" layoutY="12.0" onMouseClicked="#handleDeclineBtn" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/cross_white.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

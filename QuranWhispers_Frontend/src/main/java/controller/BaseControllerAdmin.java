@@ -35,7 +35,7 @@ public abstract class BaseControllerAdmin {
     // NAVBAR CONTROLS
     public void handleViewNavlink(MouseEvent e) throws IOException {
         System.out.println("View Navlink Pressed");
-        sceneController.switchTo(GlobalState.ADMIN_VIEW_FILE);
+        sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
         playClickSound();
     }
     public void handleInsertNavlink(MouseEvent e) throws IOException {
@@ -51,7 +51,7 @@ public abstract class BaseControllerAdmin {
 
     public void handleTitleLink(MouseEvent e) throws IOException {
         System.out.println("Title pressed");
-        sceneController.switchTo(GlobalState.ADMIN_VIEW_FILE);
+        sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
         playClickSound();
     }
 

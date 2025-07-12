@@ -3,24 +3,30 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-
-import java.io.IOException;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.File;
 
-public class RecitationCardController extends BaseController{
-    @FXML Label recitersName;
+import java.io.File;
+import java.io.IOException;
+
+public class AdminApproveCardController extends BaseControllerAdmin {
+    @FXML Label surahNumField;
+    @FXML Label ayahNumField;
+    @FXML Label requestorUsernameField;
+    @FXML Label reciterNameField;
     String audioPath;
     MediaPlayer mediaPlayer;
-    private RecitationController parentController;
+    private AdminApproveController parentController;
 
-    public void setParentController(RecitationController controller) {
+    public void setParentController(AdminApproveController controller) {
         this.parentController = controller;
     }
 
-    public void setReciterInfo(String name, String path) {
-        recitersName.setText(name);
+    public void setAdminApproveInfo(int surahNum, int ayahNum, String requestorUsername, String reciterName, String path) {
+        surahNumField.setText(String.valueOf(surahNum));
+        ayahNumField.setText(String.valueOf(ayahNum));
+        requestorUsernameField.setText(requestorUsername);
+        reciterNameField.setText(reciterName);
         audioPath = path;
     }
 
@@ -52,5 +58,14 @@ public class RecitationCardController extends BaseController{
 
     public boolean isPlaying() {
         return mediaPlayer != null;
+    }
+
+    public void handleApproveBtn(MouseEvent e) throws IOException {
+        System.out.println("Approve Btn Pressed");
+        playClickSound();
+    }
+    public void handleDeclineBtn(MouseEvent e) throws IOException {
+        System.out.println("Decline Btn Pressed");
+        playClickSound();
     }
 }
