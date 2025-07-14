@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminUserViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminRecitationViewController">
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
         <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
@@ -40,35 +40,25 @@
                  </font>
               </Label>
               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="1036.0" layoutY="165.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
-              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="888.0" layoutY="165.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
-              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="748.0" layoutY="161.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
-              <Label alignment="CENTER" layoutX="791.0" layoutY="178.0" text="Saved" textFill="WHITE">
+              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="890.0" layoutY="164.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="628.0" layoutY="165.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+              <Label alignment="CENTER" layoutX="690.0" layoutY="189.0" text="Reciters Name" textFill="WHITE">
                  <font>
                     <Font name="Segoe UI Black" size="20.0" />
                  </font>
               </Label>
-              <Label alignment="CENTER" layoutX="619.0" layoutY="190.0" prefHeight="30.0" prefWidth="63.0" text="Email" textFill="WHITE">
+              <Label alignment="CENTER" layoutX="540.0" layoutY="189.0" prefHeight="30.0" prefWidth="63.0" text="Ayah" textFill="WHITE">
                  <font>
                     <Font name="Segoe UI Black" size="20.0" />
                  </font>
               </Label>
-              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="552.0" layoutY="169.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
-              <Label alignment="CENTER" layoutX="408.0" layoutY="190.0" prefHeight="30.0" prefWidth="113.0" text="Username" textFill="WHITE">
+              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="509.0" layoutY="165.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+              <Label alignment="CENTER" layoutX="382.0" layoutY="190.0" prefHeight="30.0" prefWidth="122.0" text="Surah" textFill="WHITE">
                  <font>
                     <Font name="Segoe UI Black" size="20.0" />
                  </font>
               </Label>
-            <Label alignment="CENTER" layoutX="793.0" layoutY="202.0" text="Verse" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI Black" size="20.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="919.0" layoutY="179.0" text="Received" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI Black" size="20.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="936.0" layoutY="202.0" text="Verse" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="934.0" layoutY="190.0" text="Listen" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Black" size="20.0" />
                </font>
@@ -84,7 +74,7 @@
             </Rectangle>
             <Group fx:id="userViewBtn" layoutX="113.0" layoutY="283.0" onMouseClicked="#handleUserViewBtn">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#1e1e1e" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
                   <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/user.png" />
@@ -114,7 +104,7 @@
       </Group>
             <Group fx:id="duaViewBtn" layoutX="113.0" layoutY="412.0" onMouseClicked="#handleDuaViewBtn">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" onMouseClicked="#handleDuaViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
                   <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/dua.png" />
@@ -129,7 +119,7 @@
             </Group>
             <Group fx:id="recitationViewBtn" layoutX="113.0" layoutY="477.0" onMouseClicked="#handleRecitationViewBtn">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" onMouseClicked="#handleRecitationViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#1e1e1e" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
                   <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="16.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/speaker.png" />

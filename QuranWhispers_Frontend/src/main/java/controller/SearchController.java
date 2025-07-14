@@ -121,85 +121,77 @@ public class SearchController extends BaseController implements Initializable {
         new Thread(getDuaBackendAPITask).start();
     }
 
+    // Helper method to fetch verse data and generate a poster
+    private void fetchAndGeneratePoster(String category, String requestType) {
+        Task<Void> getVerseBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put(requestType, category);
+
+                JSONObject response = BackendAPI.fetch("generate" + requestType + "basedverse", request);
+                if (response.getString("status").equals("200")) {
+                    surahNum = response.getInt("surah");
+                    ayahNum = response.getInt("ayah");
+                    emotionName = response.getString("emotion");
+                    themeName = response.getString("theme");
+
+                    // Generate the poster after fetching the verse
+                    generatePoster(surahNum, ayahNum, emotionName, themeName);
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(getVerseBackendAPITask).start();
+    }
+
+    // Method to generate the poster
+    public void generatePoster(int surahNum, int ayahNum, String emotionName, String themeName) {
+        posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
+        Task<Void> posterGenerationTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                File posterFile = new File(posterPath);
+                if (!posterFile.exists()) {
+                    PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
+                }
+                return null;
+            }
+        };
+
+        posterGenerationTask.setOnSucceeded(event -> {
+            Platform.runLater(() -> {
+                File posterFile = new File(posterPath);
+                if (posterFile.exists()) {
+                    Image poster = new Image(posterFile.toURI().toString());
+                    versePosterView.setImage(poster);
+                } else {
+                    System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
+                }
+            });
+        });
+        new Thread(posterGenerationTask).start();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         categoryListView.setVisible(false);
 
-        categoryListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                categoryName = categoryListView.getSelectionModel().getSelectedItem();
-                categoryField.setText(categoryName);
-                categoryListView.setVisible(false);
-                categoryListView.getItems().clear();
+        categoryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            categoryName = categoryListView.getSelectionModel().getSelectedItem();
+            categoryField.setText(categoryName);
+            categoryListView.setVisible(false);
+            categoryListView.getItems().clear();
 
-                // Fetch the Surah and Ayah numbers based on the selected category
-                Task<Void> getVerseBackendAPITask= new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        JSONObject request = new JSONObject();
-                        request.put("email", SessionManager.getEmail());
-                        request.put("token", SessionManager.getToken());
-                        for (String key : request.keySet()) {
-                            System.out.println("Key: " + key + " | Value: " + request.get(key));
-                        }
-
-                        JSONObject response;
-                        if (isEmotion) {
-                            request.put("emotion", categoryName);
-                            response = BackendAPI.fetch("generateemotionbasedverse", request);
-                        } else {
-                            request.put("theme", categoryName);
-                            response = BackendAPI.fetch("generatethemebasedverse", request);
-                        }
-                        if (response.getString("status").equals("200")) {
-                            System.out.println("Fetch successful");
-                            surahNum = response.getInt("surah");
-                            ayahNum = response.getInt("ayah");
-                            emotionName = response.getString("emotion");
-                            themeName = response.getString("theme");
-                        } else {
-                            System.out.println("Fetch failed: " + response.getString("message"));
-                        }
-                        return null;
-                    }
-                };
-                new Thread(getVerseBackendAPITask).start();
-
-                // Create a new task to generate the poster in the background
-                getVerseBackendAPITask.setOnSucceeded(event -> {
-                    posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
-                    Task<Void> posterGenerationTask = new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            File posterFile = new File(posterPath);
-                            if (!posterFile.exists()) {
-                                PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
-                            }
-                            return null;
-                        }
-                    };
-
-
-                    // After the task completes, update the image
-                    posterGenerationTask.setOnSucceeded(ev -> {
-                        Platform.runLater(() -> {
-                            File posterFile = new File(posterPath);
-                            if (posterFile.exists()) {
-                                Image poster = new Image(posterFile.toURI().toString());
-                                versePosterView.setImage(poster);
-                            } else {
-                                System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
-                            }
-                        });
-                    });
-
-                    // Start the task in a background thread
-                    new Thread(posterGenerationTask).start();
-                });
-            }
+            // Fetch the Surah and Ayah numbers based on the selected category
+            fetchAndGeneratePoster(categoryName, isEmotion ? "emotion" : "theme");
         });
     }
+
 
     public void handleEmotionBtn(MouseEvent e) throws IOException {
         System.out.println("Emotion Pressed");
@@ -270,8 +262,9 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
-        RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
-        recitationControllerObj.setupPage(posterPath, categoryName, surahNum, ayahNum);
+        RecitationController recitationController = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
+        recitationController.setupPage(posterPath, categoryName, surahNum, ayahNum);
+        recitationController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
         playClickSound();
     };
 
@@ -299,16 +292,19 @@ public class SearchController extends BaseController implements Initializable {
             System.err.println("Error copying file: " + exception.getMessage());
         }
 
+        ButtonType bt = alertGenerator("Download Successful", "Verse poster offline download was successful",
+                "Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH,
+                "confirmation", null);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Download Toaster");
-        alert.setHeaderText("Verse poster offline download was successful");
-        alert.setContentText("Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH);
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        if (bt == ButtonType.OK) {
             if (Desktop.isDesktopSupported()) {
                 File imageFile = new File(destinationPath);
-                Desktop desktop = Desktop.getDesktop();
-                desktop.open(imageFile);
+                if (imageFile.exists()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(imageFile);
+                } else {
+                    System.out.println("File not found: " + destinationPath);
+                }
             } else {
                 System.out.println("Desktop is not supported on your system.");
             }
@@ -317,10 +313,20 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
-        ShareController shareControllerObj = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
-        shareControllerObj.setupPoster(posterPath, categoryName);
+        ShareController shareController = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
+        shareController.setupVerseDetails(surahNum, ayahNum, emotionName, themeName);
+        shareController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
+        shareController.setupPoster(posterPath, categoryName);
         playClickSound();
     }
 
+
+    public void handleGenerateAIBtn(MouseEvent e) throws IOException {
+        System.out.println("Generate AI Button Pressed");
+        playClickSound();
+        GenerateAIController generateAIController = (GenerateAIController) sceneController.switchTo(GlobalState.GENERATE_AI_FILE);
+        generateAIController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
+        generateAIController.setupPoster(posterPath, categoryName);
+    }
 
 }

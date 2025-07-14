@@ -3,25 +3,25 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import org.json.JSONObject;
+import util.BackendAPI;
 import util.GlobalState;
 import util.PosterGenerator;
+import util.SessionManager;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ResourceBundle;
 
-public class ProfileCardController extends BaseController implements Initializable {
+public class ProfileCardController extends BaseController {
     @FXML ImageView versePosterView;
     int surahNum;
     int ayahNum;
@@ -29,7 +29,7 @@ public class ProfileCardController extends BaseController implements Initializab
     String theme;
     String posterPath;
 
-    public void setProfileInfo(int surahNum, int ayahNum, String emotion, String theme) {
+    public void setupProfileInfo(int surahNum, int ayahNum, String emotion, String theme) {
         this.surahNum = surahNum;
         this.ayahNum = ayahNum;
         this.emotion = emotion;
@@ -37,8 +37,7 @@ public class ProfileCardController extends BaseController implements Initializab
         posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void setupProfileCard() {
         // Create a new task to generate the poster in the background
         Task<Void> posterGenerationTask = new Task<Void>() {
             @Override
@@ -71,8 +70,47 @@ public class ProfileCardController extends BaseController implements Initializab
 
     public void handleRemoveFromFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Add to Favourites Button Pressed");
+        Task<Void> removeFavouriteBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put("emotion", emotion);
+                request.put("theme", theme);
+                request.put("ayah", String.valueOf(ayahNum));
+                request.put("surah", String.valueOf(surahNum));
+                for (String key : request.keySet()) {
+                    System.out.println("Key: " + key + " | Value: " + request.get(key));
+                }
+
+                JSONObject response = BackendAPI.fetch("rmvfavverse", request);
+                System.out.println(response.getString("status"));
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Fetch successful");
+                    Platform.runLater(() -> {
+                        try {
+                            // Ensure sceneController is not null
+                            if (sceneController != null) {
+                                ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
+                                profileController.setupProfile();
+                            } else {
+                                System.err.println("sceneController is null in ProfileCardController.");
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(removeFavouriteBackendAPITask).start();
         playClickSound();
     };
+
 
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
@@ -106,15 +144,19 @@ public class ProfileCardController extends BaseController implements Initializab
         }
 
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Download Toaster");
-        alert.setHeaderText("Verse poster offline download was successful");
-        alert.setContentText("Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH);
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        ButtonType bt = alertGenerator("Download  Successful", "Verse poster offline download was successful",
+                "Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH,
+                "confirmation", null);
+
+        if (bt == ButtonType.OK) {
             if (Desktop.isDesktopSupported()) {
                 File imageFile = new File(destinationPath);
-                Desktop desktop = Desktop.getDesktop();
-                desktop.open(imageFile);
+                if (imageFile.exists()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(imageFile);
+                } else {
+                    System.out.println("File not found: " + destinationPath);
+                }
             } else {
                 System.out.println("Desktop is not supported on your system.");
             }
@@ -123,8 +165,9 @@ public class ProfileCardController extends BaseController implements Initializab
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
-//        ShareController shareControllerObj = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
-//        shareControllerObj.setupPoster(posterPath, categoryName);
+        GlobalShareController globalShareController = (GlobalShareController) sceneController.switchTo(GlobalState.GLOBAL_SHARE_FILE);
+        globalShareController.setupVerseDetails(surahNum, ayahNum, emotion, theme);
+        globalShareController.setupParent(GlobalState.PROFILE_FILE);
         playClickSound();
     }
 }

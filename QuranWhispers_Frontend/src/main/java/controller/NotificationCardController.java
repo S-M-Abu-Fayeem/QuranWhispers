@@ -10,8 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import org.json.JSONObject;
+import util.BackendAPI;
 import util.GlobalState;
 import util.PosterGenerator;
+import util.SessionManager;
 
 import java.awt.*;
 import java.io.File;
@@ -22,22 +25,25 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
-public class NotificationCardController extends BaseController implements Initializable {
+public class NotificationCardController extends BaseController {
     @FXML Label senderUsername;
     @FXML ImageView versePosterView;
     int surahNum;
     int ayahNum;
+    String emotion;
+    String theme;
     String posterPath;
 
-    public void setNotificationInfo(int surahNum, int ayahNum, String sender) {
-        senderUsername.setText(sender);
+    public void setupNotificationInfo(int surahNum, int ayahNum, String emotion, String theme, String sender) {
         this.surahNum = surahNum;
         this.ayahNum = ayahNum;
+        this.emotion = emotion;
+        this.theme = theme;
+        senderUsername.setText(sender);
         posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void setupNotificationCard() {
         // Create a new task to generate the poster in the background
         Task<Void> posterGenerationTask = new Task<Void>() {
             @Override
@@ -70,6 +76,39 @@ public class NotificationCardController extends BaseController implements Initia
 
     public void handleAddToFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Add to Favourites Button Pressed");
+        Task<Void> addFavouriteBackendAPITask= new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put("emotion", emotion);
+                request.put("theme", theme);
+                request.put("ayah", String.valueOf(ayahNum));
+                request.put("surah", String.valueOf(surahNum));
+                for (String key : request.keySet()) {
+                    System.out.println("Key: " + key + " | Value: " + request.get(key));
+                }
+
+                JSONObject response = BackendAPI.fetch("addtofavourites", request);
+                System.out.println(response.getString("status"));
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Fetch successful");
+                    Platform.runLater(() -> {
+                        try {
+                            ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
+                            profileController.setupProfile();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                } else {
+                    System.out.println("Fetch failed: " + response.getString("message"));
+                }
+                return null;
+            }
+        };
+        new Thread(addFavouriteBackendAPITask).start();
         playClickSound();
     };
 
@@ -105,15 +144,19 @@ public class NotificationCardController extends BaseController implements Initia
         }
 
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Download Toaster");
-        alert.setHeaderText("Verse poster offline download was successful");
-        alert.setContentText("Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH);
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        ButtonType bt = alertGenerator("Download Successful", "Verse poster offline download was successful",
+                "Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH,
+                "confirmation", null);
+
+        if (bt == ButtonType.OK) {
             if (Desktop.isDesktopSupported()) {
                 File imageFile = new File(destinationPath);
-                Desktop desktop = Desktop.getDesktop();
-                desktop.open(imageFile);
+                if (imageFile.exists()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(imageFile);
+                } else {
+                    System.out.println("File not found: " + destinationPath);
+                }
             } else {
                 System.out.println("Desktop is not supported on your system.");
             }
@@ -122,8 +165,9 @@ public class NotificationCardController extends BaseController implements Initia
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
-//        ShareController shareControllerObj = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
-//        shareControllerObj.setupPoster(posterPath, categoryName);
+        GlobalShareController globalShareController = (GlobalShareController) sceneController.switchTo(GlobalState.GLOBAL_SHARE_FILE);
+        globalShareController.setupVerseDetails(surahNum, ayahNum, emotion, theme);
+        globalShareController.setupParent(GlobalState.NOTIFICATION_FILE);
         playClickSound();
     }
 }

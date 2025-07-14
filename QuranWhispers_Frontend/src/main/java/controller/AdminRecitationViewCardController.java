@@ -9,25 +9,29 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import java.io.IOException;
 
-public class AdminApproveCardController extends BaseControllerAdmin {
-    @FXML Label surahNumField;
-    @FXML Label ayahNumField;
-    @FXML Label requestorUsernameField;
+public class AdminRecitationViewCardController extends BaseControllerAdmin {
+    @FXML Label surahField;
+    @FXML Label ayahField;
     @FXML Label reciterNameField;
     String audioPath;
     MediaPlayer mediaPlayer;
-    private AdminApproveController parentController;
+    private AdminRecitationViewController parentController;
 
-    public void setupParentController(AdminApproveController controller) {
+    public void setupParentController(AdminRecitationViewController controller) {
         this.parentController = controller;
     }
 
-    public void setupAdminApproveInfo(int surahNum, int ayahNum, String requestorUsername, String reciterName, String path) {
-        surahNumField.setText(String.valueOf(surahNum));
-        ayahNumField.setText(String.valueOf(ayahNum));
-        requestorUsernameField.setText(requestorUsername);
+    public void setupAdminRecitationViewInfo(String surah, String ayah, String reciterName, String path) {
+        surahField.setText(surah);
+        ayahField.setText(ayah);
         reciterNameField.setText(reciterName);
         audioPath = path;
+        System.out.println("Setup setup");
+    }
+
+    public void handleDeleteBtn(MouseEvent e) throws IOException {
+        System.out.println("Delete Btn Pressed");
+        playClickSound();
     }
 
     public void handleReciteBtn(MouseEvent e) throws IOException {
@@ -58,14 +62,5 @@ public class AdminApproveCardController extends BaseControllerAdmin {
 
     public boolean isPlaying() {
         return mediaPlayer != null;
-    }
-
-    public void handleApproveBtn(MouseEvent e) throws IOException {
-        System.out.println("Approve Btn Pressed");
-        playClickSound();
-    }
-    public void handleDeclineBtn(MouseEvent e) throws IOException {
-        System.out.println("Decline Btn Pressed");
-        playClickSound();
     }
 }

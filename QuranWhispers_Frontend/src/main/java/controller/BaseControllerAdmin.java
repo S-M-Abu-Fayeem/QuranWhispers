@@ -1,6 +1,10 @@
 package controller;
 
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import util.GlobalState;
 
 import javax.sound.sampled.AudioSystem;
@@ -10,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 
 public abstract class BaseControllerAdmin {
@@ -60,6 +65,36 @@ public abstract class BaseControllerAdmin {
         sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
     }
+
+    // VIEW SIDEBAR CONTROLS
+    public void handleUserViewBtn(MouseEvent e) throws IOException {
+        System.out.println("User View Button Pressed");
+        AdminUserViewController adminUserViewController = (AdminUserViewController) sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
+        adminUserViewController.setupUserViewTable();
+        playClickSound();
+    }
+
+    public void handleVerseViewBtn(MouseEvent e) throws IOException {
+        System.out.println("Quran View Button Pressed");
+        AdminVerseViewController adminVerseViewController = (AdminVerseViewController) sceneController.switchTo(GlobalState.ADMIN_VERSE_VIEW_FILE);
+        adminVerseViewController.setupVerseViewTable();
+        playClickSound();
+    }
+
+    public void handleDuaViewBtn(MouseEvent e) throws IOException {
+        System.out.println("Dua View Button Pressed");
+        AdminDuaViewController adminDuaViewController = (AdminDuaViewController) sceneController.switchTo(GlobalState.ADMIN_DUA_VIEW_FILE);
+        adminDuaViewController.setupDuaViewTable();
+        playClickSound();
+    }
+
+    public void handleRecitationViewBtn(MouseEvent e) throws IOException {
+        System.out.println("Recitation View Button Pressed");
+        sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
+        playClickSound();
+    }
+
+
 
     // FOOTER CONTROLS
     public void handleCopyrightText(MouseEvent e) throws IOException {

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -55,11 +56,6 @@
               <Image url="@../images/bismillah.png" />
            </image>
         </ImageView>
-      <TextField fx:id="passwordField" layoutX="704.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="password">
-         <font>
-            <Font name="Century Gothic" size="16.0" />
-         </font>
-      </TextField>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="60.0" layoutX="919.0" layoutY="222.0" stroke="BLACK" strokeType="INSIDE" width="2.0" />
         <Group fx:id="continueBtn" layoutX="704.0" layoutY="460.0" onMouseClicked="#handleContinueBtn">
            <children>
@@ -86,7 +82,7 @@
       <Group fx:id="notificationBtn" layoutX="962.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn" />
       <Group fx:id="joinNowBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleJoinNowBtn" />
       <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright ©QuranWhispers2025" textFill="WHITE">
+      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
@@ -96,5 +92,10 @@
             <Font name="Century Gothic" size="16.0" />
          </font>
       </TextField>
+      <PasswordField fx:id="passwordField" layoutX="704.0" layoutY="404.0" prefHeight="50.0" prefWidth="434.0" promptText="password">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </PasswordField>
    </children>
 </AnchorPane>

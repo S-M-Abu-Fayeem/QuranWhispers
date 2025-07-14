@@ -1,8 +1,13 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import org.json.JSONObject;
+import util.BackendAPI;
+import util.SessionManager;
 
 import java.io.IOException;
 
@@ -18,11 +23,67 @@ public class AdminInsertController extends BaseControllerAdmin {
 
     public void handleDuaSubmitBtn(MouseEvent e) throws IOException {
         System.out.println("Dua Submit Button Pressed");
+        Task<Void> addDuaBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put("title", duaTitleField.getText());
+                request.put("arabic_body", duaArabicBodyField.getText());
+                request.put("english_body", duaEnglishBodyField.getText());
+
+                JSONObject response = BackendAPI.fetch("adddua", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Dua Added successfully: " + response.toString());
+                    Platform.runLater(() -> {
+                        try {
+                            duaTitleField.clear();
+                            duaArabicBodyField.clear();
+                            duaEnglishBodyField.clear();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(addDuaBackendAPITask).start();
         playClickSound();
     }
 
     public void handleVerseSubmitBtn(MouseEvent e) throws IOException {
         System.out.println("Verse Submit Button Pressed");
+        Task<Void> addVerseBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+                request.put("surah", surahNumField.getText());
+                request.put("ayah", ayahNumField.getText());
+                request.put("emotion", emotionField.getText());
+                request.put("theme", themeField.getText());
+
+                JSONObject response = BackendAPI.fetch("addverse", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Verse Added successfully: " + response.toString());
+                    Platform.runLater(() -> {
+                        try {
+                            surahNumField.clear();
+                            ayahNumField.clear();
+                            emotionField.clear();
+                            themeField.clear();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(addVerseBackendAPITask).start();
         playClickSound();
     }
 }

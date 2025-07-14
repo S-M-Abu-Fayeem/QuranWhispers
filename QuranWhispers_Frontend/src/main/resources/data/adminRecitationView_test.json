@@ -1,0 +1,122 @@
+[
+  {
+    "surahNum": 1,
+    "ayahNum": 1,
+    "reciterName": "Shawki",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 2,
+    "ayahNum": 2,
+    "reciterName": "Mishary",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 3,
+    "ayahNum": 5,
+    "reciterName": "Sudais",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 4,
+    "ayahNum": 12,
+    "reciterName": "Minshawi",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 5,
+    "ayahNum": 8,
+    "reciterName": "Basfar",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 6,
+    "ayahNum": 15,
+    "reciterName": "Ghamdi",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 7,
+    "ayahNum": 20,
+    "reciterName": "Afasy",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 8,
+    "ayahNum": 3,
+    "reciterName": "Husary",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 9,
+    "ayahNum": 10,
+    "reciterName": "Shuraym",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 10,
+    "ayahNum": 25,
+    "reciterName": "Ajmi",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 11,
+    "ayahNum": 7,
+    "reciterName": "Hani",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 12,
+    "ayahNum": 18,
+    "reciterName": "Yasser",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 13,
+    "ayahNum": 9,
+    "reciterName": "Shatri",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 14,
+    "ayahNum": 6,
+    "reciterName": "Khalid",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 15,
+    "ayahNum": 14,
+    "reciterName": "Maher",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 16,
+    "ayahNum": 30,
+    "reciterName": "Tawfeeq",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 17,
+    "ayahNum": 22,
+    "reciterName": "Muhanna",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 18,
+    "ayahNum": 10,
+    "reciterName": "Zahrani",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 19,
+    "ayahNum": 11,
+    "reciterName": "Hudhaify",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  },
+  {
+    "surahNum": 20,
+    "ayahNum": 4,
+    "reciterName": "Ibrahim",
+    "path": "src\\main\\resources\\data\\recitations_audio\\1_2_Shawki.mp3"
+  }
+]

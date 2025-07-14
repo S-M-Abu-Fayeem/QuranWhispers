@@ -1,0 +1,122 @@
+[
+  {
+    "username": "userAlpha1",
+    "email": "useralpha1@example.com",
+    "savedVerse": "10",
+    "receivedVerse": "5"
+  },
+  {
+    "username": "userBeta2",
+    "email": "userbeta2@example.com",
+    "savedVerse": "15",
+    "receivedVerse": "7"
+  },
+  {
+    "username": "userGamma3",
+    "email": "usergamma3@example.com",
+    "savedVerse": "12",
+    "receivedVerse": "3"
+  },
+  {
+    "username": "userDelta4",
+    "email": "userdelta4@example.com",
+    "savedVerse": "18",
+    "receivedVerse": "9"
+  },
+  {
+    "username": "userEpsilon5",
+    "email": "userepsilon5@example.com",
+    "savedVerse": "20",
+    "receivedVerse": "11"
+  },
+  {
+    "username": "userZeta6",
+    "email": "userzeta6@example.com",
+    "savedVerse": "14",
+    "receivedVerse": "6"
+  },
+  {
+    "username": "userEta7",
+    "email": "usereta7@example.com",
+    "savedVerse": "25",
+    "receivedVerse": "10"
+  },
+  {
+    "username": "userTheta8",
+    "email": "usertheta8@example.com",
+    "savedVerse": "17",
+    "receivedVerse": "8"
+  },
+  {
+    "username": "userIota9",
+    "email": "useriota9@example.com",
+    "savedVerse": "22",
+    "receivedVerse": "13"
+  },
+  {
+    "username": "userKappa10",
+    "email": "userkappa10@example.com",
+    "savedVerse": "30",
+    "receivedVerse": "15"
+  },
+  {
+    "username": "userLambda11",
+    "email": "userlambda11@example.com",
+    "savedVerse": "19",
+    "receivedVerse": "9"
+  },
+  {
+    "username": "userMu12",
+    "email": "usermu12@example.com",
+    "savedVerse": "14",
+    "receivedVerse": "6"
+  },
+  {
+    "username": "userNu13",
+    "email": "usernu13@example.com",
+    "savedVerse": "11",
+    "receivedVerse": "4"
+  },
+  {
+    "username": "userXi14",
+    "email": "userxi14@example.com",
+    "savedVerse": "9",
+    "receivedVerse": "3"
+  },
+  {
+    "username": "userOmicron15",
+    "email": "useromicron15@example.com",
+    "savedVerse": "23",
+    "receivedVerse": "12"
+  },
+  {
+    "username": "userPi16",
+    "email": "userpi16@example.com",
+    "savedVerse": "17",
+    "receivedVerse": "8"
+  },
+  {
+    "username": "userRho17",
+    "email": "userrho17@example.com",
+    "savedVerse": "28",
+    "receivedVerse": "14"
+  },
+  {
+    "username": "userSigma18",
+    "email": "usersigma18@example.com",
+    "savedVerse": "12",
+    "receivedVerse": "5"
+  },
+  {
+    "username": "userTau19",
+    "email": "usertau19@example.com",
+    "savedVerse": "16",
+    "receivedVerse": "7"
+  },
+  {
+    "username": "userUpsilon20",
+    "email": "userupsilon20@example.com",
+    "savedVerse": "21",
+    "receivedVerse": "10"
+  }
+]

@@ -1,63 +1,71 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import util.BackendAPI;
+import util.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class NotificationController extends BaseController implements Initializable {
+public class NotificationController extends BaseController {
     @FXML FlowPane containerFlowPane;
     private List<NotificationCardController> cardControllers = new ArrayList<>();
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            InputStream is = getClass().getResourceAsStream("/data/notification_test.json");
-            if (is == null) {
-                System.out.println("JSON file not found in resources!");
-                return;
-            }
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
-            JSONArray notificationsArray = new JSONArray(content);
-
-            for (int i = 0; i < notificationsArray.length(); i++) {
-                JSONObject notification = notificationsArray.getJSONObject(i);
-                String senderUsername = notification.getString("senderUsername");
-                int surahNum = notification.getInt("surahNum");
-                int ayahNum = notification.getInt("ayahNum");
-
-                // Load the card FXML
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/notificationCard.fxml"));
-                Parent card = loader.load();
-
-                // Access the card controller and pass data
-                NotificationCardController controller = loader.getController();
-                cardControllers.add(controller);
-                controller.setNotificationInfo(surahNum, ayahNum, senderUsername);
-
-                // Add to VBox
-                if (card != null) {
-                    containerFlowPane.getChildren().add(card);
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error reading the JSON file: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error loading FXML or setting controller data: " + e.getMessage());
-            e.printStackTrace();
+    public void setupNotification() {
+        if (sceneController == null) {
+            System.err.println("SceneController is null in NotificationController");
         }
+
+        // Proceed with the rest of your setup
+        Task<Void> getNotificationBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("email", SessionManager.getEmail());
+                request.put("token", SessionManager.getToken());
+
+                JSONObject response = BackendAPI.fetch("getreceivedinfo", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Received notification data successfully" + response.toString());
+                    Platform.runLater(() -> {
+                        try {
+                            containerFlowPane.getChildren().clear();
+                            JSONArray receivedVersesArray = response.getJSONArray("received_verses");
+                            for (int i = 0; i < receivedVersesArray.length(); i++) {
+                                JSONObject received = receivedVersesArray.getJSONObject(i);
+                                int surahNum = received.getInt("surah");
+                                int ayahNum = received.getInt("ayah");
+                                String emotion = received.getString("emotion");
+                                String theme = received.getString("theme");
+                                String sender = received.getString("sender_username");
+
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/notificationCard.fxml"));
+                                Parent card = loader.load();
+
+                                NotificationCardController controller = loader.getController();
+                                cardControllers.add(controller);
+                                controller.setSceneController(sceneController); // Ensure SceneController is set
+                                controller.setupNotificationInfo(surahNum, ayahNum, emotion, theme, sender);
+                                controller.setupNotificationCard();
+
+                                if (card != null) {
+                                    containerFlowPane.getChildren().add(card);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(getNotificationBackendAPITask).start();
     }
 }

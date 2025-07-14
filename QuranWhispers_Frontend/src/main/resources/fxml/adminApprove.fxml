@@ -72,8 +72,8 @@
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="793.0" layoutY="159.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="901.0" layoutY="159.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="1029.0" layoutY="159.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
-        <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c" height="65.0" layoutY="685.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-        <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#1e1e1e" height="65.0" layoutY="685.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1e1e1e" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
         <HBox layoutX="727.0" layoutY="57.0" spacing="32.0">
             <children>
                 <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
@@ -101,7 +101,7 @@
                 <Font name="Segoe UI Black" size="50.0" />
             </font>
         </Label>
-        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright ©QuranWhispers2025" textFill="WHITE">
+        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="16.0" />
             </font>

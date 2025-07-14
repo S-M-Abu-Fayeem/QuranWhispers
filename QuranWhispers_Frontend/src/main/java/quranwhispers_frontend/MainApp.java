@@ -16,17 +16,33 @@ import controller.SignupController;
 import controller.HomePageController;
 import controller.SearchController;
 import controller.ShareController;
+import controller.GenerateAIController;
 import controller.RecitationController;
 import controller.NotificationController;
+import controller.NotificationCardController;
 import controller.ProfileController;
+import controller.ProfileCardController;
+
+//import controller.GlobalRecitationController;
 
 import controller.AdminInsertController;
-import controller.AdminApproveController;
-import controller.AdminUserViewController;
-import controller.AdminVerseViewController;
-import controller.AdminRecitationViewController;
-import controller.AdminDuaViewController;
 
+import controller.AdminApproveController;
+import controller.AdminApproveCardController;
+
+import controller.AdminUserViewController;
+import controller.AdminUserViewCardController;
+
+import controller.AdminVerseViewController;
+import controller.AdminVerseViewCardController;
+
+import controller.AdminDuaViewController;
+import controller.AdminDuaViewCardController;
+
+import controller.AdminRecitationViewController;
+import controller.AdminRecitationViewCardController;
+
+import controller.GlobalShareController;
 
 
 public class MainApp extends Application {
@@ -75,12 +91,28 @@ public class MainApp extends Application {
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
         initController(GlobalState.SEARCH_FILE, SearchController.class, sceneController);
         initController(GlobalState.SHARE_FILE, ShareController.class, sceneController);
+        initController(GlobalState.GENERATE_AI_FILE, GenerateAIController.class, sceneController);
         initController(GlobalState.RECITATION_FILE, RecitationController.class, sceneController);
         initController(GlobalState.NOTIFICATION_FILE, NotificationController.class, sceneController);
+        initController(GlobalState.NOTIFICATION_CARD_FILE, NotificationCardController.class, sceneController);
         initController(GlobalState.PROFILE_FILE, ProfileController.class, sceneController);
+        initController(GlobalState.PROFILE_CARD_FILE, ProfileCardController.class, sceneController);
+        initController(GlobalState.GLOBAL_SHARE_FILE, GlobalShareController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
+
+        initController(GlobalState.ADMIN_USER_VIEW_FILE, AdminUserViewController.class, sceneController);
+        initController(GlobalState.ADMIN_USER_VIEW_CARD_FILE, AdminUserViewCardController.class, sceneController);
+
+        initController(GlobalState.ADMIN_VERSE_VIEW_FILE, AdminVerseViewController.class, sceneController);
+        initController(GlobalState.ADMIN_VERSE_VIEW_CARD_FILE, AdminVerseViewCardController.class, sceneController);
+
+        initController(GlobalState.ADMIN_DUA_VIEW_FILE, AdminDuaViewController.class, sceneController);
+        initController(GlobalState.ADMIN_DUA_VIEW_CARD_FILE, AdminDuaViewCardController.class, sceneController);
+
+        initController(GlobalState.ADMIN_RECITATION_VIEW_FILE, AdminRecitationViewController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
+        initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE
@@ -94,6 +126,7 @@ public class MainApp extends Application {
 
         stage.setTitle("Quran Whispers");
         stage.setResizable(false);
+        System.setProperty("prism.lcdtext", "false");
         stage.show();
     }
 }

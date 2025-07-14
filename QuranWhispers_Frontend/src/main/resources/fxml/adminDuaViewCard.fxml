@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="120.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDuaViewCardController">
+   <children>
+      <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#000000e5" height="116.0" layoutY="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="782.0" />
+      <ImageView fx:id="deleteBtn" fitHeight="24.0" fitWidth="24.0" layoutX="712.0" layoutY="48.0" onMouseClicked="#handleDeleteBtn" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/delete.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="duaTitle" fill="WHITE" layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For Peace of Mind" wrappingWidth="130.00778198242188">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="118.0" layoutX="663.0" layoutY="1.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="118.0" layoutX="409.0" layoutY="1.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="118.0" layoutX="156.0" layoutY="1.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
+      <Text fx:id="duaArabicBody" fill="WHITE" layoutX="168.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="اللَّهُمَّ رَبَّنَا آتِ نَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ" wrappingWidth="232.40774536132812">
+         <font>
+            <Font name="Century Gothic" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="duaEnglishBody" fill="WHITE" layoutX="418.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O our Lord, grant us good in this world and good in the Hereafter, and protect us from the punishment of the Fire." wrappingWidth="232.40774536132812">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

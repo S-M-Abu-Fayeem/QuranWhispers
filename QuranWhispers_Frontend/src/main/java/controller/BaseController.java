@@ -1,6 +1,11 @@
 package controller;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import util.GlobalState;
 
 import javax.sound.sampled.AudioSystem;
@@ -10,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 
 public abstract class BaseController {
@@ -53,13 +59,15 @@ public abstract class BaseController {
     }
     public void handleFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Favourites button pressed");
-        sceneController.switchTo(GlobalState.PROFILE_FILE);
+        ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
+        profileController.setupProfile();
         playClickSound();
     }
 
     public void handleNotificationBtn(MouseEvent e) throws IOException {
         System.out.println("Notification button pressed");
-        sceneController.switchTo(GlobalState.NOTIFICATION_FILE);
+        NotificationController notificationController = (NotificationController) sceneController.switchTo(GlobalState.NOTIFICATION_FILE);
+        notificationController.setupNotification();
         playClickSound();
     }
 
@@ -79,6 +87,38 @@ public abstract class BaseController {
         System.out.println("Logout Pressed");
         sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
+    }
+
+    // ALERT TOASTER GENERATE
+    public ButtonType alertGenerator(String title, String header, String content, String type, String iconPath) {
+        Alert alert;
+        if (type.equals("error")) {
+            alert = new Alert(Alert.AlertType.ERROR);
+        } else if (type.equals("warning")) {
+            alert = new Alert(Alert.AlertType.WARNING);
+        } else if (type.equals("confirmation")) {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+        } else {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        }
+
+        alert.setTitle(title);
+
+        if (iconPath != null && !iconPath.isEmpty()) {
+            URL iconURL = getClass().getResource(iconPath);
+            if (iconURL != null) {
+                alert.getDialogPane().setGraphic(new ImageView(new Image(iconURL.toExternalForm())));
+            }
+        }
+
+        alert.getDialogPane().setStyle("-fx-font-family: 'Century Gothic'; -fx-font-size: 14px; -fx-text-fill: #000000;");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMinWidth(400);
+        alert.getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMaxWidth(600);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert.showAndWait().get();
     }
 
     // FOOTER CONTROLS

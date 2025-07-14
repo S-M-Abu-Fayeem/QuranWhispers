@@ -55,8 +55,8 @@ public class AdminApproveController extends BaseControllerAdmin implements Initi
                 // Access the card controller and pass data
                 AdminApproveCardController controller = loader.getController();
                 cardControllers.add(controller);
-                controller.setAdminApproveInfo(surahNum, ayahNum, requestorUsername, reciterName, path);
-                controller.setParentController(this);
+                controller.setupAdminApproveInfo(surahNum, ayahNum, requestorUsername, reciterName, path);
+                controller.setupParentController(this);
 
                 // Add to VBox
                 if (card != null) {

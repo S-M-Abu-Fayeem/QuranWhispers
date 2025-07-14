@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 public class LoginController extends BaseController{
     @FXML TextField usernameField;
-    @FXML TextField passwordField;
+    @FXML PasswordField passwordField;
 
     public void handleSignupBtn(MouseEvent e) throws IOException {
         System.out.println("SignUp Button pressed");
@@ -38,7 +39,14 @@ public class LoginController extends BaseController{
                     System.out.println("Login successful");
                     Platform.runLater(() -> {
                         try {
-                            sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
+                            usernameField.clear();
+                            passwordField.clear();
+                            if (response.getString("admin").equals("true")) {
+                                AdminUserViewController adminUserViewController = (AdminUserViewController) sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
+                                adminUserViewController.setupUserViewTable();
+                            } else {
+                                sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
+                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -50,10 +58,14 @@ public class LoginController extends BaseController{
             }
         };
         new Thread(loginBackendAPITask).start();
-
         playClickSound();
     }
 
-
+    @Override
+    public void handleTitleLink(MouseEvent e) throws IOException {
+        System.out.println("Title pressed");
+        sceneController.switchTo(GlobalState.LANDING_FILE);
+        playClickSound();
+    }
 
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.json.JSONObject;
 import util.BackendAPI;
@@ -16,20 +17,20 @@ import util.SessionManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
-public class ShareController extends SearchController{
+public class GlobalShareController extends BaseController{
+    @FXML ImageView profileNavImageView;
+    @FXML ImageView notificationNavImageView;
+    @FXML Label profileNavlink;
 
     @FXML TextField receiverUsername;
-    @FXML ImageView versePosterView;
-    @FXML Label categoryField;
-    @FXML Label duaTitle;
-    @FXML Text duaArabicBody;
-    @FXML Text duaEnglishBody;
     String emotionName;
     String themeName;
     int surahNum;
     int ayahNum;
-
+    String parent;
 
     public void setupVerseDetails(int surahNum, int ayahNum, String emotionName, String themeName) {
         this.surahNum = surahNum;
@@ -38,28 +39,38 @@ public class ShareController extends SearchController{
         this.themeName = themeName;
     }
 
-    public void setupDuaDetails(String title, String arabicBody, String englishBody) {
-        this.duaTitle.setText(title);
-        this.duaArabicBody.setText(arabicBody);
-        this.duaEnglishBody.setText(englishBody);
-    }
+    public void setupParent(String parent) {
+        this.parent = parent;
 
-    public void setupPoster(String posterPath, String categoryName) {
-        File posterFile = new File(posterPath);
-        if (posterFile.exists()) {
-            Image poster = new Image(posterFile.toURI().toString());
-            versePosterView.setImage(poster);
-        } else {
-            System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
+        if (Objects.equals(parent, GlobalState.PROFILE_FILE)) {
+            profileNavlink.setTextFill(Color.BLACK);
+            URL profileIconURL = getClass().getResource("/images/black_heart.png");
+            if (profileIconURL != null) {
+                profileNavImageView.setImage(new Image(profileIconURL.toExternalForm()));
+            }
+            URL notificationIconURL = getClass().getResource("/images/notifications.png");
+            if (notificationIconURL != null) {
+                notificationNavImageView.setImage(new Image(notificationIconURL.toExternalForm()));
+            }
+        } else if (Objects.equals(parent, GlobalState.NOTIFICATION_FILE)) {
+            profileNavlink.setTextFill(Color.WHITE);
+            URL profileIconURL = getClass().getResource("/images/heart.png");
+            if (profileIconURL != null) {
+                profileNavImageView.setImage(new Image(profileIconURL.toExternalForm()));
+            }
+
+            URL notificationIconURL = getClass().getResource("/images/notifications_active.png");
+            if (notificationIconURL != null) {
+                notificationNavImageView.setImage(new Image(notificationIconURL.toExternalForm()));
+            }
         }
-        categoryField.setText(categoryName);
     }
 
 
     public void handleCloseBtn(MouseEvent e) throws IOException {
         System.out.println("Close Button Pressed");
         playClickSound();
-        sceneController.switchTo(GlobalState.SEARCH_FILE);
+        sceneController.switchTo(parent);
     }
 
     public void handleSendBtn(MouseEvent e) throws IOException {

@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.JSONArray;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RecitationController extends SearchController implements Initializable {
+public class GlobalRecitationController extends SearchController implements Initializable {
     @FXML ImageView versePosterView;
     @FXML Label categoryField;
     @FXML TextField recitersNameField;
@@ -39,9 +38,6 @@ public class RecitationController extends SearchController implements Initializa
     int ayahNum;
     File selectedFile;
     String recitationPath = "src/main/resources/data/recitations_audio/";
-    @FXML Label duaTitle;
-    @FXML Text duaArabicBody;
-    @FXML Text duaEnglishBody;
 
     // HELPER FUNCTION
     public String getFileExtension(File file) {
@@ -89,7 +85,7 @@ public class RecitationController extends SearchController implements Initializa
                 RecitationCardController controller = loader.getController();
                 cardControllers.add(controller);
                 controller.setReciterInfo(recitersName, path);
-                controller.setParentController(this);
+//                controller.setParentController(this);
 
                 // Add to VBox
                 if (card != null) {
@@ -105,11 +101,6 @@ public class RecitationController extends SearchController implements Initializa
         }
     }
 
-    public void setupDuaDetails(String title, String arabicBody, String englishBody) {
-        this.duaTitle.setText(title);
-        this.duaArabicBody.setText(arabicBody);
-        this.duaEnglishBody.setText(englishBody);
-    }
 
     public void setupPage(String posterPath, String categoryName, int surahNum, int ayahNum) {
         File posterFile = new File(posterPath);

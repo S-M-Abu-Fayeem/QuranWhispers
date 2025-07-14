@@ -3,7 +3,7 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.json.JSONObject;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SignupController extends BaseController{
     @FXML TextField usernameField;
     @FXML TextField emailAddressField;
-    @FXML TextField passwordField;
+    @FXML PasswordField passwordField;
 
     public void handleLoginBtn(MouseEvent e) throws IOException {
         System.out.println("Login Button pressed");
@@ -44,6 +44,9 @@ public class SignupController extends BaseController{
                     passwordField.clear();
                     Platform.runLater(() -> {
                         try {
+                            usernameField.clear();
+                            emailAddressField.clear();
+                            passwordField.clear();
                             sceneController.switchTo(GlobalState.LOGIN_FILE);
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -56,6 +59,13 @@ public class SignupController extends BaseController{
             }
         };
         new Thread(registerBackendAPITask).start();
+        playClickSound();
+    }
+
+    @Override
+    public void handleTitleLink(MouseEvent e) throws IOException {
+        System.out.println("Title pressed");
+        sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
     }
 }

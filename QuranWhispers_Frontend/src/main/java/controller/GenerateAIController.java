@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,26 +18,17 @@ import util.SessionManager;
 import java.io.File;
 import java.io.IOException;
 
-public class ShareController extends SearchController{
-
-    @FXML TextField receiverUsername;
+public class GenerateAIController extends SearchController{
+    @FXML TextArea promptTextArea;
     @FXML ImageView versePosterView;
     @FXML Label categoryField;
+    String emotionName;
+    String themeName;
+    String surah;
+    String ayah;
     @FXML Label duaTitle;
     @FXML Text duaArabicBody;
     @FXML Text duaEnglishBody;
-    String emotionName;
-    String themeName;
-    int surahNum;
-    int ayahNum;
-
-
-    public void setupVerseDetails(int surahNum, int ayahNum, String emotionName, String themeName) {
-        this.surahNum = surahNum;
-        this.ayahNum = ayahNum;
-        this.emotionName = emotionName;
-        this.themeName = themeName;
-    }
 
     public void setupDuaDetails(String title, String arabicBody, String englishBody) {
         this.duaTitle.setText(title);
@@ -62,42 +54,48 @@ public class ShareController extends SearchController{
         sceneController.switchTo(GlobalState.SEARCH_FILE);
     }
 
-    public void handleSendBtn(MouseEvent e) throws IOException {
-        System.out.println("Send Button Pressed");
-        Task<Void> SendBackendAPITask= new Task<Void>() {
+    public void handleSearchBtn(MouseEvent e) throws IOException {
+        System.out.println("Search Button Pressed");
+        System.out.println("Prompt: " + promptTextArea.getText());
+
+        if (promptTextArea.getText().isEmpty()) {
+            System.out.println("Prompt text area is empty. Please enter a prompt.");
+            return;
+        }
+
+        Task<Void> generateApiBasedVerseTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
                 request.put("email", SessionManager.getEmail());
                 request.put("token", SessionManager.getToken());
-                request.put("emotion", emotionName);
-                request.put("theme", themeName);
-                request.put("ayah", String.valueOf(ayahNum));
-                request.put("surah", String.valueOf(surahNum));
-                request.put("receiver_username", receiverUsername.getText());
-                for (String key : request.keySet()) {
-                    System.out.println("Key: " + key + " | Value: " + request.get(key));
-                }
+                request.put("text", promptTextArea.getText());
 
-                JSONObject response = BackendAPI.fetch("sendtofriend", request);
-                System.out.println(response.getString("status"));
+                JSONObject response = BackendAPI.fetch("generateapibasedverse", request);
                 if (response.getString("status").equals("200")) {
-                    System.out.println("Fetch successful");
+                    System.out.println("Dua Generated successfully: " + response.toString());
                     Platform.runLater(() -> {
                         try {
-                            sceneController.switchTo(GlobalState.SEARCH_FILE);
+                            surah = response.getString("surah");
+                            ayah = response.getString("ayah");
+                            emotionName = response.getString("emotion");
+                            themeName = response.getString("theme");
+
+                            SearchController searchController = (SearchController) sceneController.switchTo(GlobalState.SEARCH_FILE);
+                            searchController.generatePoster(Integer.parseInt(surah), Integer.parseInt(ayah), emotionName, themeName);
+
+
+
+                            promptTextArea.clear();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     });
-                } else {
-                    System.out.println("Fetch failed: " + response.getString("message"));
                 }
                 return null;
             }
         };
-        new Thread(SendBackendAPITask).start();
-        playClickSound();
+        new Thread(generateApiBasedVerseTask).start();
         playClickSound();
     }
 }
