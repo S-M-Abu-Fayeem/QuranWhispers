@@ -37,7 +37,8 @@ public class GetRecieveInfo {
             PreparedStatement psRec = connection.prepareStatement(
                     "SELECT R.sender_username, R.timestamp, D.emotion, D.theme, D.ayah, D.surah " +
                             "FROM REC_VERSE R JOIN REC_VERSE_DETAIL D ON R.id = D.rec_verse_id " +
-                            "WHERE R.user_id = ?");
+                            "WHERE R.user_id = ? " +
+                            "ORDER BY R.timestamp DESC");
             psRec.setInt(1, userId);
             ResultSet recRs = psRec.executeQuery();
 

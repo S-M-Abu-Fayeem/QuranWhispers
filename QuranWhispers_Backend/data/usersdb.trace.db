@@ -18,3 +18,32 @@ SELECT emotion, ayah, surah, timestamp FROM FAV_VERSE WHERE user_id = ? ORDER BY
 	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:315)
 	at com.example.server/com.example.server.GetProfileInfo.GET(GetProfileInfo.java:42)
 	at com.example.server/com.example.server.HelloApplication.main(HelloApplication.java:327)
+2025-07-13 15:47:15.186787+06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Cannot parse "TIMESTAMP" constant "13/07/2025 15:47:15"; SQL statement:
+INSERT INTO REC_VERSE (user_id, sender_username, timestamp) VALUES (?, ?, ?) [22007-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:518)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:88)
+	at org.h2.value.Value.convertToTimestamp(Value.java:2006)
+	at org.h2.value.Value.convertTo(Value.java:1179)
+	at org.h2.value.Value.convertForAssignTo(Value.java:1118)
+	at org.h2.table.Column.validateConvertUpdateSequence(Column.java:406)
+	at org.h2.table.Table.convertInsertRow(Table.java:963)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:167)
+	at org.h2.command.dml.Insert.update(Insert.java:135)
+	at org.h2.command.CommandContainer.executeUpdateWithGeneratedKeys(CommandContainer.java:212)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:133)
+	at org.h2.command.Command.executeUpdate(Command.java:304)
+	at org.h2.command.Command.executeUpdate(Command.java:248)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:213)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:172)
+	at com.example.server/com.example.server.ReceivedVerseControll.SEND(SendVerseToFriend.java:53)
+	at com.example.server/com.example.server.HelloApplication.main(HelloApplication.java:99)
+Caused by: java.lang.NumberFormatException: Error at index 2 in: "13/07/"
+	at java.base/java.lang.NumberFormatException.forCharSequence(NumberFormatException.java:83)
+	at java.base/java.lang.Integer.parseInt(Integer.java:639)
+	at org.h2.util.DateTimeUtils.parseDateValue(DateTimeUtils.java:190)
+	at org.h2.util.DateTimeUtils.parseTimestamp(DateTimeUtils.java:338)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:86)
+	... 15 more
