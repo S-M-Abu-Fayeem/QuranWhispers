@@ -20,7 +20,7 @@ public class HelloApplication {
         UserInfoGetter userInfoGetter = new UserInfoGetter();
         AddFavVerse addFavVerse = new AddFavVerse();
         RemoveVerse removeVerse = new RemoveVerse();
-        SendVerseToFriend sendVerseToFriend = new SendVerseToFriend();
+        ReceivedVerseControll receivedVerseControll = new ReceivedVerseControll();
         AddDua addDua = new AddDua();
         GeneratingDuaOfTheDay generatingDuaOfTheDay = new GeneratingDuaOfTheDay();
         AdminController adminController = new AdminController();
@@ -31,6 +31,7 @@ public class HelloApplication {
         GetList getList = new GetList();
         GetProfileInfo getProfileInfo = new GetProfileInfo();
         GetRecieveInfo getRecieveInfo = new GetRecieveInfo();
+        APIBasedVerseGenerator apiBasedVerseGenerator = new APIBasedVerseGenerator();
 
         try (ServerSocket serverSocket = new ServerSocket(42069)) {
             System.out.println("Server running.........");
@@ -96,15 +97,15 @@ public class HelloApplication {
                             String surah = json.get("surah").getAsString();
                             String friendUserName = json.get("friendusername").getAsString();
                             String theme = json.get("theme").getAsString();
-                            response = sendVerseToFriend.SEND(email,valueOfToken,friendUserName, emotion,theme,  Integer.parseInt(ayah) ,surah);
+                            response = receivedVerseControll.SEND(email,valueOfToken,friendUserName, emotion,theme,  Integer.parseInt(ayah) ,surah);
                         }
                         else if(action.equalsIgnoreCase("adddua")) {
                             String curToken = json.get("token").getAsString();
                             int valueOfToken = Integer.parseInt(curToken);
                             String title = json.get("title").getAsString();
-                            String english = json.get("englishbody").getAsString();
+                            String english = json.get("english_body").getAsString();
                            // String bangla = json.get("banglabody").getAsString();
-                            String arabic = json.get("arabicbody").getAsString();
+                            String arabic = json.get("arabic_body").getAsString();
                             response = addDua.SET_DUA(email,valueOfToken, title, arabic, english);
                         }
                         else if(action.equalsIgnoreCase("addverse")) {
@@ -153,12 +154,6 @@ public class HelloApplication {
                             int valueOfToken = Integer.parseInt(curToken);
                             String userEmail= json.get("useremail").getAsString();
                             response = adminController.DELETE_USER(email,valueOfToken,userEmail);
-                        }
-                        else if(action.equalsIgnoreCase("getallinfo")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            response = adminController.getAllInfo(email,valueOfToken);
-
                         }
                         else if(action.equalsIgnoreCase("approverecitation")) {
                             String curToken = json.get("token").getAsString();
@@ -284,7 +279,7 @@ public class HelloApplication {
                             writer.flush();
                             continue;
                         }
-                        else if(action.equals("deletuser")) {
+                        else if(action.equals("deleteuser")) {
                             int value = Integer.parseInt(json.get("value").getAsString());
                             response=adminController.DELETE_USER(email,value, json.get("useremail").getAsString());
                         }
@@ -326,14 +321,47 @@ public class HelloApplication {
                         else if(action.equalsIgnoreCase("getprofileinfo")){
                             response = getProfileInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
                         }
-                        else if(action.equalsIgnoreCase("getrecieveinfo")){
+                        else if(action.equalsIgnoreCase("getreceivedinfo")){
                             response = getRecieveInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
+                        }
+                        else if(action.equalsIgnoreCase("deletereceivedverse")){
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            String senderUsername = json.get("sender_username").getAsString();
+                            String surah = json.get("surah").getAsString();
+                            int ayah = Integer.parseInt(json.get("ayah").getAsString());
+                            String theme = json.get("theme").getAsString();
+                            String emotion = json.get("emotion").getAsString();
+                            response = receivedVerseControll.DELETE(email, value, senderUsername, surah , ayah , theme , emotion );
+                        }
+                        else if(action.equalsIgnoreCase("generateapibasedverse")){
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            String text = json.get("text").getAsString();
+                            response = apiBasedVerseGenerator.generate(email, value, text);
+
+                        }
+                        else if(action.equalsIgnoreCase("getallusers")){
+                            System.out.println("here");
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            response = adminController.getAllusers(email,value);
+                        }
+                        else if(action.equalsIgnoreCase("getallverses")){
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            response = adminController.getAllVerses(email,value);
+                        }
+                        else if(action.equalsIgnoreCase("getallduas")){
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            response = adminController.getAllDuas(email,value);
+                        }
+                        else if(action.equalsIgnoreCase("getAllPendingRecitations")){
+                            int value = Integer.parseInt(json.get("token").getAsString());
+                            response = adminController.getAllPendingRecitations(email,value);
                         }
                         else {
                             JsonObject error = new JsonObject();
                             error.addProperty("status", "401");
                             response = gson.toJson(error);
                         }
+
 
                         //Sending response
                         writer.write(response);

@@ -28,6 +28,20 @@ public class AddFavVerse {
                 if (resultSet.next()) {
                     int userId = resultSet.getInt("id");
 
+                    PreparedStatement checkDuplicate = connection.prepareStatement(
+                            "SELECT id FROM FAV_VERSE WHERE user_id = ? AND surah = ? AND ayah = ?"
+                    );
+                    checkDuplicate.setInt(1, userId);
+                    checkDuplicate.setString(2, surah);
+                    checkDuplicate.setInt(3, ayah);
+                    ResultSet duplicateCheck = checkDuplicate.executeQuery();
+
+                    if (duplicateCheck.next()) {
+                        data.addProperty("status", "409");
+                        return gson.toJson(data);
+                    }
+
+                    // Step 2: Insert new favorite
                     PreparedStatement preparedStatement2 = connection.prepareStatement(
                             "INSERT INTO FAV_VERSE (user_id, emotion, theme, ayah, surah, timestamp) VALUES (?, ?, ?, ?, ?, ?)"
                     );
