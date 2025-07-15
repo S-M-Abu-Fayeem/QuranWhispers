@@ -25,7 +25,7 @@ public abstract class BaseControllerAdmin {
     }
 
 
-    // Method to play the sound
+    // METHOD TO PLAY THE CLICK SOUND
     public static void playClickSound() {
         try {
             File soundFile = new File("src/main/resources/sounds/click.wav");

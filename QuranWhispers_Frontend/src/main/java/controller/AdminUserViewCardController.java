@@ -8,7 +8,6 @@ import javafx.scene.input.MouseEvent;
 import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
-import util.SessionManager;
 
 import java.io.IOException;
 
@@ -33,8 +32,6 @@ public class AdminUserViewCardController extends BaseControllerAdmin {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("useremail", userEmail);
 
                 JSONObject response = BackendAPI.fetch("deleteuser", request);

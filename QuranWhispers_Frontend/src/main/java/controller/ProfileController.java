@@ -4,14 +4,12 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
-import util.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,18 +24,14 @@ public class ProfileController extends BaseController {
     private List<ProfileCardController> cardControllers = new ArrayList<>();
 
     public void setupProfile() {
-        // Assuming you already have sceneController set up in ProfileController
         if (sceneController == null) {
             System.err.println("SceneController is null in ProfileController");
         }
 
-        // Proceed with the rest of your setup
         Task<Void> getProfileBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
 
                 JSONObject response = BackendAPI.fetch("getprofileinfo", request);
                 if (response.getString("status").equals("200")) {
@@ -64,8 +58,6 @@ public class ProfileController extends BaseController {
                                 if (card != null) {
                                     containerFlowPane.getChildren().add(card);
                                 }
-
-                                // Set other profile info like username, email, etc.
                             }
                             username.setText(response.getString("username"));
                             email.setText(response.getString("email"));

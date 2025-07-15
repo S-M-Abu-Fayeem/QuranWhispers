@@ -1,16 +1,10 @@
 package controller;
 
-import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 import util.GlobalState;
 import java.io.IOException;
-import java.net.URL;
 
 public class LandingController extends BaseController{
-
 
     public void handleLearnMoreBtn(MouseEvent e) throws IOException {
         System.out.println("Learn More button pressed");

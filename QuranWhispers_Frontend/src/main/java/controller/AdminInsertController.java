@@ -27,8 +27,6 @@ public class AdminInsertController extends BaseControllerAdmin {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("title", duaTitleField.getText());
                 request.put("arabic_body", duaArabicBodyField.getText());
                 request.put("english_body", duaEnglishBodyField.getText());

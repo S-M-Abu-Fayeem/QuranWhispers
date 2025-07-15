@@ -3,13 +3,11 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
-import util.SessionManager;
 
 import java.io.IOException;
 
@@ -30,8 +28,6 @@ public class AdminDuaViewCardController extends BaseControllerAdmin {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("title", duaTitle.getText());
 
                 JSONObject response = BackendAPI.fetch("deletedua", request);

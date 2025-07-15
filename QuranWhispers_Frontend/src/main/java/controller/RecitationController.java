@@ -72,26 +72,21 @@ public class RecitationController extends SearchController implements Initializa
                 return;
             }
             String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
             JSONArray recitersArray = new JSONArray(content);
 
-            // Loop through each reciter
             for (int i = 0; i < recitersArray.length(); i++) {
                 JSONObject reciter = recitersArray.getJSONObject(i);
                 String recitersName = reciter.getString("recitersName");
                 String path = reciter.getString("path");
 
-                // Load the card FXML
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recitationCard.fxml"));
                 Parent card = loader.load();
 
-                // Access the card controller and pass data
                 RecitationCardController controller = loader.getController();
                 cardControllers.add(controller);
                 controller.setReciterInfo(recitersName, path);
                 controller.setParentController(this);
 
-                // Add to VBox
                 if (card != null) {
                     containerVBox.getChildren().add(card);
                 }
@@ -174,7 +169,6 @@ public class RecitationController extends SearchController implements Initializa
         selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            // Display the file path in the TextField
             filePathField.setText(selectedFile.getName());
         }
     }

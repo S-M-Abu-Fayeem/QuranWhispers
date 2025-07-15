@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
-import util.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +23,10 @@ public class AdminDuaViewController extends BaseControllerAdmin {
             System.err.println("SceneController is null in AdminDuaViewController");
         }
 
-        // Proceed with the rest of your setup
         Task<Void> adminDuaViewBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
-
 
                 JSONObject response = BackendAPI.fetch("getallduas", request);
                 if (response.getString("status").equals("200")) {
@@ -47,17 +42,14 @@ public class AdminDuaViewController extends BaseControllerAdmin {
                                 String arabic_body = adminDuaView.getString("body_arabic");
                                 String english_body = adminDuaView.getString("body_english");
 
-                                // Load the card FXML
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminDuaViewCard.fxml"));
                                 Parent card = loader.load();
 
-                                // Access the card controller and pass data
                                 AdminDuaViewCardController controller = loader.getController();
                                 cardControllers.add(controller);
                                 controller.setSceneController(sceneController);
                                 controller.setupAdminDuaViewInfo(title, arabic_body, english_body);
 
-                                // Add to VBox
                                 if (card != null) {
                                     containerVBox.getChildren().add(card);
                                 }

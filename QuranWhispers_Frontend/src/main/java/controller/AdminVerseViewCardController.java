@@ -34,8 +34,6 @@ public class AdminVerseViewCardController extends BaseControllerAdmin {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("emotion", emotionField.getText());
                 request.put("theme", themeField.getText());
                 request.put("surah", surahField.getText());

@@ -3,7 +3,6 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +37,6 @@ public class ProfileCardController extends BaseController {
     }
 
     public void setupProfileCard() {
-        // Create a new task to generate the poster in the background
         Task<Void> posterGenerationTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -51,7 +49,6 @@ public class ProfileCardController extends BaseController {
         };
 
 
-        // After the task completes, update the image
         posterGenerationTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 File posterFile = new File(posterPath);
@@ -64,7 +61,6 @@ public class ProfileCardController extends BaseController {
             });
         });
 
-        // Start the task in a background thread
         new Thread(posterGenerationTask).start();
     }
 
@@ -90,7 +86,6 @@ public class ProfileCardController extends BaseController {
                     System.out.println("Fetch successful");
                     Platform.runLater(() -> {
                         try {
-                            // Ensure sceneController is not null
                             if (sceneController != null) {
                                 ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
                                 profileController.setupProfile();
@@ -136,13 +131,11 @@ public class ProfileCardController extends BaseController {
         Path destinationFile = Path.of(destinationPath);
 
         try {
-            // Copy the file from source to destination
             Files.copy(sourceFile.toPath(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image copied successfully to: " + destinationPath);
         } catch (IOException exception) {
             System.err.println("Error copying file: " + exception.getMessage());
         }
-
 
         ButtonType bt = alertGenerator("Download  Successful", "Verse poster offline download was successful",
                 "Your generated verse poster is saved at the download folder: " + GlobalState.DOWNLOAD_FOLDER_PATH,

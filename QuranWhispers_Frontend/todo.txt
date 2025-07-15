@@ -10,20 +10,13 @@ CSS Design
 - UI Enhancement
 - make front page pop out
 
-- setup dua when share/recitation/gemini ai popup
-- session manager request/token
-
 Features
 - Database Connect
     - Recitation Management
-    - Add Dua
-    - Add Verse
-    - Approve / Decline Recitation
-    - Delete Userinfo / verse / dua / recitation
 
 - verse filter in profile / notification
 - Common Forum (All users / admin / gemini ai / add verse poster / add recitation / add question / add answer);
 - Audio Player for Recitations
-- Spinners
+- Spinners, Loaders
 
 - About Us Page

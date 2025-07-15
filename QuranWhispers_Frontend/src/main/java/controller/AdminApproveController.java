@@ -48,17 +48,14 @@ public class AdminApproveController extends BaseControllerAdmin implements Initi
                 String reciterName = adminApprove.getString("reciterName");
                 String path = adminApprove.getString("path");
 
-                // Load the card FXML
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminApproveCard.fxml"));
                 Parent card = loader.load();
 
-                // Access the card controller and pass data
                 AdminApproveCardController controller = loader.getController();
                 cardControllers.add(controller);
                 controller.setupAdminApproveInfo(surahNum, ayahNum, requestorUsername, reciterName, path);
                 controller.setupParentController(this);
 
-                // Add to VBox
                 if (card != null) {
                     containerVBox.getChildren().add(card);
                 }

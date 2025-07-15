@@ -66,7 +66,6 @@ public class GlobalShareController extends BaseController{
         }
     }
 
-
     public void handleCloseBtn(MouseEvent e) throws IOException {
         System.out.println("Close Button Pressed");
         playClickSound();
@@ -79,8 +78,6 @@ public class GlobalShareController extends BaseController{
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("emotion", emotionName);
                 request.put("theme", themeName);
                 request.put("ayah", String.valueOf(ayahNum));
@@ -108,7 +105,6 @@ public class GlobalShareController extends BaseController{
             }
         };
         new Thread(SendBackendAPITask).start();
-        playClickSound();
         playClickSound();
     }
 }

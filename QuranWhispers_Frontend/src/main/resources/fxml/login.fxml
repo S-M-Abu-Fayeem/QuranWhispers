@@ -87,7 +87,7 @@
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="usernameField" layoutX="704.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="username">
+      <TextField fx:id="emailAddressField" layoutX="704.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="email address">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>

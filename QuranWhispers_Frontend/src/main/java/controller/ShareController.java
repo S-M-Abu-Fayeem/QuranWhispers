@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
-import util.SessionManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,8 +67,6 @@ public class ShareController extends SearchController{
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("emotion", emotionName);
                 request.put("theme", themeName);
                 request.put("ayah", String.valueOf(ayahNum));

@@ -37,7 +37,6 @@ public class RecitationCardController extends BaseController{
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
         } else {
-            // Stop and dispose the audio
             stopAudio();
         }
     }

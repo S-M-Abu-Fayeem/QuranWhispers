@@ -9,7 +9,6 @@ import javafx.scene.layout.FlowPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
-import util.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +21,10 @@ public class NotificationController extends BaseController {
             System.err.println("SceneController is null in NotificationController");
         }
 
-        // Proceed with the rest of your setup
         Task<Void> getNotificationBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
 
                 JSONObject response = BackendAPI.fetch("getreceivedinfo", request);
                 if (response.getString("status").equals("200")) {

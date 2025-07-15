@@ -3,18 +3,16 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
-
 import java.io.IOException;
 
 public class LoginController extends BaseController{
-    @FXML TextField usernameField;
+    @FXML TextField emailAddressField;
     @FXML PasswordField passwordField;
 
     public void handleSignupBtn(MouseEvent e) throws IOException {
@@ -30,7 +28,7 @@ public class LoginController extends BaseController{
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", usernameField.getText());
+                request.put("email", emailAddressField.getText());
                 request.put("password", passwordField.getText());
 
 
@@ -39,7 +37,7 @@ public class LoginController extends BaseController{
                     System.out.println("Login successful");
                     Platform.runLater(() -> {
                         try {
-                            usernameField.clear();
+                            emailAddressField.clear();
                             passwordField.clear();
                             if (response.getString("admin").equals("true")) {
                                 AdminUserViewController adminUserViewController = (AdminUserViewController) sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);

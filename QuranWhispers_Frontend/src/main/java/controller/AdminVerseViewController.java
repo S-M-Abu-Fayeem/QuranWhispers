@@ -48,17 +48,14 @@ public class AdminVerseViewController extends BaseControllerAdmin {
                                 String emotion = adminVerseView.getString("emotion");
                                 String theme = adminVerseView.getString("theme");
 
-                                // Load the card FXML
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminVerseViewCard.fxml"));
                                 Parent card = loader.load();
 
-                                // Access the card controller and pass data
                                 AdminVerseViewCardController controller = loader.getController();
                                 cardControllers.add(controller);
                                 controller.setSceneController(sceneController);
                                 controller.setupAdminVerseViewInfo(surah, ayah, emotion, theme);
 
-                                // Add to VBox
                                 if (card != null) {
                                     containerVBox.getChildren().add(card);
                                 }

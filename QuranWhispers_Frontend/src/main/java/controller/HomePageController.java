@@ -2,7 +2,6 @@ package controller;
 
 import javafx.scene.input.MouseEvent;
 import util.GlobalState;
-
 import java.io.IOException;
 
 public class HomePageController extends BaseController{

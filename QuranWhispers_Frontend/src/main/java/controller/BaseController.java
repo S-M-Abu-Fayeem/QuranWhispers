@@ -23,10 +23,10 @@ public abstract class BaseController {
     protected SceneController sceneController;
     public void setSceneController(SceneController controller) {
         this.sceneController = controller;
-    } // Called in the MainApp
+    }
 
 
-    // Method to play the sound
+    // METHOD TO PLAY THE CLICK SOUND
     public static void playClickSound() {
         try {
             File soundFile = new File("src/main/resources/sounds/click.wav");

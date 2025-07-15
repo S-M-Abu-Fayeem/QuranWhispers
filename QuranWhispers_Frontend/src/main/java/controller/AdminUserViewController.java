@@ -47,17 +47,14 @@ public class AdminUserViewController extends BaseControllerAdmin {
                                 String savedVerse = String.valueOf(adminUserView.getInt("total_saved_verse"));
                                 String receivedVerse = String.valueOf(adminUserView.getInt("total_received_verse"));
 
-                                // Load the card FXML
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminUserViewCard.fxml"));
                                 Parent card = loader.load();
 
-                                // Access the card controller and pass data
                                 AdminUserViewCardController controller = loader.getController();
                                 cardControllers.add(controller);
                                 controller.setSceneController(sceneController);
                                 controller.setupAdminUserViewInfo(username, email, savedVerse, receivedVerse);
 
-                                // Add to VBox
                                 if (card != null) {
                                     containerVBox.getChildren().add(card);
                                     System.out.println("Added card for user: " + username);

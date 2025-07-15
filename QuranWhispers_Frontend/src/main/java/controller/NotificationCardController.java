@@ -3,8 +3,6 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,16 +12,14 @@ import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
 import util.PosterGenerator;
-import util.SessionManager;
+
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ResourceBundle;
 
 public class NotificationCardController extends BaseController {
     @FXML Label senderUsername;
@@ -44,7 +40,6 @@ public class NotificationCardController extends BaseController {
     }
 
     public void setupNotificationCard() {
-        // Create a new task to generate the poster in the background
         Task<Void> posterGenerationTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -57,7 +52,6 @@ public class NotificationCardController extends BaseController {
         };
 
 
-        // After the task completes, update the image
         posterGenerationTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 File posterFile = new File(posterPath);
@@ -70,7 +64,6 @@ public class NotificationCardController extends BaseController {
             });
         });
 
-        // Start the task in a background thread
         new Thread(posterGenerationTask).start();
     }
 
@@ -80,8 +73,6 @@ public class NotificationCardController extends BaseController {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("emotion", emotion);
                 request.put("theme", theme);
                 request.put("ayah", String.valueOf(ayahNum));

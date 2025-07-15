@@ -47,7 +47,6 @@ public class AdminRecitationViewCardController extends BaseControllerAdmin {
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
         } else {
-            // Stop and dispose the audio
             stopAudio();
         }
     }

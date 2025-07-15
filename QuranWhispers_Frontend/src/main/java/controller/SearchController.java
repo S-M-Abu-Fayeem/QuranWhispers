@@ -1,11 +1,8 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,7 +16,6 @@ import util.BackendAPI;
 import util.GlobalState;
 import util.PosterGenerator;
 import javafx.concurrent.Task;
-import util.SessionManager;
 
 import java.awt.*;
 import java.io.File;
@@ -43,8 +39,6 @@ public class SearchController extends BaseController implements Initializable {
     String themeName;
     boolean categoryListViewVisible = false;
     boolean isEmotion = false;
-
-    // THIS WILL BE FETCHED FROM BACKEND
     int surahNum;
     int ayahNum;
     String [] emotionArray; // = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
@@ -57,8 +51,6 @@ public class SearchController extends BaseController implements Initializable {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 for (String key : request.keySet()) {
                     System.out.println("Key: " + key + " | Value: " + request.get(key));
                 }
@@ -92,8 +84,6 @@ public class SearchController extends BaseController implements Initializable {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 for (String key : request.keySet()) {
                     System.out.println("Key: " + key + " | Value: " + request.get(key));
                 }
@@ -121,14 +111,11 @@ public class SearchController extends BaseController implements Initializable {
         new Thread(getDuaBackendAPITask).start();
     }
 
-    // Helper method to fetch verse data and generate a poster
     private void fetchAndGeneratePoster(String category, String requestType) {
         Task<Void> getVerseBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put(requestType, category);
 
                 JSONObject response = BackendAPI.fetch("generate" + requestType + "basedverse", request);
@@ -138,7 +125,8 @@ public class SearchController extends BaseController implements Initializable {
                     emotionName = response.getString("emotion");
                     themeName = response.getString("theme");
 
-                    // Generate the poster after fetching the verse
+                    System.out.println("Emotion: " + emotionName + ", Theme: " + themeName);
+
                     generatePoster(surahNum, ayahNum, emotionName, themeName);
                 } else {
                     System.out.println("Fetch failed: " + response.getString("message"));
@@ -149,7 +137,7 @@ public class SearchController extends BaseController implements Initializable {
         new Thread(getVerseBackendAPITask).start();
     }
 
-    // Method to generate the poster
+
     public void generatePoster(int surahNum, int ayahNum, String emotionName, String themeName) {
         posterPath = "src/main/resources/images/verse_posters/" + surahNum + "_" + ayahNum + ".png";
         Task<Void> posterGenerationTask = new Task<Void>() {
@@ -169,6 +157,17 @@ public class SearchController extends BaseController implements Initializable {
                 if (posterFile.exists()) {
                     Image poster = new Image(posterFile.toURI().toString());
                     versePosterView.setImage(poster);
+                    if (emotionName != null && !emotionName.isEmpty()) {
+                        categoryName = emotionName;
+                    } else  {
+                        categoryName = themeName;
+                    }
+                    System.out.println("Category Name: " + categoryName);
+                    categoryField.setText(categoryName);
+                    categoryListViewVisible = !categoryListViewVisible;
+                    System.out.println("Category List View Visible (inside trigger): " + categoryListViewVisible);
+                    categoryListView.setVisible(categoryListViewVisible);
+                    categoryListView.getItems().clear();
                 } else {
                     System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
                 }
@@ -183,34 +182,36 @@ public class SearchController extends BaseController implements Initializable {
 
         categoryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             categoryName = categoryListView.getSelectionModel().getSelectedItem();
-            categoryField.setText(categoryName);
-            categoryListView.setVisible(false);
-            categoryListView.getItems().clear();
 
-            // Fetch the Surah and Ayah numbers based on the selected category
-            fetchAndGeneratePoster(categoryName, isEmotion ? "emotion" : "theme");
+            if (categoryName != null) {
+                fetchAndGeneratePoster(categoryName, isEmotion ? "emotion" : "theme");
+            }
         });
     }
 
 
     public void handleEmotionBtn(MouseEvent e) throws IOException {
         System.out.println("Emotion Pressed");
+        System.out.println("Is Emotion when pressed: " + isEmotion);
         categoryListView.getItems().clear();
 
         categoryType = "Emotion";
 
         categoryListView.getItems().addAll(emotionArray);
         categoryListViewVisible = !categoryListViewVisible;
+        System.out.println("Category List View Visible: " + categoryListViewVisible);
         categoryListView.setVisible(categoryListViewVisible);
         if (categoryListViewVisible) {
             isEmotion = true;
         }
+        System.out.println("Is Emotion after pressed: " + isEmotion);
         playClickSound();
     };
 
 
     public void handleThemeBtn(MouseEvent e) throws IOException {
         System.out.println("Theme Btn Pressed");
+        System.out.println("Is Emotion when pressed: " + isEmotion);
         categoryListView.getItems().clear();
         categoryType = "Theme";
         categoryListView.getItems().addAll(themeArray);
@@ -219,6 +220,7 @@ public class SearchController extends BaseController implements Initializable {
         if (categoryListViewVisible) {
             isEmotion = false;
         }
+        System.out.println("Is Emotion after pressed: " + isEmotion);
         playClickSound();
     };
 
@@ -228,8 +230,6 @@ public class SearchController extends BaseController implements Initializable {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
                 request.put("emotion", emotionName);
                 request.put("theme", themeName);
                 request.put("ayah", String.valueOf(ayahNum));
@@ -285,7 +285,6 @@ public class SearchController extends BaseController implements Initializable {
         Path destinationFile = Path.of(destinationPath);
 
         try {
-            // Copy the file from source to destination
             Files.copy(sourceFile.toPath(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image copied successfully to: " + destinationPath);
         } catch (IOException exception) {

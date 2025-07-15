@@ -39,7 +39,6 @@ public class AdminRecitationViewController extends BaseControllerAdmin implement
                 return;
             }
             String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
             JSONArray adminRecitationViewArray = new JSONArray(content);
 
             for (int i = 0; i < adminRecitationViewArray.length(); i++) {
@@ -49,17 +48,14 @@ public class AdminRecitationViewController extends BaseControllerAdmin implement
                 String reciterName = adminRecitationView.getString("reciterName");
                 String path = adminRecitationView.getString("path");
 
-                // Load the card FXML
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminRecitationViewCard.fxml"));
                 Parent card = loader.load();
 
-                // Access the card controller and pass data
                 AdminRecitationViewCardController controller = loader.getController();
                 cardControllers.add(controller);
                 controller.setupAdminRecitationViewInfo(surah, ayah, reciterName, path);
                 controller.setupParentController(this);
 
-                // Add to VBox
                 if (card != null) {
                     containerVBox.getChildren().add(card);
                 }

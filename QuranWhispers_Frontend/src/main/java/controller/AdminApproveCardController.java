@@ -43,7 +43,6 @@ public class AdminApproveCardController extends BaseControllerAdmin {
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
         } else {
-            // Stop and dispose the audio
             stopAudio();
         }
     }
