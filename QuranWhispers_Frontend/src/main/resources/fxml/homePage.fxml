@@ -21,7 +21,7 @@
             <Font name="Palatino Linotype Bold" size="50.0" />
          </font>
       </Label>
-      <HBox layoutX="619.0" layoutY="55.0" spacing="32.0">
+      <HBox layoutX="556.0" layoutY="56.0" spacing="32.0">
          <children>
             <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home">
                <font>
@@ -40,6 +40,11 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
+            </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
             </Label>
          </children>
       </HBox>

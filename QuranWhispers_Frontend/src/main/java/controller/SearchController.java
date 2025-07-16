@@ -192,6 +192,7 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleEmotionBtn(MouseEvent e) throws IOException {
         System.out.println("Emotion Pressed");
+        playClickSound();
         System.out.println("Is Emotion when pressed: " + isEmotion);
         categoryListView.getItems().clear();
 
@@ -205,12 +206,12 @@ public class SearchController extends BaseController implements Initializable {
             isEmotion = true;
         }
         System.out.println("Is Emotion after pressed: " + isEmotion);
-        playClickSound();
     };
 
 
     public void handleThemeBtn(MouseEvent e) throws IOException {
         System.out.println("Theme Btn Pressed");
+        playClickSound();
         System.out.println("Is Emotion when pressed: " + isEmotion);
         categoryListView.getItems().clear();
         categoryType = "Theme";
@@ -221,11 +222,11 @@ public class SearchController extends BaseController implements Initializable {
             isEmotion = false;
         }
         System.out.println("Is Emotion after pressed: " + isEmotion);
-        playClickSound();
     };
 
     public void handleAddToFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Add to Favourites Button Pressed");
+        playClickSound();
         Task<Void> addFavouriteBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -257,15 +258,14 @@ public class SearchController extends BaseController implements Initializable {
             }
         };
         new Thread(addFavouriteBackendAPITask).start();
-        playClickSound();
     };
 
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
+        playClickSound();
         RecitationController recitationController = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
         recitationController.setupPage(posterPath, categoryName, surahNum, ayahNum);
         recitationController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
-        playClickSound();
     };
 
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {
@@ -312,11 +312,11 @@ public class SearchController extends BaseController implements Initializable {
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
+        playClickSound();
         ShareController shareController = (ShareController) sceneController.switchTo(GlobalState.SHARE_FILE);
         shareController.setupVerseDetails(surahNum, ayahNum, emotionName, themeName);
         shareController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
         shareController.setupPoster(posterPath, categoryName);
-        playClickSound();
     }
 
 

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LearnMoreController">
+    <children>
+        <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
+          <Label layoutX="93.0" layoutY="145.0" prefHeight="86.0" prefWidth="409.0" text="Learn more">
+              <font>
+                  <Font name="Segoe UI Black" size="60.0" />
+              </font>
+          </Label>
+          <Label layoutX="93.0" layoutY="208.0" prefHeight="84.0" prefWidth="377.0" styleClass="learnMoreSubtitle" text="about the journey behind our JavaFX project and the amazing team who made it happen." textFill="#4f4f4f" wrapText="true">
+              <font>
+                  <Font name="Century Gothic" size="17.0" />
+              </font>
+          </Label>
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="355.0" layoutX="93.0" layoutY="302.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="338.0">
+           <effect>
+              <DropShadow>
+                 <color>
+                    <Color opacity="0.4000000059604645" />
+                 </color>
+              </DropShadow>
+           </effect>
+        </Rectangle>
+        <Label alignment="CENTER" layoutX="-13.0" layoutY="430.0" prefHeight="86.0" prefWidth="327.0" rotate="-90.0" text="DEV TEAM" textFill="#ff63c93b">
+           <font>
+              <Font name="Segoe UI Black" size="50.0" />
+           </font>
+        </Label>
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="492.0" layoutX="519.0" layoutY="165.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="666.0">
+           <effect>
+              <DropShadow>
+                 <color>
+                    <Color opacity="0.4000000059604645" />
+                 </color>
+              </DropShadow>
+           </effect>
+        </Rectangle>
+        <Label alignment="CENTER" layoutX="877.0" layoutY="369.0" prefHeight="84.0" prefWidth="482.0" rotate="90.0" text="PROJECT DETAILS" textFill="#ff63c93b">
+           <font>
+              <Font name="Segoe UI Black" size="50.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="189.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="QuranWhispers is more than just an app." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="20.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="215.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="it's your emotional companion to the Quran." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="260.0" prefHeight="40.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="KEY FEATURES" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="20.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="289.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Search Verse by Emotion or Theme" wrapText="true">
+           <font>
+              <Font name="Century Gothic Bold" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="611.0" layoutY="308.0" prefHeight="48.0" prefWidth="422.0" style="-fx-letter-spacing: 20;" text="Feeling anxious, hopeful, or grateful? Get verses and recitations that speak directly to your heart." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="356.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Immersive Experience" wrapText="true">
+           <font>
+              <Font name="Century Gothic Bold" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="611.0" layoutY="376.0" prefHeight="48.0" prefWidth="422.0" style="-fx-letter-spacing: 20;" text="Listen to soothing recitations, view daily duas, and download beautiful verse posters." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="424.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Social &amp; Personal Usage" wrapText="true">
+           <font>
+              <Font name="Century Gothic Bold" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="611.0" layoutY="443.0" prefHeight="48.0" prefWidth="422.0" style="-fx-letter-spacing: 20;" text="Add to favorites, share with friends, and explore suggestions from your circle." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="491.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Admin Control Panel" wrapText="true">
+           <font>
+              <Font name="Century Gothic Bold" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="611.0" layoutY="511.0" prefHeight="48.0" prefWidth="422.0" style="-fx-letter-spacing: 20;" text="Easily add verses, manage users, approve recitations, and keep everything meaningful and organized." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="565.0" layoutY="566.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Interactive Forum" wrapText="true">
+           <font>
+              <Font name="Century Gothic Bold" size="14.0" />
+           </font>
+        </Label>
+        <Label layoutX="611.0" layoutY="586.0" prefHeight="48.0" prefWidth="422.0" style="-fx-letter-spacing: 20;" text="A global discussion space for users and admins with smart commands." wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="346.0" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="23305067" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="20.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="363.0" prefHeight="63.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="Ahammad Shawki Frontend Developer" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="441.0" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="23305070" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="20.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="458.0" prefHeight="63.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="SM Abu Fayeem Backend Developer" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="540.0" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="Supervisor" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="20.0" />
+           </font>
+        </Label>
+        <Label layoutX="209.0" layoutY="549.0" prefHeight="63.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="Ishrat Jahan Mam" wrapText="true">
+           <font>
+              <Font name="Century Gothic" size="13.0" />
+           </font>
+        </Label>
+        <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Label fx:id="titleLink" layoutX="91.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="Quran Whispers" textFill="WHITE">
+            <font>
+                <Font name="Palatino Linotype Bold" size="50.0" />
+            </font>
+        </Label>
+        <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="16.0" />
+            </font>
+        </Label>
+        <HBox layoutX="605.0" layoutY="55.0" spacing="32.0">
+            <children>
+                <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" prefHeight="26.0" prefWidth="60.0" text="Home" textFill="WHITE" translateX="-12.0">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE" translateX="-12.0">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE" translateX="-12.0">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <Group fx:id="favouritesBtn" layoutX="910.0" layoutY="59.0" onMouseClicked="#handleFavouritesBtn" translateX="-12.0" translateY="-10.0">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+                <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/heart.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </Group>
+        <Group fx:id="notificationBtn1" layoutX="972.0" layoutY="59.0" onMouseClicked="#handleNotificationBtn" translateX="-12.0" translateY="-10.0">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/notifications.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </Group>
+        <Group accessibleRole="BUTTON" layoutX="1030.0" layoutY="59.0" onMouseClicked="#handleJoinNowBtn" translateX="-12.0" translateY="-10.0">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
+                <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" text="Join Now" textFill="#ff6ec7">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </Group>
+    </children>
+</AnchorPane>

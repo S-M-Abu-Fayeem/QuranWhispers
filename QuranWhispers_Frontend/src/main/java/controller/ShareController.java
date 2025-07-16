@@ -63,6 +63,7 @@ public class ShareController extends SearchController{
 
     public void handleSendBtn(MouseEvent e) throws IOException {
         System.out.println("Send Button Pressed");
+        playClickSound();
         Task<Void> SendBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -94,7 +95,5 @@ public class ShareController extends SearchController{
             }
         };
         new Thread(SendBackendAPITask).start();
-        playClickSound();
-        playClickSound();
     }
 }

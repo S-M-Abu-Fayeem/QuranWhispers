@@ -11,6 +11,7 @@ import java.net.URL;
 
 // IMPORT ALL CONTROLLERS HERE
 import controller.LandingController;
+import controller.LearnMoreController;
 import controller.LoginController;
 import controller.SignupController;
 import controller.HomePageController;
@@ -43,6 +44,7 @@ import controller.AdminRecitationViewController;
 import controller.AdminRecitationViewCardController;
 
 import controller.GlobalShareController;
+import controller.ForumController;
 
 
 public class MainApp extends Application {
@@ -86,6 +88,7 @@ public class MainApp extends Application {
 
         // REGISTER CONTROLLERS
         initController(GlobalState.LANDING_FILE, LandingController.class, sceneController);
+        initController(GlobalState.LEARN_MORE_FILE, LearnMoreController.class, sceneController);
         initController(GlobalState.HOME_PAGE_FILE, HomePageController.class, sceneController);
         initController(GlobalState.LOGIN_FILE, LoginController.class, sceneController);
         initController(GlobalState.SIGNUP_FILE, SignupController.class, sceneController);
@@ -100,19 +103,18 @@ public class MainApp extends Application {
         initController(GlobalState.GLOBAL_SHARE_FILE, GlobalShareController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
-
         initController(GlobalState.ADMIN_USER_VIEW_FILE, AdminUserViewController.class, sceneController);
         initController(GlobalState.ADMIN_USER_VIEW_CARD_FILE, AdminUserViewCardController.class, sceneController);
-
         initController(GlobalState.ADMIN_VERSE_VIEW_FILE, AdminVerseViewController.class, sceneController);
         initController(GlobalState.ADMIN_VERSE_VIEW_CARD_FILE, AdminVerseViewCardController.class, sceneController);
-
         initController(GlobalState.ADMIN_DUA_VIEW_FILE, AdminDuaViewController.class, sceneController);
         initController(GlobalState.ADMIN_DUA_VIEW_CARD_FILE, AdminDuaViewCardController.class, sceneController);
 
         initController(GlobalState.ADMIN_RECITATION_VIEW_FILE, AdminRecitationViewController.class, sceneController);
+
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
+        initController(GlobalState.FORUM_FILE, ForumController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE

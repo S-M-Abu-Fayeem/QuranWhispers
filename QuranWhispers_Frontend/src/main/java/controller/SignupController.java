@@ -19,12 +19,13 @@ public class SignupController extends BaseController{
 
     public void handleLoginBtn(MouseEvent e) throws IOException {
         System.out.println("Login Button pressed");
-        sceneController.switchTo(GlobalState.LOGIN_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LOGIN_FILE);
     }
 
     public void handleContinueBtn(MouseEvent e) throws IOException {
         System.out.println("Continue button pressed");
+        playClickSound();
         Task<Void> registerBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -59,13 +60,12 @@ public class SignupController extends BaseController{
             }
         };
         new Thread(registerBackendAPITask).start();
-        playClickSound();
     }
 
     @Override
     public void handleTitleLink(MouseEvent e) throws IOException {
         System.out.println("Title pressed");
-        sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LANDING_FILE);
     }
 }

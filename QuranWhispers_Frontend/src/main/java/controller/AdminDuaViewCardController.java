@@ -24,6 +24,7 @@ public class AdminDuaViewCardController extends BaseControllerAdmin {
 
     public void handleDeleteBtn(MouseEvent e) throws IOException {
         System.out.println("Delete Btn Pressed");
+        playClickSound();
         Task<Void> deleteDuaBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -50,6 +51,5 @@ public class AdminDuaViewCardController extends BaseControllerAdmin {
             }
         };
         new Thread(deleteDuaBackendAPITask).start();
-        playClickSound();
     }
 }

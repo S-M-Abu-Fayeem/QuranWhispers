@@ -39,59 +39,59 @@ public abstract class BaseControllerAdmin {
 
     // NAVBAR CONTROLS
     public void handleViewNavlink(MouseEvent e) throws IOException {
+        playClickSound();
         System.out.println("View Navlink Pressed");
         sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
-        playClickSound();
     }
     public void handleInsertNavlink(MouseEvent e) throws IOException {
+        playClickSound();
         System.out.println("Insert Navlink Pressed");
         sceneController.switchTo(GlobalState.ADMIN_INSERT_FILE);
-        playClickSound();
     }
     public void handleApproveNavlink(MouseEvent e) throws IOException {
+        playClickSound();
         System.out.println("Approve Navlink Pressed");
         sceneController.switchTo(GlobalState.ADMIN_APPROVE_FILE);
-        playClickSound();
     }
 
     public void handleTitleLink(MouseEvent e) throws IOException {
         System.out.println("Title pressed");
-        sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
     }
 
     public void handleLogoutBtn(MouseEvent e) throws IOException {
         System.out.println("Logout Pressed");
-        sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LANDING_FILE);
     }
 
     // VIEW SIDEBAR CONTROLS
     public void handleUserViewBtn(MouseEvent e) throws IOException {
         System.out.println("User View Button Pressed");
+        playClickSound();
         AdminUserViewController adminUserViewController = (AdminUserViewController) sceneController.switchTo(GlobalState.ADMIN_USER_VIEW_FILE);
         adminUserViewController.setupUserViewTable();
-        playClickSound();
     }
 
     public void handleVerseViewBtn(MouseEvent e) throws IOException {
         System.out.println("Quran View Button Pressed");
+        playClickSound();
         AdminVerseViewController adminVerseViewController = (AdminVerseViewController) sceneController.switchTo(GlobalState.ADMIN_VERSE_VIEW_FILE);
         adminVerseViewController.setupVerseViewTable();
-        playClickSound();
     }
 
     public void handleDuaViewBtn(MouseEvent e) throws IOException {
         System.out.println("Dua View Button Pressed");
+        playClickSound();
         AdminDuaViewController adminDuaViewController = (AdminDuaViewController) sceneController.switchTo(GlobalState.ADMIN_DUA_VIEW_FILE);
         adminDuaViewController.setupDuaViewTable();
-        playClickSound();
     }
 
     public void handleRecitationViewBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation View Button Pressed");
-        sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
     }
 
 
@@ -99,11 +99,11 @@ public abstract class BaseControllerAdmin {
     // FOOTER CONTROLS
     public void handleCopyrightText(MouseEvent e) throws IOException {
         System.out.println("Copyright pressed");
+        playClickSound();
         try {
             Desktop.getDesktop().browse(new URI(GlobalState.COPYRIGHT_URL));
         } catch (IOException | URISyntaxException ex) {
             ex.printStackTrace();
         }
-        playClickSound();
     }
 }

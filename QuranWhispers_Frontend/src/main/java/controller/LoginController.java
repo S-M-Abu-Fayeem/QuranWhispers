@@ -17,12 +17,13 @@ public class LoginController extends BaseController{
 
     public void handleSignupBtn(MouseEvent e) throws IOException {
         System.out.println("SignUp Button pressed");
-        sceneController.switchTo(GlobalState.SIGNUP_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.SIGNUP_FILE);
     }
 
     public void handleContinueBtn(MouseEvent e) throws IOException {
         System.out.println("Continue button pressed");
+        playClickSound();
 
         Task<Void> loginBackendAPITask= new Task<Void>() {
             @Override
@@ -56,14 +57,13 @@ public class LoginController extends BaseController{
             }
         };
         new Thread(loginBackendAPITask).start();
-        playClickSound();
     }
 
     @Override
     public void handleTitleLink(MouseEvent e) throws IOException {
         System.out.println("Title pressed");
-        sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LANDING_FILE);
     }
 
 }

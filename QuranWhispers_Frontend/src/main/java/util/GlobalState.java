@@ -45,4 +45,6 @@ public class GlobalState {
 
     public static final String ADMIN_APPROVE_FILE = "adminApprove";
     public static final String ADMIN_APPROVE_CARD_FILE = "adminApproveCard";
+
+    public static final String FORUM_FILE = "forum";
 }

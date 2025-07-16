@@ -23,6 +23,7 @@ public class AdminInsertController extends BaseControllerAdmin {
 
     public void handleDuaSubmitBtn(MouseEvent e) throws IOException {
         System.out.println("Dua Submit Button Pressed");
+        playClickSound();
         Task<Void> addDuaBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -48,11 +49,11 @@ public class AdminInsertController extends BaseControllerAdmin {
             }
         };
         new Thread(addDuaBackendAPITask).start();
-        playClickSound();
     }
 
     public void handleVerseSubmitBtn(MouseEvent e) throws IOException {
         System.out.println("Verse Submit Button Pressed");
+        playClickSound();
         Task<Void> addVerseBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -82,6 +83,5 @@ public class AdminInsertController extends BaseControllerAdmin {
             }
         };
         new Thread(addVerseBackendAPITask).start();
-        playClickSound();
     }
 }

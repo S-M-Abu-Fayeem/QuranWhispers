@@ -54,6 +54,7 @@ public class GenerateAIController extends SearchController{
 
     public void handleSearchBtn(MouseEvent e) throws IOException {
         System.out.println("Search Button Pressed");
+        playClickSound();
         System.out.println("Prompt: " + promptTextArea.getText());
 
         if (promptTextArea.getText().isEmpty()) {
@@ -91,6 +92,5 @@ public class GenerateAIController extends SearchController{
             }
         };
         new Thread(generateApiBasedVerseTask).start();
-        playClickSound();
     }
 }

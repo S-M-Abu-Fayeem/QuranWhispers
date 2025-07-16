@@ -76,3 +76,7 @@
   -fx-padding: 0;
   -fx-opacity: 0; /* hide arrows */
 }
+
+.learnMoreSubtitle {
+  -fx-letter-spacing: 100px;
+}

@@ -74,6 +74,7 @@ public class GlobalShareController extends BaseController{
 
     public void handleSendBtn(MouseEvent e) throws IOException {
         System.out.println("Send Button Pressed");
+        playClickSound();
         Task<Void> SendBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -105,6 +106,5 @@ public class GlobalShareController extends BaseController{
             }
         };
         new Thread(SendBackendAPITask).start();
-        playClickSound();
     }
 }

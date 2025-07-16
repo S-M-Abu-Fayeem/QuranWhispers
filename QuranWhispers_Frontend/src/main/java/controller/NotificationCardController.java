@@ -69,6 +69,7 @@ public class NotificationCardController extends BaseController {
 
     public void handleAddToFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Add to Favourites Button Pressed");
+        playClickSound();
         Task<Void> addFavouriteBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -100,14 +101,13 @@ public class NotificationCardController extends BaseController {
             }
         };
         new Thread(addFavouriteBackendAPITask).start();
-        playClickSound();
     };
 
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
+        playClickSound();
 //        RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
 //        recitationControllerObj.setupPage(posterPath, categoryName, surahNum, ayahNum);
-        playClickSound();
     };
 
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {
@@ -156,9 +156,9 @@ public class NotificationCardController extends BaseController {
 
     public void handleShareOptionsBtn(MouseEvent e) throws IOException {
         System.out.println("Share Options Btn Pressed");
+        playClickSound();
         GlobalShareController globalShareController = (GlobalShareController) sceneController.switchTo(GlobalState.GLOBAL_SHARE_FILE);
         globalShareController.setupVerseDetails(surahNum, ayahNum, emotion, theme);
         globalShareController.setupParent(GlobalState.NOTIFICATION_FILE);
-        playClickSound();
     }
 }

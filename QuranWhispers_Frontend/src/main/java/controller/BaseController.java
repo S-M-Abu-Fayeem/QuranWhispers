@@ -41,52 +41,60 @@ public abstract class BaseController {
     // NAVBAR CONTROLS
     public void handleHomeNavlink(MouseEvent e) throws IOException {
         System.out.println("Home navlink button pressed");
-        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
     }
     public void handleProfileNavlink(MouseEvent e) throws IOException {
         System.out.println("Profile navlink button pressed");
+        playClickSound();
         ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
         profileController.setupProfile();
-        playClickSound();
     }
     public void handleSearchNavlink(MouseEvent e) throws IOException {
         System.out.println("Search navlink button pressed");
+        playClickSound();
         SearchController searchController = (SearchController) sceneController.switchTo(GlobalState.SEARCH_FILE);
         searchController.setupListView();
         searchController.setupDua();
-        playClickSound();
     }
+
+    public void handleForumNavlink(MouseEvent e) throws IOException {
+        System.out.println("Forum navlink button pressed");
+        playClickSound();
+//        ForumController forumController = (ForumController) sceneController.switchTo(GlobalState.FORUM_FILE);
+//        forumController.setupForum();
+    }
+
     public void handleFavouritesBtn(MouseEvent e) throws IOException {
         System.out.println("Favourites button pressed");
+        playClickSound();
         ProfileController profileController = (ProfileController) sceneController.switchTo(GlobalState.PROFILE_FILE);
         profileController.setupProfile();
-        playClickSound();
     }
 
     public void handleNotificationBtn(MouseEvent e) throws IOException {
         System.out.println("Notification button pressed");
+        playClickSound();
         NotificationController notificationController = (NotificationController) sceneController.switchTo(GlobalState.NOTIFICATION_FILE);
         notificationController.setupNotification();
-        playClickSound();
     }
 
     public void handleJoinNowBtn(MouseEvent e) throws IOException {
         System.out.println("Join Now button pressed");
-        sceneController.switchTo(GlobalState.LOGIN_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LOGIN_FILE);
     }
 
     public void handleTitleLink(MouseEvent e) throws IOException {
         System.out.println("Title pressed");
-        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.HOME_PAGE_FILE);
     }
 
     public void handleLogoutBtn(MouseEvent e) throws IOException {
         System.out.println("Logout Pressed");
-        sceneController.switchTo(GlobalState.LANDING_FILE);
         playClickSound();
+        sceneController.switchTo(GlobalState.LANDING_FILE);
     }
 
     // ALERT TOASTER GENERATE
@@ -124,11 +132,11 @@ public abstract class BaseController {
     // FOOTER CONTROLS
     public void handleCopyrightText(MouseEvent e) throws IOException {
         System.out.println("Copyright pressed");
+        playClickSound();
         try {
             Desktop.getDesktop().browse(new URI(GlobalState.COPYRIGHT_URL));
         } catch (IOException | URISyntaxException ex) {
             ex.printStackTrace();
         }
-        playClickSound();
     }
 }

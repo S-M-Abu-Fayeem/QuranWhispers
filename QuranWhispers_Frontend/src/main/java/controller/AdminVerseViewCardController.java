@@ -30,6 +30,7 @@ public class AdminVerseViewCardController extends BaseControllerAdmin {
 
     public void handleDeleteBtn(MouseEvent e) throws IOException {
         System.out.println("Delete Btn Pressed");
+        playClickSound();
         Task<Void> deleteVerseBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -59,6 +60,5 @@ public class AdminVerseViewCardController extends BaseControllerAdmin {
             }
         };
         new Thread(deleteVerseBackendAPITask).start();
-        playClickSound();
     }
 }
