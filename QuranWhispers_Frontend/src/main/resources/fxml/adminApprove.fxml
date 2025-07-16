@@ -74,7 +74,7 @@
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="80.0" layoutX="1029.0" layoutY="159.0" stroke="WHITE" strokeType="INSIDE" width="2.0" />
         <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#1e1e1e" height="65.0" layoutY="685.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
         <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1e1e1e" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-        <HBox layoutX="727.0" layoutY="57.0" spacing="32.0">
+        <HBox layoutX="672.0" layoutY="55.0" spacing="25.0">
             <children>
                 <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
                     <font>
@@ -94,6 +94,11 @@
                         <Insets />
                     </HBox.margin>
                 </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="#8e8e8e">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
             </children>
         </HBox>
         <Label fx:id="titleLink" layoutX="95.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="ADMIN PANEL" textFill="WHITE">

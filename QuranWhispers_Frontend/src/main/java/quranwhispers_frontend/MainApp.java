@@ -45,6 +45,7 @@ import controller.AdminRecitationViewCardController;
 
 import controller.GlobalShareController;
 import controller.ForumController;
+import controller.AdminForumController;
 
 
 public class MainApp extends Application {
@@ -115,6 +116,7 @@ public class MainApp extends Application {
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
         initController(GlobalState.FORUM_FILE, ForumController.class, sceneController);
+        initController(GlobalState.ADMIN_FORUM_FILE, AdminForumController.class, sceneController);
 
 
         // CHOOSE THE INITIAL SCENE

@@ -123,28 +123,6 @@
             </ImageView>
          </children>
       </Group>
-        <HBox layoutX="724.0" layoutY="57.0" spacing="32.0">
-           <children>
-              <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
-                 <font>
-                    <Font name="Century Gothic" size="20.0" />
-                 </font>
-              </Label>
-              <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" text="Insert" textFill="WHITE">
-                 <font>
-                    <Font name="Century Gothic" size="20.0" />
-                 </font>
-              </Label>
-              <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" text="Approve" textFill="#8e8e8e">
-                 <font>
-                    <Font name="Century Gothic" size="20.0" />
-                 </font>
-                 <HBox.margin>
-                    <Insets />
-                 </HBox.margin>
-              </Label>
-           </children>
-        </HBox>
         <Label fx:id="titleLink" layoutX="95.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="ADMIN PANEL" textFill="WHITE">
             <font>
                 <Font name="Segoe UI Black" size="50.0" />
@@ -155,7 +133,34 @@
                 <Font name="Century Gothic" size="16.0" />
             </font>
         </Label>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1018.0" layoutY="60.0" onMouseClicked="#handleLogoutBtn">
+      <HBox layoutX="682.0" layoutY="65.0" spacing="25.0" translateX="-10.0" translateY="-10.0">
+         <children>
+            <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" text="Insert" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" text="Approve" textFill="#8e8e8e">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="#8e8e8e">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1031.0" layoutY="70.0" onMouseClicked="#handleLogoutBtn" translateX="-10.0" translateY="-10.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" layoutY="-12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
             <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" text="Logout">

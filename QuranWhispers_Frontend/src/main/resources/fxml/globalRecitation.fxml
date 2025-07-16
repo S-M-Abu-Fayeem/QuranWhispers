@@ -93,7 +93,7 @@
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search">
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

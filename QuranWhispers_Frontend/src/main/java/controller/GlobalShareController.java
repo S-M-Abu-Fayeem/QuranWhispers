@@ -94,7 +94,7 @@ public class GlobalShareController extends BaseController{
                     System.out.println("Fetch successful");
                     Platform.runLater(() -> {
                         try {
-                            sceneController.switchTo(GlobalState.SEARCH_FILE);
+                            sceneController.switchTo(parent);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

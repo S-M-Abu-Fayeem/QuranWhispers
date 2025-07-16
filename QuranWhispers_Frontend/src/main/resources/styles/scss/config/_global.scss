@@ -66,7 +66,7 @@
 }
 
 .scroll-pane-admin .scroll-bar:vertical .thumb {
-  -fx-background-color: rgb(0, 0, 0); /* pink */
+  -fx-background-color: rgb(0, 0, 0);
   -fx-background-insets: 0;
   -fx-background-radius: 4px;
 }
@@ -79,5 +79,15 @@
 
 .learnMoreSubtitle {
   -fx-letter-spacing: 100px;
+}
+
+.text-area-admin .scroll-bar:vertical .track {
+  -fx-background-color: transparent;
+}
+
+.text-area-admin .scroll-bar:vertical .thumb {
+  -fx-background-color: rgb(0, 0, 0);
+  -fx-background-insets: 0;
+  -fx-background-radius: 4px;
 }
 

@@ -94,6 +94,13 @@ public abstract class BaseControllerAdmin {
         sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
     }
 
+    public void handleForumNavlink(MouseEvent e) throws IOException {
+        System.out.println("Forum navlink button pressed");
+        playClickSound();
+        AdminForumController adminForumController = (AdminForumController) sceneController.switchTo(GlobalState.ADMIN_FORUM_FILE);
+//        admnForumController.setupForum();
+    }
+
 
 
     // FOOTER CONTROLS
