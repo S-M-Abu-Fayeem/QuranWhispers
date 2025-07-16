@@ -114,7 +114,7 @@
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="logoutBtn1" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleLogoutBtn">
+      <Group fx:id="joinNowBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onInputMethodTextChanged="#handleJoinNowBtn" onMouseClicked="#handleJoinNowBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
             <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" text="Join Now" textFill="#ff6ec7">

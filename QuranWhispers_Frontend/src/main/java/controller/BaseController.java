@@ -61,7 +61,7 @@ public abstract class BaseController {
     public void handleForumNavlink(MouseEvent e) throws IOException {
         System.out.println("Forum navlink button pressed");
         playClickSound();
-//        ForumController forumController = (ForumController) sceneController.switchTo(GlobalState.FORUM_FILE);
+        ForumController forumController = (ForumController) sceneController.switchTo(GlobalState.FORUM_FILE);
 //        forumController.setupForum();
     }
 

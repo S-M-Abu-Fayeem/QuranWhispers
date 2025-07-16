@@ -54,57 +54,62 @@
                 <Font name="Palatino Linotype Bold" size="50.0" />
             </font>
         </Label>
-        <HBox layoutX="619.0" layoutY="55.0" spacing="32.0">
-            <children>
-                <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-                <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-                <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                </Label>
-            </children>
-        </HBox>
-        <Group fx:id="favouritesBtn" layoutX="900.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-                <ImageView fx:id="profileNavImageView" fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/heart.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </Group>
-        <Group fx:id="notificationBtn" layoutX="962.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-                <ImageView fx:id="notificationNavImageView" fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/notifications.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </Group>
-        <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleLogoutBtn">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-                <Label alignment="CENTER" layoutX="49.0" layoutY="8.0" text="Logout" textFill="#ff6ec7">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-            </children>
-        </Group>
+      <HBox layoutX="606.0" layoutY="96.0" spacing="25.0" translateX="-40.0" translateY="-40.0">
+         <children>
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Group fx:id="favouritesBtn" layoutX="954.0" layoutY="89.0" onMouseClicked="#handleFavouritesBtn" translateX="-40.0" translateY="-40.0">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/heart.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="notificationBtn" layoutX="1007.0" layoutY="89.0" onMouseClicked="#handleNotificationBtn" translateX="-40.0" translateY="-40.0">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/notifications.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1060.0" layoutY="89.0" onMouseClicked="#handleLogoutBtn" translateX="-40.0" translateY="-40.0">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" text="Logout" textFill="#ff6ec7">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
     </children>
 </AnchorPane>

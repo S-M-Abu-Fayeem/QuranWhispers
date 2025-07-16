@@ -18,7 +18,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NotificationController">
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
-        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay"/>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
           <Label alignment="CENTER" layoutX="466.0" layoutY="144.0" prefHeight="58.0" prefWidth="348.0" text="Received Verses">
               <font>
                   <Font name="Segoe UI Black" size="40.0" />
@@ -39,12 +39,12 @@
            </content>
         </ScrollPane>
         <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-        <Label fx:id="titleLink" layoutX="95.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="Quran Whispers" textFill="WHITE">
+        <Label fx:id="titleLink" layoutX="99.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="Quran Whispers" textFill="WHITE">
             <font>
                 <Font name="Palatino Linotype Bold" size="50.0" />
             </font>
         </Label>
-      <HBox layoutX="621.0" layoutY="56.0" spacing="32.0">
+      <HBox layoutX="574.0" layoutY="50.0" spacing="25.0" translateY="5.0">
          <children>
             <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
                <font>
@@ -64,9 +64,14 @@
                   <Insets />
                </HBox.margin>
             </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="900.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+      <Group fx:id="favouritesBtn" layoutX="922.0" layoutY="43.0" onMouseClicked="#handleFavouritesBtn" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
             <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
@@ -76,7 +81,7 @@
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn" layoutX="961.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+      <Group fx:id="notificationBtn" layoutX="975.0" layoutY="43.0" onMouseClicked="#handleNotificationBtn" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
             <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
@@ -86,10 +91,10 @@
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleLogoutBtn">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1028.0" layoutY="43.0" onMouseClicked="#handleLogoutBtn" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="49.0" layoutY="8.0" text="Logout" textFill="#ff6ec7">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" text="Logout" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

@@ -157,7 +157,7 @@ public class SearchController extends BaseController implements Initializable {
                 if (posterFile.exists()) {
                     Image poster = new Image(posterFile.toURI().toString());
                     versePosterView.setImage(poster);
-                    if (emotionName != null && !emotionName.isEmpty()) {
+                    if (emotionName != null && !emotionName.isEmpty() && isEmotion) {
                         categoryName = emotionName;
                     } else  {
                         categoryName = themeName;

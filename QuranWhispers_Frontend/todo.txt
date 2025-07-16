@@ -15,8 +15,5 @@ Features
     - Recitation Management
 
 - verse filter in profile / notification
-- Common Forum (All users / admin / gemini ai / add verse poster / add recitation / add question / add answer);
 - Audio Player for Recitations
 - Spinners, Loaders
-
-- About Us Page

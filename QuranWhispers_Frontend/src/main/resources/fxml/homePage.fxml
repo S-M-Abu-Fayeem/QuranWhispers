@@ -21,7 +21,7 @@
             <Font name="Palatino Linotype Bold" size="50.0" />
          </font>
       </Label>
-      <HBox layoutX="556.0" layoutY="56.0" spacing="32.0">
+      <HBox layoutX="566.0" layoutY="56.0" spacing="25.0">
          <children>
             <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home">
                <font>
@@ -48,7 +48,7 @@
             </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="900.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
             <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
@@ -58,7 +58,7 @@
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn" layoutX="962.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+      <Group fx:id="notificationBtn" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
             <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
@@ -71,7 +71,7 @@
       <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleLogoutBtn">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="49.0" layoutY="8.0" text="Logout" textFill="#ff6ec7">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" text="Logout" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

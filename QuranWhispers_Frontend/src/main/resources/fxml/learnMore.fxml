@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -161,54 +162,62 @@
                 <Font name="Century Gothic" size="16.0" />
             </font>
         </Label>
-        <HBox layoutX="605.0" layoutY="55.0" spacing="32.0">
-            <children>
-                <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" prefHeight="26.0" prefWidth="60.0" text="Home" textFill="WHITE" translateX="-12.0">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-                <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE" translateX="-12.0">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-                <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE" translateX="-12.0">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-            </children>
-        </HBox>
-        <Group fx:id="favouritesBtn" layoutX="910.0" layoutY="59.0" onMouseClicked="#handleFavouritesBtn" translateX="-12.0" translateY="-10.0">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-                <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/heart.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </Group>
-        <Group fx:id="notificationBtn1" layoutX="972.0" layoutY="59.0" onMouseClicked="#handleNotificationBtn" translateX="-12.0" translateY="-10.0">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/notifications.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </Group>
-        <Group accessibleRole="BUTTON" layoutX="1030.0" layoutY="59.0" onMouseClicked="#handleJoinNowBtn" translateX="-12.0" translateY="-10.0">
-            <children>
-                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-                <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" text="Join Now" textFill="#ff6ec7">
-                    <font>
-                        <Font name="Century Gothic" size="20.0" />
-                    </font>
-                </Label>
-            </children>
-        </Group>
+      <HBox layoutX="566.0" layoutY="56.0" spacing="25.0">
+         <children>
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/heart.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="notificationBtn" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/notifications.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <Group fx:id="actionBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleActionBtn">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
+            <Label fx:id="actionTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="8.0" onMouseClicked="#handleActionBtn" prefHeight="25.0" prefWidth="121.0" text="Logout" textFill="#ff6ec7">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
     </children>
 </AnchorPane>

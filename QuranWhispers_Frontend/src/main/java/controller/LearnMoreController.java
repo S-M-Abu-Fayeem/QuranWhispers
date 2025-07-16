@@ -1,13 +1,33 @@
 package controller;
 
+import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import util.GlobalState;
 import java.io.IOException;
 
 public class LearnMoreController extends BaseController {
     String parent;
+    @FXML Label actionTitle;
+
     public void setupParent(String parent) {
         this.parent = parent;
+        if (parent != null && parent.equals(GlobalState.HOME_PAGE_FILE)) {
+            actionTitle.setText("Logout");
+        } else {
+            actionTitle.setText("Join Now");
+        }
+
+    }
+
+    public void handleActionBtn(MouseEvent e) throws IOException {
+        System.out.println("Action button pressed");
+        if (parent != null && parent.equals(GlobalState.HOME_PAGE_FILE)) {
+            super.handleLogoutBtn(e);
+        } else {
+           super.handleJoinNowBtn(e);
+        }
     }
 
     @Override
@@ -86,4 +106,6 @@ public class LearnMoreController extends BaseController {
             super.handleNotificationBtn(e);
         }
     }
+
+
 }

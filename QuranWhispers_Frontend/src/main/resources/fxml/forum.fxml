@@ -1,14 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ForumController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ForumController">
+    <children>
+        <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay">
+         <children>
+              <Label layoutX="96.0" layoutY="218.0" prefHeight="84.0" prefWidth="353.0" styleClass="learnMoreSubtitle" text="A space where faith connects, knowledge flows, and every question finds an answer." textFill="#4f4f4f" wrapText="true">
+                  <font>
+                      <Font name="Century Gothic" size="16.0" />
+                  </font>
+              </Label>
+         </children></Pane>
+        <Label layoutX="93.0" layoutY="145.0" prefHeight="86.0" prefWidth="409.0" text="Forum Page">
+            <font>
+                <Font name="Segoe UI Black" size="60.0" />
+            </font>
+        </Label>
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="343.0" layoutX="93.0" layoutY="314.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="338.0">
+            <effect>
+                <DropShadow>
+                    <color>
+                        <Color opacity="0.4000000059604645" />
+                    </color>
+                </DropShadow>
+            </effect>
+        </Rectangle>
+        <Label alignment="CENTER" layoutX="-20.0" layoutY="443.0" prefHeight="86.0" prefWidth="338.0" rotate="-90.0" text="COMMANDS" textFill="#ff63c93b">
+            <font>
+                <Font name="Segoe UI Black" size="45.0" />
+            </font>
+        </Label>
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="492.0" layoutX="519.0" layoutY="165.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="666.0">
+            <effect>
+                <DropShadow>
+                    <color>
+                        <Color opacity="0.4000000059604645" />
+                    </color>
+                </DropShadow>
+            </effect>
+        </Rectangle>
+      <VBox layoutX="218.0" layoutY="341.0" spacing="5.0">
+         <children>
+              <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/question/" wrapText="true">
+                  <font>
+                      <Font name="Century Gothic" size="14.0" />
+                  </font>
+              </Label>
+              <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/askai/" wrapText="true">
+                  <font>
+                      <Font name="Century Gothic" size="14.0" />
+                  </font>
+              </Label>
+              <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/reply(msg_id)/" wrapText="true">
+                  <font>
+                      <Font name="Century Gothic" size="14.0" />
+                  </font>
+              </Label>
+            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/verse(surah, ayah)/" wrapText="true">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/verse(emotion)/" wrapText="true">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/verse(theme)/" wrapText="true">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/send(username)/" wrapText="true">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/about/" wrapText="true">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+        <Rectangle fx:id="navbarRectangle" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Label fx:id="titleLink" layoutX="91.0" layoutY="31.0" onMouseClicked="#handleTitleLink" text="Quran Whispers" textFill="WHITE">
+            <font>
+                <Font name="Palatino Linotype Bold" size="50.0" />
+            </font>
+        </Label>
+        <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
+        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="16.0" />
+            </font>
+        </Label>
+        <HBox layoutX="566.0" layoutY="56.0" spacing="25.0">
+            <children>
+                <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Label>
+                <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+                <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/heart.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </Group>
+        <Group fx:id="notificationBtn" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/notifications.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </Group>
+        <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleLogoutBtn">
+            <children>
+                <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="8.0" prefHeight="25.0" prefWidth="121.0" text="Logout" textFill="#ff6ec7">
+                    <font>
+                        <Font name="Century Gothic" size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </Group>
+      <TextArea fx:id="promptArea" layoutX="535.0" layoutY="556.0" prefHeight="84.0" prefWidth="559.0" wrapText="true">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </TextArea>
+      <ScrollPane layoutX="535.0" layoutY="188.0" prefHeight="354.0" prefWidth="643.0">
+         <content>
+            <VBox fx:id="containerVBox" prefHeight="346.0" prefWidth="630.0" />
+         </content>
+      </ScrollPane>
+      <Group fx:id="sendBtn" layoutX="1118.0" layoutY="578.0" onMouseClicked="#handleSendBtn">
+         <children>
+            <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1e1e1e" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/send.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+    </children>
 </AnchorPane>
