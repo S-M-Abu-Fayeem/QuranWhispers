@@ -1,0 +1,6 @@
+@use '../config/variables';
+
+.footer-copy:hover {
+  -fx-text-fill: variables.$secondary-color;
+  -fx-cursor: hand;
+}

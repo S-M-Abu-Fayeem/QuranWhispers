@@ -1,0 +1,12 @@
+@use '../config/variables';
+
+.form-field:focused {
+  -fx-focus-color: variables.$primary-color;
+  -fx-faint-focus-color: transparent;
+}
+
+.form-field-black:focused {
+  -fx-focus-color: variables.$secondary-color;
+  -fx-faint-focus-color: transparent;
+}
+

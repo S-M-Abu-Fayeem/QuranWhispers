@@ -106,12 +106,6 @@
                 </Label>
             </children>
         </Group>
-        <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#ff70c8cc" height="40.0" layoutY="-127.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-        <Label alignment="CENTER" layoutX="49.0" layoutY="-119.0" text="Search" textFill="WHITE">
-            <font>
-                <Font name="Century Gothic" size="20.0" />
-            </font>
-        </Label>
         <Group fx:id="themeBtn" layoutX="279.0" layoutY="375.0" onMouseClicked="#handleThemeBtn">
             <children>
                 <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
@@ -168,22 +162,26 @@
               <Font name="Segoe UI Black" size="25.0" />
            </font>
         </Label>
-        <Group fx:id="searchBtn" layoutX="422.0" layoutY="469.0" onMouseClicked="#handleSearchBtn">
+        <Group fx:id="searchBtn" layoutX="422.0" layoutY="469.0" onMouseClicked="#handleSearchBtn" styleClass="btn-pink-wrapper">
            <children>
               <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="50.0" layoutY="25.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
-              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" text="Search" textFill="WHITE">
+              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" styleClass="btn-pink" text="Search" textFill="WHITE">
                  <font>
                     <Font name="Segoe UI Black" size="20.0" />
                  </font>
               </Label>
            </children>
         </Group>
-        <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" layoutX="870.0" layoutY="190.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true">
-           <image>
-              <Image url="@../images/cross.png" />
-           </image>
-        </ImageView>
-      <TextArea fx:id="promptTextArea" layoutX="422.0" layoutY="325.0" prefHeight="150.0" prefWidth="434.0" text="Tell us your story, share your thoughts, or express how you're feeling today—let's hear it in detail!" wrapText="true">
+      <Group layoutX="870.0" layoutY="190.0" styleClass="nav-btn-wrapper">
+         <children>
+              <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+                 <image>
+                    <Image url="@../images/cross.png" />
+                 </image>
+              </ImageView>
+         </children>
+      </Group>
+      <TextArea fx:id="promptTextArea" layoutX="422.0" layoutY="325.0" prefHeight="150.0" prefWidth="434.0" styleClass="form-field-black" text="Tell us your story, share your thoughts, or express how you're feeling today—let's hear it in detail!" wrapText="true">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>

@@ -5,8 +5,10 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import org.json.JSONObject;
+import util.AnimationUtil;
 import util.BackendAPI;
 import util.GlobalState;
 
@@ -16,11 +18,18 @@ public class SignupController extends BaseController{
     @FXML TextField usernameField;
     @FXML TextField emailAddressField;
     @FXML PasswordField passwordField;
+    @FXML
+    ImageView heroImg;
+
+    public void setupSignupPage() {
+        AnimationUtil.startFloatingAnimation(heroImg, 0.75);
+    }
 
     public void handleLoginBtn(MouseEvent e) throws IOException {
         System.out.println("Login Button pressed");
         playClickSound();
-        sceneController.switchTo(GlobalState.LOGIN_FILE);
+        LoginController loginController = (LoginController) sceneController.switchTo(GlobalState.LOGIN_FILE);
+        loginController.setupLoginPage();
     }
 
     public void handleContinueBtn(MouseEvent e) throws IOException {

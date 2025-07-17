@@ -82,7 +82,8 @@ public abstract class BaseController {
     public void handleJoinNowBtn(MouseEvent e) throws IOException {
         System.out.println("Join Now button pressed");
         playClickSound();
-        sceneController.switchTo(GlobalState.LOGIN_FILE);
+        LoginController loginController = (LoginController) sceneController.switchTo(GlobalState.LOGIN_FILE);
+        loginController.setupLoginPage();
     }
 
     public void handleTitleLink(MouseEvent e) throws IOException {
@@ -94,7 +95,8 @@ public abstract class BaseController {
     public void handleLogoutBtn(MouseEvent e) throws IOException {
         System.out.println("Logout Pressed");
         playClickSound();
-        sceneController.switchTo(GlobalState.LANDING_FILE);
+        LandingController landingController = (LandingController) sceneController.switchTo(GlobalState.LANDING_FILE);
+        landingController.setupLandingPage();
     }
 
     // ALERT TOASTER GENERATE

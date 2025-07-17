@@ -18,50 +18,50 @@
    <children>
       <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
-      <Group fx:id="generateAIBtn" layoutX="427.0" layoutY="375.0" onMouseClicked="#handleGenerateAIBtn">
+      <Group fx:id="generateAIBtn" layoutX="427.0" layoutY="375.0" onMouseClicked="#handleGenerateAIBtn" styleClass="btn-black-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="26.0" fitWidth="32.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="32.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" styleClass="btn-black">
                <image>
                   <Image url="@../images/ai.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="addToFavouritesBtn" layoutX="1025.0" layoutY="446.0" onMouseClicked="#handleAddToFavouritesBtn">
+      <Group fx:id="addToFavouritesBtn" layoutX="1025.0" layoutY="446.0" onMouseClicked="#handleAddToFavouritesBtn" styleClass="nav-btn-wrapper">
          <children>
             <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/white_heart.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="recitationViewerBtn" layoutX="1074.0" layoutY="446.0" onMouseClicked="#handleRecitationViewerBtn">
+      <Group fx:id="recitationViewerBtn" layoutX="1074.0" layoutY="446.0" onMouseClicked="#handleRecitationViewerBtn" styleClass="nav-btn-wrapper">
          <children>
             <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/speaker.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="downloadOfflineBtn" layoutX="1120.0" layoutY="446.0" onMouseClicked="#handleDownloadOfflineBtn">
+      <Group fx:id="downloadOfflineBtn" layoutX="1120.0" layoutY="446.0" onMouseClicked="#handleDownloadOfflineBtn" styleClass="nav-btn-wrapper">
          <children>
             <Circle fill="#ff6ec7" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-9.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/download.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="shareOptionsBtn" layoutX="1167.0" layoutY="446.0" onMouseClicked="#handleShareOptionsBtn">
+      <Group fx:id="shareOptionsBtn" layoutX="1167.0" layoutY="446.0" onMouseClicked="#handleShareOptionsBtn" styleClass="nav-btn-wrapper">
          <children>
             <Circle fill="#ff6ec7" onMouseClicked="#handleShareOptionsBtn" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/share.png" />
                </image>
@@ -103,10 +103,10 @@
             <Image url="@../images/verse_posters/background.png" />
          </image>
       </ImageView>
-      <Group fx:id="emotionBtn" layoutX="95.0" layoutY="375.0" onMouseClicked="#handleEmotionBtn">
+      <Group fx:id="emotionBtn" layoutX="95.0" layoutY="375.0" onMouseClicked="#handleEmotionBtn" styleClass="btn-pink-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#ff70c8cc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="156.0" />
-            <Label alignment="CENTER" layoutX="39.0" layoutY="8.0" text="Emotion" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="39.0" layoutY="8.0" styleClass="btn-pink" text="Emotion" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -119,10 +119,10 @@
             <Font name="Century Gothic" size="20.0" />
          </font>
       </Label>
-      <Group fx:id="themeBtn" layoutX="279.0" layoutY="375.0" onMouseClicked="#handleThemeBtn">
+      <Group fx:id="themeBtn" layoutX="279.0" layoutY="375.0" onMouseClicked="#handleThemeBtn" styleClass="btn-black-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="40.0" layoutX="-14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="149.0" />
-            <Label alignment="CENTER" layoutX="28.0" layoutY="8.0" text="Theme" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="28.0" layoutY="8.0" styleClass="btn-black" text="Theme" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -167,20 +167,20 @@
             <Font name="Century Gothic" size="24.0" />
          </font>
       </Text>
-      <ListView fx:id="categoryListView" layoutX="96.0" layoutY="429.0" prefHeight="226.0" prefWidth="317.0" visible="false" />
+      <ListView fx:id="categoryListView" layoutX="96.0" layoutY="429.0" prefHeight="226.0" prefWidth="317.0" styleClass="catagoryListView" visible="false" />
       <HBox layoutX="567.0" layoutY="61.0" spacing="25.0" translateY="-5.0">
          <children>
-            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" styleClass="navlink" text="Home" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search">
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" styleClass="navlink" text="Search">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" styleClass="navlink" text="Profile" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -188,37 +188,37 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="915.0" layoutY="54.0" onMouseClicked="#handleFavouritesBtn" translateY="-5.0">
+      <Group fx:id="favouritesBtn" layoutX="915.0" layoutY="54.0" onMouseClicked="#handleFavouritesBtn" styleClass="nav-btn-wrapper" translateY="-5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/heart.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn" layoutX="968.0" layoutY="54.0" onMouseClicked="#handleNotificationBtn" translateY="-5.0">
+      <Group fx:id="notificationBtn" layoutX="968.0" layoutY="54.0" onMouseClicked="#handleNotificationBtn" styleClass="nav-btn-wrapper" translateY="-5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/notifications.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1021.0" layoutY="54.0" onMouseClicked="#handleLogoutBtn" translateY="-5.0">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1021.0" layoutY="54.0" onMouseClicked="#handleLogoutBtn" styleClass="nav-btn-wrapper" translateY="-5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" text="Logout" textFill="#ff6ec7">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" styleClass="nav-btn" text="Logout" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

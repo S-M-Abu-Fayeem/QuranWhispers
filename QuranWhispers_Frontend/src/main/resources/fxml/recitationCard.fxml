@@ -8,16 +8,15 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecitationCardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecitationCardController">
    <children>
-      <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#fefefe" height="50.0" stroke="#ff6ec7" strokeType="INSIDE" width="430.0" />
+      <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#fefefe" height="50.0" stroke="#ff6ec7" strokeType="INSIDE" width="410.0" />
       <Label fx:id="recitersName" layoutX="32.0" layoutY="15.0" text="Mishary Alafasy">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
-      <Group fx:id="reciteBtn" layoutX="380.0" onMouseClicked="#handleReciteBtn">
+      <Group fx:id="reciteBtn" layoutX="360.0" onMouseClicked="#handleReciteBtn">
          <children>
             <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#ff70c8cc" height="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="50.0" />
             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="13.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">

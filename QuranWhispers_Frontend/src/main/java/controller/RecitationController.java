@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.BackendAPI;
 import util.GlobalState;
 
 import java.io.File;
@@ -134,28 +137,56 @@ public class RecitationController extends SearchController implements Initializa
         System.out.println("Request Button Pressed");
         playClickSound();
 
-        if (selectedFile != null) {
-            File destinationFolder = new File(recitationPath);
-
-            if (!destinationFolder.exists()) {
-                destinationFolder.mkdirs();
-            }
-
-            File destinationFile = new File(destinationFolder, surahNum + "_" + ayahNum + "_" + recitersNameField.getText() + "." + getFileExtension(selectedFile));
-
-            try {
-                Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("File copied successfully to: " + destinationFile.getAbsolutePath());
-            } catch (IOException ex) {
-                System.out.println("Failed to copy the file: " + ex.getMessage());
-            }
-        } else {
+        if (selectedFile == null) {
             System.out.println("No file selected.");
+            return;
         }
-        selectedFile = null;
-        filePathField.setText("");
-        sceneController.switchTo(GlobalState.SEARCH_FILE);
+
+        File destinationFolder = new File(recitationPath);
+
+        if (!destinationFolder.exists()) {
+            destinationFolder.mkdirs();
+        }
+
+        File destinationFile = new File(destinationFolder, surahNum + "_" + ayahNum + "_" + recitersNameField.getText() + "." + getFileExtension(selectedFile));
+
+        try {
+            Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File copied successfully to: " + destinationFile.getAbsolutePath());
+
+            Task<Void> uploadRecitationTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    JSONObject request = new JSONObject();
+                    request.put("reciter_name", recitersNameField.getText());
+                    request.put("surah", String.valueOf(surahNum));
+                    request.put("ayah", String.valueOf(ayahNum));
+                    request.put("mp3file", destinationFile.getAbsolutePath());
+
+                    JSONObject response = BackendAPI.fetch("uploadmp3", request);
+
+                    if (response.getString("status").equals("200")) {
+                        System.out.println("Recitation uploaded successfully: " + response.toString());
+
+                        Platform.runLater(() -> {
+                            try {
+                                selectedFile = null;
+                                filePathField.setText("");
+                                sceneController.switchTo(GlobalState.SEARCH_FILE);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
+                    }
+                    return null;
+                }
+            };
+            new Thread(uploadRecitationTask).start();
+        } catch (IOException ex) {
+            System.out.println("Failed to copy the file: " + ex.getMessage());
+        }
     }
+
 
     public void handleSelectFileBtn(MouseEvent e) throws IOException {
         System.out.println("Select File Btn Pressed");

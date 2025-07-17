@@ -1,0 +1,73 @@
+@use '../config/variables';
+
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+  -fx-padding: 0;
+  -fx-pref-width: 8px;
+  -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+  -fx-background-color: variables.$primary-color;
+  -fx-background-insets: 0;
+  -fx-background-radius: 4px;
+}
+
+.scroll-pane .scroll-bar:vertical .increment-button,
+.scroll-pane .scroll-bar:vertical .decrement-button {
+  -fx-padding: 0;
+  -fx-opacity: 0;
+}
+
+.scroll-pane-admin {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.scroll-pane-admin .viewport {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical {
+  -fx-padding: 0;
+  -fx-pref-width: 8px;
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .track {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .thumb {
+  -fx-background-color: variables.$secondary-color;
+  -fx-background-insets: 0;
+  -fx-background-radius: 4px;
+}
+
+.scroll-pane-admin .scroll-bar:vertical .increment-button,
+.scroll-pane-admin .scroll-bar:vertical .decrement-button {
+  -fx-padding: 0;
+  -fx-opacity: 0;
+}
+
+.text-area-admin .scroll-bar:vertical .track {
+  -fx-background-color: transparent;
+}
+
+.text-area-admin .scroll-bar:vertical .thumb {
+  -fx-background-color: variables.$secondary-color;
+  -fx-background-insets: 0;
+  -fx-background-radius: 4px;
+}

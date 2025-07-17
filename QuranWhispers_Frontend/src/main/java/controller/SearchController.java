@@ -24,6 +24,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SearchController extends BaseController implements Initializable {
@@ -62,14 +64,22 @@ public class SearchController extends BaseController implements Initializable {
                     emotionArray = new String[jsonArrayEmotion.length()];
 
                     for (int i = 0; i < jsonArrayEmotion.length(); i++) {
-                        emotionArray[i] = jsonArrayEmotion.getString(i);  // Get each string from JSONArray
+                        if (!(jsonArrayEmotion.isNull(i) || jsonArrayEmotion.getString(i).isEmpty() || jsonArrayEmotion.getString(i).equals(""))) {
+                            emotionArray[i] = jsonArrayEmotion.getString(i);  // Get each string from JSONArray
+                        }
                     }
+                    emotionArray = Arrays.stream(emotionArray).filter(Objects::nonNull).toArray(String[]::new);
+
                     JSONArray jsonArrayTheme = response.getJSONArray("themes");
                     themeArray = new String[jsonArrayTheme.length()];
 
                     for (int i = 0; i < jsonArrayTheme.length(); i++) {
-                        themeArray[i] = jsonArrayTheme.getString(i);  // Get each string from JSONArray
+                        if (!(jsonArrayTheme.isNull(i) || jsonArrayTheme.getString(i).isEmpty() || jsonArrayTheme.getString(i).equals(""))) {
+                            themeArray[i] = jsonArrayTheme.getString(i);  // Get each string from JSONArray
+                        }
                     }
+                    themeArray = Arrays.stream(themeArray).filter(Objects::nonNull).toArray(String[]::new);
+
                 } else {
                     System.out.println("Fetch failed: " + response.getString("message"));
                 }

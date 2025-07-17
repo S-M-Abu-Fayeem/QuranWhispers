@@ -278,7 +278,7 @@
       </Rectangle>
       <ScrollPane layoutX="427.0" layoutY="207.0" prefHeight="175.0" prefWidth="443.0">
          <content>
-            <VBox fx:id="containerVBox1" alignment="CENTER" prefHeight="172.0" prefWidth="426.0" spacing="15.0" />
+            <VBox fx:id="containerVBox" alignment="CENTER" prefHeight="172.0" prefWidth="411.0" spacing="15.0" />
          </content>
       </ScrollPane>
     </children>

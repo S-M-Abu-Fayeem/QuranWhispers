@@ -1,0 +1,11 @@
+@use '../config/variables';
+
+.text-black:hover {
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.text-pink:hover {
+    -fx-underline: true;
+    -fx-cursor: hand;
+}

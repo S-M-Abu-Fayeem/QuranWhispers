@@ -115,17 +115,17 @@
         </Label>
       <HBox layoutX="572.0" layoutY="50.0" spacing="25.0" translateY="5.0">
          <children>
-            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" styleClass="navlink" text="Home" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" styleClass="navlink" text="Search" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile">
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" styleClass="navlink" text="Profile">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -133,37 +133,37 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="920.0" layoutY="43.0" onMouseClicked="#handleFavouritesBtn" translateY="5.0">
+      <Group fx:id="favouritesBtn" layoutX="920.0" layoutY="43.0" onMouseClicked="#handleFavouritesBtn" styleClass="nav-btn-wrapper" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/black_heart.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn" layoutX="973.0" layoutY="43.0" onMouseClicked="#handleNotificationBtn" translateY="5.0">
+      <Group fx:id="notificationBtn" layoutX="973.0" layoutY="43.0" onMouseClicked="#handleNotificationBtn" styleClass="nav-btn-wrapper" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/notifications.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1026.0" layoutY="43.0" onMouseClicked="#handleLogoutBtn" translateY="5.0">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1026.0" layoutY="43.0" onMouseClicked="#handleLogoutBtn" styleClass="nav-btn-wrapper" translateY="5.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" text="Logout" textFill="#ff6ec7">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="8.0" prefHeight="25.0" prefWidth="107.0" styleClass="nav-btn" text="Logout" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

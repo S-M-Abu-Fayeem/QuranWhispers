@@ -7,6 +7,8 @@ public class GlobalState {
 
     // OTHER CONST
     public static final String COPYRIGHT_URL = "https://github.com/ahammadshawki8/QuranWhispers/blob/main/LICENSE";
+    public static final String SHAWKI_CONTACT_URL = "https://ahammadshawki8.github.io/";
+    public static final String FAYEEM_CONTACT_URL = "https://www.facebook.com/abu.fayeem";
     public static final String QURAN_API_URL = "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/";
     public static final String QURAN_BENGALI_EDITION_NAME = "ben-muhiuddinkhan";
     public static final String QURAN_ENGLISH_EDITION_NAME = "eng-abdelhaleem";

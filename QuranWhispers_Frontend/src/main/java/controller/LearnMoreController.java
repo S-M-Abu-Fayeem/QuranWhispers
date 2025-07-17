@@ -5,7 +5,11 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import util.GlobalState;
+
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class LearnMoreController extends BaseController {
     String parent;
@@ -19,6 +23,26 @@ public class LearnMoreController extends BaseController {
             actionTitle.setText("Join Now");
         }
 
+    }
+
+    public void handleShawkiContact(MouseEvent e) throws IOException {
+        System.out.println("Copyright pressed");
+        playClickSound();
+        try {
+            Desktop.getDesktop().browse(new URI(GlobalState.SHAWKI_CONTACT_URL));
+        } catch (IOException | URISyntaxException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void handleFayeemContact(MouseEvent e) throws IOException {
+        System.out.println("Copyright pressed");
+        playClickSound();
+        try {
+            Desktop.getDesktop().browse(new URI(GlobalState.FAYEEM_CONTACT_URL));
+        } catch (IOException | URISyntaxException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void handleActionBtn(MouseEvent e) throws IOException {

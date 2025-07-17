@@ -3,8 +3,13 @@ package quranwhispers_frontend;
 import controller.SceneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import util.GlobalState;
 import java.net.URL;
@@ -49,6 +54,10 @@ import controller.AdminForumController;
 
 
 public class MainApp extends Application {
+    private MediaPlayer mediaPlayer;
+    private MediaView mediaView;
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -119,8 +128,8 @@ public class MainApp extends Application {
         initController(GlobalState.ADMIN_FORUM_FILE, AdminForumController.class, sceneController);
 
 
-        // CHOOSE THE INITIAL SCENE
-        sceneController.switchTo(GlobalState.LANDING_FILE);
+        // PLAY INTRO VIDEO
+        playIntroVideo(stage, sceneController);
 
         // SETUP THE STAGE
         URL iconURL = getClass().getResource("/images/brand.png");
@@ -132,5 +141,39 @@ public class MainApp extends Application {
         stage.setResizable(false);
         System.setProperty("prism.lcdtext", "false");
         stage.show();
+    }
+
+
+    // HELPER METHOD TO PLAY INTRO VIDEO
+    private void playIntroVideo(Stage stage, SceneController sceneController) {
+        URL videoURL = getClass().getResource("/video/intro.mp4");
+        if (videoURL == null) {
+            System.out.println("Video file not found: intro.mp4");
+            return;
+        }
+        String videoPath = videoURL.toExternalForm();
+
+        Media media = new Media(videoPath);
+        mediaPlayer = new MediaPlayer(media);
+        mediaView = new MediaView(mediaPlayer);
+
+        mediaView.setFitWidth(1280);
+        mediaView.setFitHeight(750);
+
+        Group root = new Group();
+        root.getChildren().add(mediaView);
+
+        Scene videoScene = new Scene(root, 1280, 750);
+        stage.setScene(videoScene);
+
+        mediaPlayer.play();
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            root.getChildren().remove(mediaView);
+
+            // SETUP THE INITIAL SCENE
+            LandingController landingController = (LandingController) sceneController.switchTo(GlobalState.LANDING_FILE);  // Switch to the landing page
+            landingController.setupLandingPage();
+        });
     }
 }

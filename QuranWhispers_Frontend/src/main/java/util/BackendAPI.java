@@ -141,44 +141,39 @@ public class BackendAPI {
                 data.put("token", SessionManager.getToken());
                 data.put("email", SessionManager.getEmail());
             }
+            else if (action.equals("uploadmp3")) {
+                data.put("action", action);
+                data.put("token", SessionManager.getToken());
+                data.put("email", SessionManager.getEmail());
+                File mp3File = new File(request.getString("mp3file"));
+                if (!mp3File.exists()) {
+                    System.out.println("File not found.");
+                    return null;
+                }
+                data.put("filename", mp3File.getName());
+                data.put("reciter_name", request.getString("reciter_name"));
+                data.put("surah", request.getString("surah"));
+                data.put("ayah",  request.getString("ayah"));
+                data.put("filesize", String.valueOf(mp3File.length()));
 
-//            else if (action.equals("uploadmp3")) {
-//                data.put("action", action);
-//                data.put("token", SessionManager.getToken());
-//                data.put("email", SessionManager.getEmail());
-//                System.out.print("Enter full path of MP3 file: ");
-//                File mp3File = new File(scanner.nextLine());
-//                if (!mp3File.exists()) {
-//                    System.out.println("File not found.");
-//                    return null;
-//                }
-//                data.put("filename", mp3File.getName());
-//                data.put("reciter_name", "Qari Mishary2");
-//                data.put("surah", "Al-Fatih2a");
-//                data.put("ayat", "2");
-//                data.put("filesize", String.valueOf(mp3File.length()));
-//
-//                String json = new JSONObject(data).toString();
-//                bufferedWriter.write(json);
-//                bufferedWriter.newLine();
-//                bufferedWriter.flush();
-//
-//                try (FileInputStream fis = new FileInputStream(mp3File); DataOutputStream dos = new DataOutputStream(socket.getOutputStream())) {
-//                    dos.writeLong(mp3File.length());
-//                    byte[] buffer = new byte[4096];
-//                    int read;
-//                    while ((read = fis.read(buffer)) != -1) {
-//                        dos.write(buffer, 0, read);
-//                    }
-//                    dos.flush();
-//                    System.out.println("MP3 file sent.");
-//                } catch (IOException e) {
-//                    System.out.println("Error sending file: " + e.getMessage());
-//                }
-//
-//                continue;
-//            }
+                String json = new JSONObject(data).toString();
+                bufferedWriter.write(json);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
 
+                try (FileInputStream fis = new FileInputStream(mp3File); DataOutputStream dos = new DataOutputStream(socket.getOutputStream())) {
+                    dos.writeLong(mp3File.length());
+                    byte[] buffer = new byte[4096];
+                    int read;
+                    while ((read = fis.read(buffer)) != -1) {
+                        dos.write(buffer, 0, read);
+                    }
+                    dos.flush();
+                    System.out.println("MP3 file sent.");
+                } catch (IOException e) {
+                    System.out.println("Error sending file: " + e.getMessage());
+                }
+            }
             else if (action.equals("generateapibasedverse")) {
                 data.put("action", action);
                 data.put("token", SessionManager.getToken());

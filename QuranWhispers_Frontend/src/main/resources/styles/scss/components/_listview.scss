@@ -1,0 +1,43 @@
+@use '../config/variables';
+
+.catagoryListView {
+  -fx-background-color: variables.$light-color;
+  -fx-border-color: variables.$primary-color;
+  -fx-border-width: 1px;
+  -fx-padding: 5px;
+  -fx-font-size: 14px;
+  -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+.catagoryListView .list-cell {
+  -fx-background-color: variables.$light-color;
+  -fx-border-width: 1px;
+  -fx-padding: 8px 10px;
+  -fx-text-fill: variables.$dark-color;
+}
+
+.catagoryListView .list-cell:hover {
+  -fx-background-color: variables.$light-color;
+  -fx-border-color: variables.$primary-color;
+  -fx-text-fill: variables.$dark-color;
+  -fx-cursor: hand;
+}
+
+.catagoryListView .list-cell:selected {
+  -fx-background-color: variables.$secondary-color;
+  -fx-text-fill: variables.$light-color;
+  -fx-border-color: variables.$semi-dark-color;
+  -fx-border-width: 2px;
+  -fx-border-radius: 5px;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 6);
+}
+
+.catagoryListView .scroll-bar:vertical,
+.catagoryListView .scroll-bar:horizontal {
+  -fx-opacity: 0;
+}
+
+.catagoryListView .scroll-bar:vertical .thumb,
+.catagoryListView .scroll-bar:horizontal .thumb {
+  -fx-background-color: transparent;
+}

@@ -61,4 +61,60 @@ public class ForumController extends BaseController{
         extractMessageCommandAndArgs(promptArea.getText());
         promptArea.clear();
     }
+
+    public void handleCommand1() {
+        playClickSound();
+        System.out.println("Command 1 button pressed");
+        promptArea.clear();
+        promptArea.setText("/question/");
+    }
+
+    public void handleCommand2() {
+        playClickSound();
+        System.out.println("Command 2 button pressed");
+        promptArea.clear();
+        promptArea.setText("/askai/");
+    }
+
+    public void handleCommand3() {
+        playClickSound();
+        System.out.println("Command 3 button pressed");
+        promptArea.clear();
+        promptArea.setText("/reply(msg_id)/");
+    }
+
+    public void handleCommand4() {
+        playClickSound();
+        System.out.println("Command 4 button pressed");
+        promptArea.clear();
+        promptArea.setText("/verse(surah, ayah)/");
+    }
+
+    public void handleCommand5() {
+        playClickSound();
+        System.out.println("Command 5 button pressed");
+        promptArea.clear();
+        promptArea.setText("/verse(emotion)/");
+    }
+
+    public void handleCommand6() {
+        playClickSound();
+        System.out.println("Command 6 button pressed");
+        promptArea.clear();
+        promptArea.setText("/verse(theme)/");
+    }
+
+    public void handleCommand7() {
+        playClickSound();
+        System.out.println("Command 7 button pressed");
+        promptArea.clear();
+        promptArea.setText("/send(username)/");
+    }
+
+    public void handleCommand8() {
+        playClickSound();
+        System.out.println("Command 8 button pressed");
+        promptArea.clear();
+        promptArea.setText("/about/");
+    }
 }

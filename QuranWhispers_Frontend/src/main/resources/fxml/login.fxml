@@ -27,9 +27,9 @@
             </DropShadow>
          </effect>
       </Rectangle>
-        <Group fx:id="signupBtn" layoutX="943.0" layoutY="232.0" onMouseClicked="#handleSignupBtn">
+        <Group fx:id="signupBtn" layoutX="943.0" layoutY="232.0" onMouseClicked="#handleSignupBtn" styleClass="btn-black-wrapper">
            <children>
-              <Label alignment="CENTER" layoutX="2.0" layoutY="5.0" prefHeight="30.0" prefWidth="80.0" text="SIGNUP">
+              <Label alignment="CENTER" layoutX="2.0" layoutY="5.0" prefHeight="30.0" prefWidth="80.0" styleClass="btn-black" text="SIGNUP">
                  <font>
                     <Font name="Segoe UI Black" size="20.0" />
                  </font>
@@ -51,16 +51,16 @@
               <Font name="Palatino Linotype Bold" size="50.0" />
            </font>
         </Label>
-        <ImageView fitHeight="480.0" fitWidth="480.0" layoutX="64.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="heroImg" fitHeight="480.0" fitWidth="480.0" layoutX="64.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
            <image>
               <Image url="@../images/bismillah.png" />
            </image>
         </ImageView>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="60.0" layoutX="919.0" layoutY="222.0" stroke="BLACK" strokeType="INSIDE" width="2.0" />
-        <Group fx:id="continueBtn" layoutX="704.0" layoutY="460.0" onMouseClicked="#handleContinueBtn">
+        <Group fx:id="continueBtn" layoutX="704.0" layoutY="460.0" onMouseClicked="#handleContinueBtn" styleClass="btn-black-wrapper">
            <children>
               <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#000000cc" height="50.0" layoutY="25.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
-              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" text="CONTINUE" textFill="WHITE">
+              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" styleClass="btn-black" text="CONTINUE" textFill="WHITE">
                  <font>
                     <Font name="Segoe UI Black" size="16.0" />
                  </font>
@@ -72,7 +72,7 @@
               <Font name="Century Gothic" size="12.0" />
            </font>
         </Label>
-        <Label alignment="CENTER" layoutX="953.0" layoutY="552.0" onMouseClicked="#handleSignupBtn" prefHeight="30.0" prefWidth="80.0" text="Register now" textFill="#ff6ec7">
+        <Label alignment="CENTER" layoutX="953.0" layoutY="552.0" onMouseClicked="#handleSignupBtn" prefHeight="30.0" prefWidth="80.0" styleClass="text-pink" text="Register now" textFill="#ff6ec7">
            <font>
               <Font name="Century Gothic" size="12.0" />
            </font>
@@ -82,17 +82,17 @@
       <Group fx:id="notificationBtn" layoutX="962.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn" />
       <Group fx:id="joinNowBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleJoinNowBtn" />
       <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" styleClass="footer-copy" text="Copyright © QuranWhispers2025" textFill="WHITE">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="emailAddressField" layoutX="704.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="email address">
+      <TextField fx:id="emailAddressField" layoutX="704.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="434.0" promptText="email address" styleClass="form-field">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordField" layoutX="704.0" layoutY="404.0" prefHeight="50.0" prefWidth="434.0" promptText="password">
+      <PasswordField fx:id="passwordField" layoutX="704.0" layoutY="404.0" prefHeight="50.0" prefWidth="434.0" promptText="password" styleClass="form-field">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>

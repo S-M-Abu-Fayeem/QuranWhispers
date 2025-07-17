@@ -1,1 +1,35 @@
 @use "../config/variables";
+
+/* Apply animation to the hero image */
+.hero-img {
+  -fx-cursor: hand;
+  -fx-pref-width: 355px;  /* Set width of the image */
+  -fx-pref-height: 355px; /* Set height of the image */
+  -fx-translate-x: 0;
+  -fx-translate-y: 0;
+  animation: floatAndVibrate 5s ease-in-out infinite;  /* Apply animation */
+}
+
+/* Define keyframes for floating and vibrating effect */
+@keyframes floatAndVibrate {
+  0% {
+    -fx-translate-y: 0; /* Start at original position */
+    -fx-translate-x: 0;
+  }
+  25% {
+    -fx-translate-y: -5px; /* Move up */
+    -fx-translate-x: 3px;  /* Slightly move right */
+  }
+  50% {
+    -fx-translate-y: 0;   /* Back to center */
+    -fx-translate-x: -3px; /* Slightly move left */
+  }
+  75% {
+    -fx-translate-y: 5px;  /* Move down */
+    -fx-translate-x: 3px;  /* Slightly move right */
+  }
+  100% {
+    -fx-translate-y: 0;   /* Back to original position */
+    -fx-translate-x: 0;
+  }
+}

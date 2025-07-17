@@ -1,0 +1,19 @@
+@use '../config/variables';
+
+.btn-pink-wrapper:hover {
+  -fx-cursor: hand;
+  .btn-pink {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    transition: transform 0.4s ease;
+  }
+}
+
+.btn-black-wrapper:hover {
+  -fx-cursor: hand;
+  .btn-black {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    transition: transform 0.4s ease;
+  }
+}

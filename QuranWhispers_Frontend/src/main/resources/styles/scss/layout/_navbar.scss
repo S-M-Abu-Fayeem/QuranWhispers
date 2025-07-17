@@ -1,0 +1,14 @@
+@use '../config/variables';
+
+.navlink:hover {
+  -fx-underline: true;
+}
+
+.nav-btn-wrapper:hover {
+    -fx-cursor: hand;
+  .nav-btn {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    transition: transform 0.4s ease;
+  }
+}

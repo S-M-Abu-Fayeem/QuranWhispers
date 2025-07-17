@@ -21,65 +21,65 @@
             <Font name="Palatino Linotype Bold" size="50.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="89.0" layoutY="257.0" prefHeight="86.0" prefWidth="409.0" text="Let the Quran">
+      <Label fx:id="heroTitle1" alignment="CENTER" layoutX="89.0" layoutY="257.0" prefHeight="86.0" prefWidth="409.0" text="Let the Quran">
          <font>
             <Font name="Segoe UI Black" size="60.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="76.0" layoutY="311.0" prefHeight="86.0" prefWidth="650.0" text="Speak to Your Heart.">
+      <Label fx:id="heroTitle2" alignment="CENTER" layoutX="76.0" layoutY="311.0" prefHeight="86.0" prefWidth="650.0" text="Speak to Your Heart.">
          <font>
             <Font name="Segoe UI Black" size="60.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="83.0" layoutY="383.0" prefHeight="84.0" prefWidth="725.0" text="Discover verses tailored to your emotions, in Arabic, English, and Bengali" textFill="#4f4f4f">
+      <Label fx:id="heroSubtitle" alignment="CENTER" layoutX="83.0" layoutY="383.0" prefHeight="84.0" prefWidth="725.0" text="Discover verses tailored to your emotions, in Arabic, English, and Bengali" textFill="#4f4f4f">
          <font>
             <Font name="Century Gothic" size="20.0" />
          </font>
       </Label>
-      <Group layoutX="95.0" layoutY="480.0" onMouseClicked="#handleJoinNowBtn">
+      <Group fx:id="searchBtn" layoutX="95.0" layoutY="480.0" onMouseClicked="#handleJoinNowBtn" styleClass="btn-pink-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#ff70c8cc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" text="Join Now" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" styleClass="btn-pink" text="Join Now" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </Group>
-      <Group fx:id="learnMoreBtn" layoutX="279.0" layoutY="480.0" onMouseClicked="#handleLearnMoreBtn">
+      <Group fx:id="learnMoreBtn" layoutX="279.0" layoutY="480.0" onMouseClicked="#handleLearnMoreBtn" styleClass="btn-black-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="27.0" layoutY="7.0" text="Learn More" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="27.0" layoutY="7.0" styleClass="btn-black" text="Learn More" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </Group>
-      <ImageView fitHeight="355.0" fitWidth="355.0" layoutX="866.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="heroImg" fitHeight="355.0" fitWidth="355.0" layoutX="866.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" styleClass="hero-img">
          <image>
             <Image url="@../images/heroImage.png" />
          </image>
       </ImageView>
       <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+      <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" styleClass="footer-copy" text="Copyright © QuranWhispers2025" textFill="WHITE">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
       <HBox layoutX="566.0" layoutY="56.0" spacing="25.0">
          <children>
-            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home">
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" styleClass="navlink" text="Home">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" styleClass="navlink" text="Search" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" styleClass="navlink" text="Profile" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -87,37 +87,37 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/heart.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn1" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+      <Group fx:id="notificationBtn1" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/notifications.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="joinNowBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onInputMethodTextChanged="#handleJoinNowBtn" onMouseClicked="#handleJoinNowBtn">
+      <Group fx:id="joinNowBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onInputMethodTextChanged="#handleJoinNowBtn" onMouseClicked="#handleJoinNowBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" text="Join Now" textFill="#ff6ec7">
+            <Label alignment="CENTER" layoutX="38.0" layoutY="8.0" styleClass="nav-btn" text="Join Now" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

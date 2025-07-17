@@ -70,7 +70,7 @@
               <Font name="Century Gothic" size="20.0" />
            </font>
         </Label>
-        <Label layoutX="565.0" layoutY="289.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Search Verse by Emotion or Theme" wrapText="true">
+        <Label layoutX="565.0" layoutY="289.0" prefHeight="32.0" prefWidth="492.0" text="Search Verse by Emotion or Theme" wrapText="true">
            <font>
               <Font name="Century Gothic Bold" size="14.0" />
            </font>
@@ -80,7 +80,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="565.0" layoutY="356.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Immersive Experience" wrapText="true">
+        <Label layoutX="565.0" layoutY="356.0" prefHeight="32.0" prefWidth="492.0" text="Immersive Experience" wrapText="true">
            <font>
               <Font name="Century Gothic Bold" size="14.0" />
            </font>
@@ -90,7 +90,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="565.0" layoutY="424.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Social &amp; Personal Usage" wrapText="true">
+        <Label layoutX="565.0" layoutY="424.0" prefHeight="32.0" prefWidth="492.0" text="Social &amp; Personal Usage" wrapText="true">
            <font>
               <Font name="Century Gothic Bold" size="14.0" />
            </font>
@@ -100,7 +100,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="565.0" layoutY="491.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Admin Control Panel" wrapText="true">
+        <Label layoutX="565.0" layoutY="491.0" prefHeight="32.0" prefWidth="492.0" text="Admin Control Panel" wrapText="true">
            <font>
               <Font name="Century Gothic Bold" size="14.0" />
            </font>
@@ -110,7 +110,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="565.0" layoutY="566.0" prefHeight="32.0" prefWidth="492.0" style="-fx-letter-spacing: 20;" text="Interactive Forum" wrapText="true">
+        <Label layoutX="565.0" layoutY="566.0" prefHeight="32.0" prefWidth="492.0" text="Interactive Forum" wrapText="true">
            <font>
               <Font name="Century Gothic Bold" size="14.0" />
            </font>
@@ -120,7 +120,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="209.0" layoutY="346.0" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="23305067" wrapText="true">
+        <Label layoutX="209.0" layoutY="346.0" onMouseClicked="#handleShawkiContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="23035067" wrapText="true">
            <font>
               <Font name="Century Gothic" size="20.0" />
            </font>
@@ -130,7 +130,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="209.0" layoutY="441.0" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="23305070" wrapText="true">
+        <Label layoutX="209.0" layoutY="441.0" onMouseClicked="#handleFayeemContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="23035070" wrapText="true">
            <font>
               <Font name="Century Gothic" size="20.0" />
            </font>
@@ -157,24 +157,24 @@
             </font>
         </Label>
         <Rectangle fx:id="navbarRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff70c8cc" height="65.0" layoutY="686.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1280.0" />
-        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" styleClass="footer-copy" text="Copyright © QuranWhispers2025" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="16.0" />
             </font>
         </Label>
       <HBox layoutX="566.0" layoutY="56.0" spacing="25.0">
          <children>
-            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home">
+            <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" styleClass="navlink" text="Home">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" text="Search" textFill="WHITE">
+            <Label fx:id="searchNavlink" alignment="CENTER" onMouseClicked="#handleSearchNavlink" styleClass="navlink" text="Search" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" text="Profile" textFill="WHITE">
+            <Label fx:id="profileNavlink" alignment="CENTER" onMouseClicked="#handleProfileNavlink" styleClass="navlink" text="Profile" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -182,37 +182,37 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn">
+      <Group fx:id="favouritesBtn" layoutX="914.0" layoutY="49.0" onMouseClicked="#handleFavouritesBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/heart.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="notificationBtn" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn">
+      <Group fx:id="notificationBtn" layoutX="967.0" layoutY="49.0" onMouseClicked="#handleNotificationBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
                   <Image url="@../images/notifications.png" />
                </image>
             </ImageView>
          </children>
       </Group>
-      <Group fx:id="actionBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleActionBtn">
+      <Group fx:id="actionBtn" accessibleRole="BUTTON" layoutX="1020.0" layoutY="49.0" onMouseClicked="#handleActionBtn" styleClass="nav-btn-wrapper">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label fx:id="actionTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="8.0" onMouseClicked="#handleActionBtn" prefHeight="25.0" prefWidth="121.0" text="Logout" textFill="#ff6ec7">
+            <Label fx:id="actionTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="8.0" onMouseClicked="#handleActionBtn" prefHeight="25.0" prefWidth="121.0" styleClass="nav-btn" text="Logout" textFill="#ff6ec7">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
