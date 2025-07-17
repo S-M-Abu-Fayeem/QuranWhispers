@@ -9,11 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class AddFavVerse {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
     public String SET(String email, int valueOfToken, String emotion, String theme, int ayah, String surah) {
-        TokenValidator tokenValidator = new TokenValidator();
+        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);

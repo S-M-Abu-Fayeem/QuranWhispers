@@ -5,10 +5,12 @@ import com.google.gson.JsonObject;
 
 import java.sql.*;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class RandomizedSelection {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    private int getUserIdByEmail(Connection conn, String email) throws SQLException {
+    private synchronized int getUserIdByEmail(Connection conn, String email) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT id FROM USERS WHERE email = ?");
         ps.setString(1, email);
         ResultSet rs = ps.executeQuery();
@@ -16,8 +18,8 @@ public class RandomizedSelection {
         return -1;
     }
 
-    public String generateMoodBased(String email, int valueOfToken, String emotion) {
-        TokenValidator tokenValidator = new TokenValidator();
+    public synchronized String generateMoodBased(String email, int valueOfToken, String emotion) {
+        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
@@ -68,8 +70,8 @@ public class RandomizedSelection {
         return gson.toJson(data);
     }
 
-    public String generateThemeBased(String email, int valueOfToken, String theme) {
-        TokenValidator tokenValidator = new TokenValidator();
+    public synchronized String generateThemeBased(String email, int valueOfToken, String theme) {
+        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);

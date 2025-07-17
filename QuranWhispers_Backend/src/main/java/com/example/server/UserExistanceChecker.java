@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 public class UserExistanceChecker {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
-    public boolean doesExist(String username) {
+    public synchronized boolean doesExist(String username) {
             try (Connection connection = DriverManager.getConnection(DB_URL)) {
 
                 PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT id FROM USERS WHERE username = ?");

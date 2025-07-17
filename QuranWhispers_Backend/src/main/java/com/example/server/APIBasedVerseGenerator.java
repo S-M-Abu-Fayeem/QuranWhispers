@@ -12,12 +12,14 @@ import java.sql.ResultSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class APIBasedVerseGenerator {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String generate(String email, int valueOfToken, String text) {
+    public synchronized String generate(String email, int valueOfToken, String text) {
         Client client = new Client();
-        TokenValidator tokenValidator = new TokenValidator();
+        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);

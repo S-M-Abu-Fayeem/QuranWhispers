@@ -6,80 +6,66 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static java.lang.Boolean.getBoolean;
-
+import java.util.HashMap;
 
 public class Login {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String GET(String userName, String password) {
+    public synchronized String GET(String userName, String password) {
         HashMap<String, String> data = new HashMap<>();
         Gson gson = new Gson();
         data.put("email", userName);
-        try(Connection connection = DriverManager.getConnection(DB_URL)) {
-            try {
-                //fetching password by username
-                PreparedStatement ps = connection.prepareStatement("SELECT password FROM USERS WHERE email = ?");
+        data.put("status", "404");   // default
+        data.put("token", "-1");
 
-                ps.setString(1, userName);
-                ResultSet rs = ps.executeQuery();
+        try (Connection connection = DriverManager.getConnection(DB_URL)) {
+            // Fetch hashed password and current token
+            PreparedStatement ps = connection.prepareStatement("SELECT password, token, is_admin FROM USERS WHERE email = ?");
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
 
-                //creating json file to send response
-               // System.out.println("done");
-                HashingFunction hasFunction = new HashingFunction();
-                int hashValue = hasFunction.getHash(password);
-                data.put("status", "404");
-                data.put("token", "-1");
+            if (rs.next()) {
+                int storedHash = rs.getInt("password");
+                int existingToken = rs.getInt("token");
+                boolean isAdmin = rs.getBoolean("is_admin");
 
-                while (rs.next()) {
-                    System.out.println(rs.getInt("password"));
-                    System.out.println(hashValue);
-                    if (rs.getInt("password") == hashValue) {
+                HashingFunction hasher = new HashingFunction();
+                int inputHash = hasher.getHash(password);
 
-                        data.put("email", userName);
-                        data.put("status", "200");
+                if (storedHash == inputHash) {
+                    // Auth success
+                    data.put("status", "200");
 
-                        // creating the token using hashing function , token format = TimeStamp + email -> converted to hashValue
-                        LocalDateTime now = LocalDateTime.now();
-                        String formatted = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                        String concat = formatted + userName;
-                        int hashValueOfToken = hasFunction.getHash(concat);
-                        //token update
-                        PreparedStatement  addingToken = connection.prepareStatement("UPDATE USERS SET token = ? WHERE email = ?");
-                        addingToken.setInt(1, hashValueOfToken);
-                        addingToken.setString(2, userName);
-                        int updatedRows = addingToken.executeUpdate();
-                        data.put("token", String.valueOf(hashValueOfToken));
-                        PreparedStatement isAdmin = connection.prepareStatement("SELECT is_admin FROM USERS WHERE email = ?");
-                        isAdmin.setString(1, userName);
-                        ResultSet Admin = isAdmin.executeQuery();
-                        Admin.next();
-                        if(Admin.getBoolean("is_admin")) {
-                            data.put("admin", "true");
-                        }
-                        else{
-                            data.put("admin", "false");
-                        }
+                    if (existingToken != -1) {
+                        // Already logged in
+                        System.out.println("User " + userName + " already logged in with token " + existingToken);
+                        data.put("token", String.valueOf(existingToken));
+                    } else {
+                        // Generate new token
+                        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                        String rawToken = timestamp + userName;
+                        int newToken = hasher.getHash(rawToken);
+
+                        PreparedStatement updateToken = connection.prepareStatement("UPDATE USERS SET token = ? WHERE email = ?");
+                        updateToken.setInt(1, newToken);
+                        updateToken.setString(2, userName);
+                        updateToken.executeUpdate();
+
+                        System.out.println("New token generated for " + userName + ": " + newToken);
+                        data.put("token", String.valueOf(newToken));
                     }
+
+                    data.put("admin", isAdmin ? "true" : "false");
                 }
-
-                //converting the json file to string to send to client
-                return gson.toJson(data);
-            }
-            catch (Exception e) {
-                data.put("status", "404");
-                return gson.toJson(data);
             }
 
+            return gson.toJson(data);
         } catch (Exception e) {
-
             e.printStackTrace();
+            data.put("status", "500");
+            return gson.toJson(data);
         }
-        data.put("status", "500");
-        return gson.toJson(data);
     }
 }

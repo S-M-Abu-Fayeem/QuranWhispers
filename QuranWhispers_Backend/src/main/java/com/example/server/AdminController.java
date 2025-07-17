@@ -7,13 +7,16 @@ import com.google.gson.JsonObject;
 import java.io.InputStream;
 import java.sql.*;
 
+import static com.example.server.HelloApplication.isAdmin;
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class AdminController {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
-    public String getAllusers(String email, int token){
+    public synchronized String getAllusers(String email, int token){
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
@@ -41,9 +44,9 @@ public class AdminController {
         }
         return gson.toJson(root);
     }
-    public String DELETE_USER(String email, int valueOfToken, String userMail) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String DELETE_USER(String email, int valueOfToken, String userMail) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
@@ -68,9 +71,9 @@ public class AdminController {
         }
         return gson.toJson(data);
     }
-    public String DELETE_DUA(String email, int valueOfToken, String title) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String DELETE_DUA(String email, int valueOfToken, String title) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
@@ -95,9 +98,9 @@ public class AdminController {
         }
         return gson.toJson(data);
     }
-    public String DELETE_VERSE(String email, int valueOfToken, String emotion, String theme, String ayah, String surah) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String DELETE_VERSE(String email, int valueOfToken, String emotion, String theme, String ayah, String surah) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
@@ -126,9 +129,9 @@ public class AdminController {
         return gson.toJson(data);
     }
 
-    public String approveRecitation(String email, int token, String reciterName, String surah, String ayah) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String approveRecitation(String email, int token, String reciterName, String surah, String ayah) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject res = new JsonObject();
         res.addProperty("email", email);
@@ -187,7 +190,7 @@ public class AdminController {
     }
 
 
-    private JsonArray getAllAsJsonArray(Connection conn, String query) throws SQLException {
+    private synchronized JsonArray getAllAsJsonArray(Connection conn, String query) throws SQLException {
         JsonArray array = new JsonArray();
         try (PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -209,7 +212,7 @@ public class AdminController {
         return array;
     }
 
-    private JsonArray getFilteredRecitations(Connection conn, String table) throws SQLException {
+    private synchronized JsonArray getFilteredRecitations(Connection conn, String table) throws SQLException {
         JsonArray array = new JsonArray();
 
         // Choose correct timestamp column
@@ -237,11 +240,11 @@ public class AdminController {
         return array;
     }
 
-    public String getAllDuas(String email, int token) {
+    public synchronized String getAllDuas(String email, int token) {
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
@@ -257,11 +260,11 @@ public class AdminController {
         }
         return gson.toJson(root);
     }
-    public String getAllVerses(String email, int token) {
+    public synchronized String getAllVerses(String email, int token) {
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
@@ -277,11 +280,11 @@ public class AdminController {
         }
         return gson.toJson(root);
     }
-    public String getAllPendingRecitations(String email, int token) {
+    public synchronized String getAllPendingRecitations(String email, int token) {
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
@@ -299,11 +302,11 @@ public class AdminController {
         return gson.toJson(root);
     }
 
-    public String getAllApprovedRecitations(String email, int token) {
+    public synchronized String getAllApprovedRecitations(String email, int token) {
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
             if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
@@ -320,9 +323,9 @@ public class AdminController {
         }
         return gson.toJson(root);
     }
-    public String DELETE_APPROVED_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String DELETE_APPROVED_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject res = new JsonObject();
         res.addProperty("email", email);
@@ -352,9 +355,9 @@ public class AdminController {
 
         return gson.toJson(res);
     }
-    public String DISAPPROVE_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
+    public synchronized String DISAPPROVE_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
+        //TokenValidator tokenValidator = new TokenValidator();
+        //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject res = new JsonObject();
         res.addProperty("email", email);
@@ -385,58 +388,3 @@ public class AdminController {
         return gson.toJson(res);
     }
 }
-
-
-/*public String getAllInfo(String email, int token) {
-        Gson gson = new Gson();
-        JsonObject root = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
-        IsAdmin isAdmin = new IsAdmin();
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-
-            // USERS info
-
-            if (!tokenValidator.VALIDATE(email, token) || !isAdmin.isAdmin(email)){
-                root.addProperty("status", "404");
-                return gson.toJson(root);
-            }
-            JsonArray users = new JsonArray();
-            PreparedStatement st = conn.prepareStatement(
-                    "SELECT username, email, total_saved_verse, total_received_verse FROM USERS"
-            );
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                JsonObject user = new JsonObject();
-                user.addProperty("username", rs.getString("username"));
-                user.addProperty("email", rs.getString("email"));
-                user.addProperty("total_saved_verse", rs.getInt("total_saved_verse"));
-                user.addProperty("total_received_verse", rs.getInt("total_received_verse"));
-                users.add(user);
-            }
-            root.add("users", users);
-
-            // DUA info
-            JsonArray duas = getAllAsJsonArray(conn, "SELECT * FROM DUA");
-            root.add("duas", duas);
-
-            // MOOD_VERSES info
-            JsonArray verses = getAllAsJsonArray(conn, "SELECT * FROM MOOD_VERSES");
-            root.add("verses", verses);
-
-            // PendingRecitations (without file_path)
-            JsonArray pending = getFilteredRecitations(conn, "PendingRecitations");
-            root.add("pending_recitations", pending);
-
-            // Approved Recitations (without file_path)
-            JsonArray approved = getFilteredRecitations(conn, "Recitations");
-            root.add("approved_recitations", approved);
-            root.addProperty("status", "200");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            root.addProperty("status", "500");
-            return gson.toJson(root);
-        }
-
-        return gson.toJson(root);
-    }*/

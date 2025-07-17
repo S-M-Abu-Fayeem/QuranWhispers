@@ -15,7 +15,7 @@ public class HashingFunction {
     }
 
 
-    public static int getHash(String s) {
+    public synchronized static int getHash(String s) {
         int hash = 0;
         for (int i = 0; i < s.length(); i++) {
             hash = (int)((hash + 1L * s.charAt(i) * pw[i]) % MOD);

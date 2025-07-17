@@ -1,373 +1,42 @@
 package com.example.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import Threading.ReadThread;
+import Threading.SocketWrapper;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class HelloApplication {
-    private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
+    // Thread-safe list of all client sockets
+    public static final List<SocketWrapper> connectedClients = Collections.synchronizedList(new ArrayList<>());
+    public static final ForumMaintenance forumMaintenance = new ForumMaintenance();
+    public static final Login login = new Login();
+    public static final Register register = new Register();
+    public static final UserInfoGetter userInfoGetter = new UserInfoGetter();
+    public static final AddFavVerse addFavVerse = new AddFavVerse();
+    public static final RemoveVerse removeVerse = new RemoveVerse();
+    public static final ReceivedVerseControll receivedVerseControll = new ReceivedVerseControll();
+    public static final AddDua addDua = new AddDua();
+    public static final GeneratingDuaOfTheDay generatingDuaOfTheDay = new GeneratingDuaOfTheDay();
+    public static final AdminController adminController = new AdminController();
+    public static final RandomizedSelection randomizedSelection = new RandomizedSelection();
+    public static final LogOut logOut = new LogOut();
+    public static final GetList getList = new GetList();
+    public static final GetProfileInfo getProfileInfo = new GetProfileInfo();
+    public static final GetRecieveInfo getRecieveInfo = new GetRecieveInfo();
+    public static final APIBasedVerseGenerator apiBasedVerseGenerator = new APIBasedVerseGenerator();
+    public static final TokenValidator tokenValidator = new TokenValidator();
+    public static final IsAdmin isAdmin = new IsAdmin();
     public static void main(String[] args) {
-        Gson gson = new Gson();
-        Login login = new Login();
-        Register register = new Register();
-        UserInfoGetter userInfoGetter = new UserInfoGetter();
-        AddFavVerse addFavVerse = new AddFavVerse();
-        RemoveVerse removeVerse = new RemoveVerse();
-        ReceivedVerseControll receivedVerseControll = new ReceivedVerseControll();
-        AddDua addDua = new AddDua();
-        GeneratingDuaOfTheDay generatingDuaOfTheDay = new GeneratingDuaOfTheDay();
-        AdminController adminController = new AdminController();
-        //TokenValidator tokenValidator = new TokenValidator();
-        RandomizedSelection randomizedSelection = new RandomizedSelection();
-        //AdminController adminController1 = new AdminController();
-        LogOut logOut = new LogOut();
-        GetList getList = new GetList();
-        GetProfileInfo getProfileInfo = new GetProfileInfo();
-        GetRecieveInfo getRecieveInfo = new GetRecieveInfo();
-        APIBasedVerseGenerator apiBasedVerseGenerator = new APIBasedVerseGenerator();
-
         try (ServerSocket serverSocket = new ServerSocket(42069)) {
-            System.out.println("Server running.........");
-
             while (true) {
-                try (
-                        Socket socket = serverSocket.accept();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))
-                ) {
-                    generatingDuaOfTheDay.getDua();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.out.println("Client: " + line);
-
-                        //parsing json file
-                        JsonObject json = gson.fromJson(line, JsonObject.class);
-                        String action = json.get("action").getAsString();
-                        String email = json.get("email").getAsString();
-                        System.out.println("action: " + action);
-                        // checking  action
-                        String response;
-                        if (action.equalsIgnoreCase("login")) {
-                            String password = json.get("password").getAsString();
-                            response = login.GET(email, password);
-                        } else if (action.equalsIgnoreCase("register")) {
-
-                            String password = json.get("password").getAsString();
-                            String username = json.get("username").getAsString();
-                            //System.out.println(json.get("name").getAsString());
-                            System.out.println(email + ": " + password + ": " + username);
-                            response = register.GET(email,username, password);
-                        }
-                        else if(action.equalsIgnoreCase("getinfo")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            response = userInfoGetter.GET(email, valueOfToken);
-                        }
-                        else if(action.equalsIgnoreCase("addtofavorite") || action.equalsIgnoreCase("addtofavourites")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String emotion = json.get("emotion").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            response = addFavVerse.SET(email, valueOfToken, emotion, theme, Integer.parseInt(ayah), surah);
-                        }
-                        else if(action.equalsIgnoreCase("rmvfavverse")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String emotion = json.get("emotion").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            response = removeVerse.DELETE(email, valueOfToken, emotion, theme, Integer.parseInt(ayah), surah);
-
-                        }
-                        else if(action.equalsIgnoreCase("sendToFriend")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String emotion = json.get("emotion").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String friendUserName = json.get("friendusername").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            response = receivedVerseControll.SEND(email,valueOfToken,friendUserName, emotion,theme,  Integer.parseInt(ayah) ,surah);
-                        }
-                        else if(action.equalsIgnoreCase("adddua")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String title = json.get("title").getAsString();
-                            String english = json.get("english_body").getAsString();
-                           // String bangla = json.get("banglabody").getAsString();
-                            String arabic = json.get("arabic_body").getAsString();
-                            response = addDua.SET_DUA(email,valueOfToken, title, arabic, english);
-                        }
-                        else if(action.equalsIgnoreCase("addverse")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String surah = json.get("surah").getAsString();
-                            String verse = json.get("ayah").getAsString();
-                            String emotion = json.get("emotion").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            System.out.println("done");
-                            response = addDua.SET_THEME_MOOD(email,valueOfToken, theme, emotion, Integer.parseInt(verse), surah);
-                        }
-                        else if(action.equalsIgnoreCase("getduaoftheday")) {
-                            System.out.println("Here is the duaoftheday");
-                            response = generatingDuaOfTheDay.getDua();
-                        }
-                        else if(action.equalsIgnoreCase("generateemotionbasedverse")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String emotion = json.get("emotion").getAsString();
-                            response = randomizedSelection.generateMoodBased(email,valueOfToken, emotion);
-                        }
-                        else if(action.equalsIgnoreCase("generatethemebasedverse")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String theme = json.get("theme").getAsString();
-                            response = randomizedSelection.generateThemeBased(email,valueOfToken, theme);
-                        }
-                        else if(action.equalsIgnoreCase("deleteverse")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String emotion = json.get("emotion").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            response = adminController.DELETE_VERSE(email,valueOfToken,emotion,theme,ayah,surah);
-                        }
-                        else if(action.equalsIgnoreCase("deletedua")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String title = json.get("title").getAsString();
-                            response = adminController.DELETE_DUA(email,valueOfToken,title);
-                        }
-                        else if(action.equalsIgnoreCase("deleteuser")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String userEmail= json.get("useremail").getAsString();
-                            response = adminController.DELETE_USER(email,valueOfToken,userEmail);
-                        }
-                        else if(action.equalsIgnoreCase("approverecitation")) {
-                            String curToken = json.get("token").getAsString();
-                            int valueOfToken = Integer.parseInt(curToken);
-                            String recitername = json.get("recitername").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            response = adminController.approveRecitation(email, valueOfToken, recitername, surah, ayah);
-                        }
-                        else if (action.equalsIgnoreCase("uploadmp3")) {
-                            TokenValidator tokenValidator = new TokenValidator();
-                            IsAdmin isAdmin = new IsAdmin();
-                            JsonObject res = new JsonObject();
-                            res.addProperty("email", email);
-
-                            String tokenStr = json.get("token").getAsString();
-                            int token = Integer.parseInt(tokenStr);
-                            String filename = json.get("filename").getAsString();
-                            long filesize = Long.parseLong(json.get("filesize").getAsString());
-
-                            String reciterName = json.get("reciter_name").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-
-                            if (tokenValidator.VALIDATE(email, token)) {
-
-                                writer.write("READY_TO_RECEIVE");
-                                writer.newLine();
-                                writer.flush();
-
-                                try {
-                                    DataInputStream dis = new DataInputStream(socket.getInputStream());
-                                    long fileSize = dis.readLong();  // 👈 read the 8-byte long sent by client
-
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    byte[] buffer = new byte[4096];
-                                    long bytesReceived = 0;
-                                    int read;
-                                    while (bytesReceived < fileSize && (read = dis.read(buffer, 0, (int)Math.min(buffer.length, fileSize - bytesReceived))) != -1) {
-                                        baos.write(buffer, 0, read);
-                                        bytesReceived += read;
-                                    }
-
-                                    try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                        PreparedStatement stmt = conn.prepareStatement(
-                                                "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
-                                        );
-                                        stmt.setString(1, email);
-                                        stmt.setString(2, reciterName);
-                                        stmt.setString(3, surah);
-                                        stmt.setString(4, ayah);
-                                        stmt.setString(5, filename);
-                                        stmt.setBinaryStream(6, new ByteArrayInputStream(baos.toByteArray()), baos.size());
-                                        stmt.executeUpdate();
-
-                                        res.addProperty("status", "200");
-                                    } catch (Exception e) {
-                                        res.addProperty("status", "db_error");
-                                        res.addProperty("error", e.getMessage());
-                                    }
-
-                                } catch (IOException e) {
-                                    res.addProperty("status", "io_error");
-                                    res.addProperty("error", e.getMessage());
-                                }
-                            } else {
-                                res.addProperty("status", "unauthorized");
-                            }
-
-                            writer.write(res.toString());
-                            writer.newLine();
-                            writer.flush();
-                            System.out.println("Receiving done");
-                            continue;
-                        }
-
-                        else if (action.equals("listenrecitation")) {
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            TokenValidator tokenValidator = new TokenValidator();
-                            JsonObject res = new JsonObject();
-
-                            if (tokenValidator.VALIDATE(email, Integer.parseInt(json.get("token").getAsString()))) {
-                                try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                    PreparedStatement ps = conn.prepareStatement(
-                                            "SELECT audio_data FROM Recitations WHERE surah = ? AND ayah = ? ORDER BY RAND() LIMIT 1"
-                                    );
-                                    //ps.setString(1, reciter);
-                                    ps.setString(1, surah);
-                                    ps.setString(2, ayah);
-                                    ResultSet rs = ps.executeQuery();
-
-                                    if (rs.next()) {
-                                        InputStream audioStream = rs.getBinaryStream("audio_data");
-                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                        byte[] buffer = new byte[4096];
-                                        int read;
-                                        while ((read = audioStream.read(buffer)) != -1) {
-                                            baos.write(buffer, 0, read);
-                                        }
-                                        byte[] audioBytes = baos.toByteArray();
-
-                                        // Send file size then raw audio bytes
-                                        System.out.println("Sending audio size: " + audioBytes.length);
-                                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                                        dos.writeLong(audioBytes.length);
-                                        dos.write(audioBytes);
-                                        dos.flush();
-                                        continue;
-                                    } else {
-                                        res.addProperty("status", "404");
-                                    }
-                                } catch (Exception e) {
-                                    res.addProperty("status", "500");
-
-                                }
-                            } else {
-                                res.addProperty("status", "401");
-                            }
-
-                            writer.write(res.toString());
-                            writer.newLine();
-                            writer.flush();
-                            continue;
-                        }
-                        else if(action.equals("deleteuser")) {
-                            int value = Integer.parseInt(json.get("value").getAsString());
-                            response=adminController.DELETE_USER(email,value, json.get("useremail").getAsString());
-                        }
-                        else if(action.equals("deletedua")){
-                            int value = Integer.parseInt(json.get("value").getAsString());
-                            response = adminController.DELETE_DUA(email,value, json.get("title").getAsString());
-                        }
-                        else if(action.equals("deleteverse")) {
-                            int value = Integer.parseInt(json.get("value").getAsString());
-                            String emotion = json.get("emotion").getAsString();
-                            String theme = json.get("theme").getAsString();
-                            String ayah =json.get("ayah").getAsString();
-                            String surah = json.get("surah").getAsString();
-
-                            response = adminController.DELETE_VERSE(email, value, emotion, theme, ayah, surah);
-                        }
-                        else if (action.equals("disapproverecitation")) {
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            String reciterName = json.get("recitername").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-
-                            response = adminController.DISAPPROVE_RECITATION(email, value, reciterName, surah, ayah);
-                        }
-                        else if (action.equals("deleteapprovedrecitation")) {
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            String reciterName = json.get("recitername").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-
-                            response = adminController.DELETE_APPROVED_RECITATION(email, value, reciterName, surah, ayah);
-                        }
-                        else if(action.equalsIgnoreCase("logout")){
-                            response = logOut.Logout(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
-                        }
-                        else if(action.equalsIgnoreCase("getlist")) {
-                            response = getList.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
-                        }
-                        else if(action.equalsIgnoreCase("getprofileinfo")){
-                            response = getProfileInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
-                        }
-                        else if(action.equalsIgnoreCase("getreceivedinfo")){
-                            response = getRecieveInfo.GET(json.get("email").getAsString(),Integer.parseInt(json.get("token").getAsString()));
-                        }
-                        else if(action.equalsIgnoreCase("deletereceivedverse")){
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            String senderUsername = json.get("sender_username").getAsString();
-                            String surah = json.get("surah").getAsString();
-                            int ayah = Integer.parseInt(json.get("ayah").getAsString());
-                            String theme = json.get("theme").getAsString();
-                            String emotion = json.get("emotion").getAsString();
-                            response = receivedVerseControll.DELETE(email, value, senderUsername, surah , ayah , theme , emotion );
-                        }
-                        else if(action.equalsIgnoreCase("generateapibasedverse")){
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            String text = json.get("text").getAsString();
-                            response = apiBasedVerseGenerator.generate(email, value, text);
-
-                        }
-                        else if(action.equalsIgnoreCase("getallusers")){
-                            System.out.println("here");
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            response = adminController.getAllusers(email,value);
-                        }
-                        else if(action.equalsIgnoreCase("getallverses")){
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            response = adminController.getAllVerses(email,value);
-                        }
-                        else if(action.equalsIgnoreCase("getallduas")){
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            response = adminController.getAllDuas(email,value);
-                        }
-                        else if(action.equalsIgnoreCase("getAllPendingRecitations")){
-                            int value = Integer.parseInt(json.get("token").getAsString());
-                            response = adminController.getAllPendingRecitations(email,value);
-                        }
-                        else {
-                            JsonObject error = new JsonObject();
-                            error.addProperty("status", "401");
-                            response = gson.toJson(error);
-                        }
-
-
-                        //Sending response
-                        writer.write(response);
-                        writer.newLine();
-                        writer.flush();
-                    }
+                try {
+                    Socket socket = serverSocket.accept();
+                    serve(socket);
                 } catch (Exception e) {
                     System.err.println("Error handling client: " + e.getMessage());
                 }
@@ -375,6 +44,15 @@ public class HelloApplication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
+    public static void serve(Socket socket) throws IOException {
+        SocketWrapper socketWrapper = new SocketWrapper(socket);
+        connectedClients.add(socketWrapper);
+        new ReadThread(socketWrapper);
+    }
 }
+
+
+ // /Users/fayeem/Library/Java/JavaVirtualMachines/openjdk-24/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=57990 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /Users/fayeem/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-controls/24.0.1/javafx-controls-24.0.1.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-graphics/24.0.1/javafx-graphics-24.0.1.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-base/24.0.1/javafx-base-24.0.1.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-fxml/24.0.1/javafx-fxml-24.0.1.jar:/Users/fayeem/.m2/repository/com/dlsc/formsfx/formsfx-core/11.6.0/formsfx-core-11.6.0.jar:/Users/fayeem/.m2/repository/com/google/auth/google-auth-library-oauth2-http/1.33.0/google-auth-library-oauth2-http-1.33.0.jar:/Users/fayeem/.m2/repository/com/google/auto/value/auto-value-annotations/1.11.0/auto-value-annotations-1.11.0.jar:/Users/fayeem/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/fayeem/.m2/repository/com/google/auth/google-auth-library-credentials/1.33.0/google-auth-library-credentials-1.33.0.jar:/Users/fayeem/.m2/repository/com/google/http-client/google-http-client/1.46.2/google-http-client-1.46.2.jar:/Users/fayeem/.m2/repository/io/grpc/grpc-context/1.70.0/grpc-context-1.70.0.jar:/Users/fayeem/.m2/repository/io/grpc/grpc-api/1.70.0/grpc-api-1.70.0.jar:/Users/fayeem/.m2/repository/io/opencensus/opencensus-api/0.31.1/opencensus-api-0.31.1.jar:/Users/fayeem/.m2/repository/io/opencensus/opencensus-contrib-http-util/0.31.1/opencensus-contrib-http-util-0.31.1.jar:/Users/fayeem/.m2/repository/com/google/http-client/google-http-client-gson/1.46.2/google-http-client-gson-1.46.2.jar:/Users/fayeem/.m2/repository/com/google/guava/guava/33.4.0-android/guava-33.4.0-android.jar:/Users/fayeem/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/fayeem/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/fayeem/.m2/repository/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/Users/fayeem/.m2/repository/com/google/errorprone/error_prone_annotations/2.36.0/error_prone_annotations-2.36.0.jar:/Users/fayeem/.m2/repository/org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14.jar:/Users/fayeem/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/fayeem/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/Users/fayeem/.m2/repository/org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.jar:/Users/fayeem/.m2/repository/com/google/auto/value/auto-value/1.11.0/auto-value-1.11.0.jar:/Users/fayeem/.m2/repository/com/google/api/api-common/2.47.0/api-common-2.47.0.jar:/Users/fayeem/.m2/repository/javax/annotation/javax.annotation-api/1.3.2/javax.annotation-api-1.3.2.jar:/Users/fayeem/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/Users/fayeem/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.17.2/jackson-databind-2.17.2.jar:/Users/fayeem/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.17.2/jackson-annotations-2.17.2.jar:/Users/fayeem/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.17.2/jackson-core-2.17.2.jar:/Users/fayeem/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.17.2/jackson-datatype-jdk8-2.17.2.jar:/Users/fayeem/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.17.2/jackson-datatype-jsr310-2.17.2.jar:/Users/fayeem/.m2/repository/org/java-websocket/Java-WebSocket/1.6.0/Java-WebSocket-1.6.0.jar:/Users/fayeem/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar -p /Users/fayeem/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-base/24.0.1/javafx-base-24.0.1-mac-aarch64.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-graphics/24.0.1/javafx-graphics-24.0.1-mac-aarch64.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-controls/24.0.1/javafx-controls-24.0.1-mac-aarch64.jar:/Users/fayeem/IdeaProjects/QuranWhispers_Backend/target/classes:/Users/fayeem/.m2/repository/com/google/genai/google-genai/1.4.1/google-genai-1.4.1.jar:/Users/fayeem/.m2/repository/org/xerial/sqlite-jdbc/3.44.1.0/sqlite-jdbc-3.44.1.0.jar:/Users/fayeem/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/Users/fayeem/.m2/repository/org/openjfx/javafx-fxml/24.0.1/javafx-fxml-24.0.1-mac-aarch64.jar -m com.example.server/com.example.server.HelloApplication
