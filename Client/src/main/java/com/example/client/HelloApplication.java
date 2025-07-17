@@ -3,6 +3,7 @@ package com.example.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -32,7 +33,7 @@ public class HelloApplication extends Application {
         SessionManager sessionManager = new SessionManager();
 
         try {
-            socket = new Socket("localhost", 8080);
+            socket = new Socket("localhost", 42069);
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
 
@@ -147,6 +148,11 @@ public class HelloApplication extends Application {
                     System.out.print("Enter Theme: ");
                     data.put("theme", scanner.nextLine());
                 }
+                else if(action.equalsIgnoreCase("getrecieveinfo")) {
+                    data.put("action", "getrecieveinfo");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
                 else if (action.equals("uploadmp3")) {
                     data.put("action", "uploadmp3");
                     data.put("token", sessionManager.getToken());
@@ -162,6 +168,8 @@ public class HelloApplication extends Application {
                     data.put("surah", "Al-Fatiha");
                     data.put("ayah", "1");
                     data.put("filesize", String.valueOf(mp3File.length()));
+
+
 
                     String json = gson.toJson(data);
                     bufferedWriter.write(json);
@@ -210,12 +218,10 @@ public class HelloApplication extends Application {
                     data.put("surah", scanner.nextLine());
                     System.out.print("Enter ayah: ");
                     data.put("ayah", scanner.nextLine());
-                } else if (action.equals("listenrecitation")) {
-                    data.put("action", "listenrecitation");
+                } else if (action.equals("listenapprovedrecitation")) {
+                    data.put("action", "listenapprovedrecitation");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
-                    //System.out.print("Enter Reciter Name: ");
-                    //data.put("reciter", scanner.nextLine());
                     System.out.print("Enter Surah: ");
                     data.put("surah", scanner.nextLine());
                     System.out.print("Enter ayah: ");
@@ -227,29 +233,116 @@ public class HelloApplication extends Application {
                     bufferedWriter.flush();
 
                     DataInputStream dis = new DataInputStream(socket.getInputStream());
-                    long audioSize = dis.readLong();
+
+                    long audioSize = dis.readLong();  // 🔒 Waits for exact file size
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] buffer = new byte[4096];
                     long bytesRead = 0;
+
                     while (bytesRead < audioSize) {
-                        int read = dis.read(buffer, 0, (int) Math.min(buffer.length, audioSize - bytesRead));
+                        int read = dis.read(buffer, 0, (int)Math.min(buffer.length, audioSize - bytesRead));
                         if (read == -1) break;
                         baos.write(buffer, 0, read);
                         bytesRead += read;
                     }
-                    byte[] audioBytes = baos.toByteArray();
-                    File tempMp3 = File.createTempFile("recitation", ".mp3");
-                    try (FileOutputStream fos = new FileOutputStream(tempMp3)) {
-                        fos.write(audioBytes);
+
+                    File mp3File = new File("recitation_" + System.currentTimeMillis() + ".mp3"); // ✅ Save in project root
+                    try (FileOutputStream fos = new FileOutputStream(mp3File)) {
+                        fos.write(baos.toByteArray());
                     }
-                    String uri = tempMp3.toURI().toString();
-                    Media media = new Media(uri);
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setOnEndOfMedia(() -> tempMp3.delete());
-                    mediaPlayer.play();
-                    System.out.println("🔊 Playing audio using MediaPlayer...");
+                    System.out.println("✅ MP3 file saved to: " + mp3File.getAbsolutePath());
+                    System.out.println("MP3 file size = " + mp3File.length() + " bytes");
+
+                    javafx.application.Platform.runLater(() -> {
+                        try {
+                            String uri = mp3File.toURI().toString();
+                            Media media = new Media(uri);
+                            MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+                            mediaPlayer.setOnEndOfMedia(() -> {
+                                mediaPlayer.dispose(); // Only dispose player
+                                System.out.println("Audio playback finished.");
+                            });
+
+                            mediaPlayer.setOnError(() -> {
+                                System.err.println("Media error: " + mediaPlayer.getError().getMessage());
+                            });
+
+                            mediaPlayer.play();
+                            System.out.println("🔊 Playing audio...");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    System.out.print("Enter reciter_name: ");
+
                     continue;
-                } else if (action.equals("getallinfo")) {
+                }
+                else if(action.equals("listenpendingrecitation")) {
+                    data.put("action", "listenpendingrecitation");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                    System.out.print("Enter reciter_name: ");
+                    data.put("recitername", scanner.nextLine());
+                    System.out.print("Enter Surah: ");
+                    data.put("surah", scanner.nextLine());
+                    System.out.print("Enter ayah: ");
+                    data.put("ayah", scanner.nextLine());
+
+                    String json = gson.toJson(data);
+                    bufferedWriter.write(json);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+
+                    DataInputStream dis = new DataInputStream(socket.getInputStream());
+
+                    long audioSize = dis.readLong();  // 🔒 Waits for exact file size
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[4096];
+                    long bytesRead = 0;
+
+                    while (bytesRead < audioSize) {
+                        int read = dis.read(buffer, 0, (int)Math.min(buffer.length, audioSize - bytesRead));
+                        if (read == -1) break;
+                        baos.write(buffer, 0, read);
+                        bytesRead += read;
+                    }
+
+                    File mp3File = new File("recitation_" + System.currentTimeMillis() + ".mp3"); // ✅ Save in project root
+                    try (FileOutputStream fos = new FileOutputStream(mp3File)) {
+                        fos.write(baos.toByteArray());
+                    }
+                    System.out.println("✅ MP3 file saved to: " + mp3File.getAbsolutePath());
+                    System.out.println("MP3 file size = " + mp3File.length() + " bytes");
+
+                    javafx.application.Platform.runLater(() -> {
+                        try {
+                            String uri = mp3File.toURI().toString();
+                            Media media = new Media(uri);
+                            MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+                            mediaPlayer.setOnEndOfMedia(() -> {
+                                mediaPlayer.dispose(); // Only dispose player
+                                System.out.println("Audio playback finished.");
+                            });
+
+                            mediaPlayer.setOnError(() -> {
+                                System.err.println("Media error: " + mediaPlayer.getError().getMessage());
+                            });
+
+                            mediaPlayer.play();
+                            System.out.println("🔊 Playing audio...");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    System.out.print("Enter reciter_name: ");
+
+                    continue;
+                }
+                else if (action.equals("getallinfo")) {
                     data.put("action", "getallinfo");
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
@@ -280,10 +373,117 @@ public class HelloApplication extends Application {
                     data.put("token", sessionManager.getToken());
                     data.put("email", sessionManager.getEmail());
                 }
+                else if (action.equals("getlist")) {
+                    data.put("action", "getlist");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if (action.equals("getprofileinfo")) {
+                    data.put("action", "getprofileinfo");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equals("generateapibasedverse")) {
+                    data.put("action", "generateapibasedverse");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                    String text = scanner.nextLine();
+                    data.put("text", text);
+                }
+                else if(action.equals("getallusers")) {
+                    data.put("action", "getallusers");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equals("getallverses")) {
+                    data.put("action", "getallverses");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equalsIgnoreCase("getAllPendingRecitations")) {
+                    data.put("action", "getAllPendingRecitations");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equalsIgnoreCase("banuser")) {
+                    data.put("action", "banuser");
+                    data.put("token", sessionManager.getToken());
+                    System.out.println("Give username");
+                    String username = scanner.nextLine();
+                    data.put("email", sessionManager.getEmail());
+                    data.put("username", username);
+                }
+                else if(action.equalsIgnoreCase("unbanuser")) {
+                    data.put("action", "banuser");
+                    data.put("token", sessionManager.getToken());
+                    System.out.println("Give username");
+                    String username = scanner.nextLine();
+                    data.put("username", username);
+                }
+                else if(action.equalsIgnoreCase("registerchat")) {
+                    data.put("action", "registerchat");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                    System.out.println("Give senderusername");
+                    String sender_username = scanner.nextLine();
+                    System.out.println("Give receiverusername");
+                    String receiverusername =  scanner.nextLine();
+                    data.put("receiver_username", receiverusername);
+                    data.put("sender_username", sender_username);
+                    System.out.println("Body");
+                    String body = scanner.nextLine();
+                    System.out.println("type");
+                    String type = scanner.nextLine();
+                    System.out.println("reply_chat_id");
+                    String reply_chat_id = scanner.nextLine();
+                    //scanner.nextLine();
+                    System.out.println("Surah");
+                    String surah = scanner.nextLine();
+                    System.out.println("Ayah");
+                    String ayah = scanner.nextLine();
 
+                    data.put("body", body);
+                    data.put("type", type);
+                    data.put("surah", surah);
+                    data.put("reply_chat_id", reply_chat_id);
+                    data.put("ayah", ayah);
+                }
+                else if(action.equalsIgnoreCase("clearchathistory")) {
+                    data.put("action", "clearchathistory");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equalsIgnoreCase("deletechatbyid")) {
+                    data.put("action", "deletechatbyid");
+                    String id = scanner.nextLine();
+                    data.put("id", id);
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equalsIgnoreCase("deletelatest")) {
+                    String id = scanner.nextLine();
+                    data.put("action", "deletelatest");
+                    data.put("number_of_chats", id);
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+
+                }
+                else if(action.equalsIgnoreCase("retrievechat")) {
+                    data.put("action", "retrievechat");
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
+                else if(action.equalsIgnoreCase("askai")) {
+                    String question = scanner.nextLine();
+                    data.put("action", "askai");
+                    data.put("question", question);
+                    data.put("token", sessionManager.getToken());
+                    data.put("email", sessionManager.getEmail());
+                }
                 else {
                     continue;
                 }
+                // deleteuser baki
 
                 String json = gson.toJson(data);
                 bufferedWriter.write(json);
@@ -314,4 +514,4 @@ public class HelloApplication extends Application {
         }
     }
 }
-// /Users/fayeem/Downloads/001.mp3
+// /Users/fayeem/IdeaProjects/Client/src/main/resources/com/example/client/001.mp3

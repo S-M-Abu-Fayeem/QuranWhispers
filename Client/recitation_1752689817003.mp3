@@ -1,0 +1,2 @@
+":"500","error":"Parameter \"#3\" is not set; SQL statement:\nSELECT audio_data FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ? ORDER BY RAND() LIMIT 1 [90012-232]"}
+

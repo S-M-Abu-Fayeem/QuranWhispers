@@ -6,13 +6,15 @@ import com.google.gson.JsonObject;
 
 import java.sql.*;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class GetList {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String GET(String email, int token) {
+    public synchronized String GET(String email, int token) {
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
-        TokenValidator tokenValidator = new TokenValidator();
+        //TokenValidator tokenValidator = new TokenValidator();
 
         try (Connection connection = DriverManager.getConnection(DB_URL)) {
             data.addProperty("email", email);

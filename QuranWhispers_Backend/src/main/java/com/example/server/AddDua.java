@@ -8,11 +8,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class AddDua {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
     public String SET_DUA(String email, int valueOfToken, String title, String arabicBody, String englishBody) {
-        TokenValidator tokenValidator = new TokenValidator();
         IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
@@ -42,7 +43,7 @@ public class AddDua {
         return gson.toJson(data);
     }
     public String SET_THEME_MOOD(String email, int valueOfToken, String theme , String emotion, int ayah, String surah) {
-        TokenValidator tokenValidator = new TokenValidator();
+       // TokenValidator tokenValidator = new TokenValidator();
         IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();

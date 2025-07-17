@@ -6,11 +6,13 @@ import com.google.gson.JsonObject;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+import static com.example.server.HelloApplication.tokenValidator;
+
 public class ReceivedVerseControll {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String SEND(String email, int valueOfToken, String usernameOfFriend, String emotion, String theme, int ayah, String surah) {
-        TokenValidator tokenValidator = new TokenValidator();
+    public synchronized String SEND(String email, int valueOfToken, String usernameOfFriend, String emotion, String theme, int ayah, String surah) {
+        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
@@ -94,7 +96,7 @@ public class ReceivedVerseControll {
 
         return gson.toJson(data);
     }
-    public String DELETE(String email, int token, String senderUsername, String surah, int ayah, String theme, String emotion) {
+    public synchronized String DELETE(String email, int token, String senderUsername, String surah, int ayah, String theme, String emotion) {
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);

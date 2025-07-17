@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Register {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String GET(String email, String username, String password) {
+    public synchronized String GET(String email, String username, String password) {
         HashMap<String, String> data = new HashMap<>();
         Gson gson = new Gson();
         data.put("email", email);
@@ -35,10 +35,11 @@ public class Register {
 
             HashingFunction hashFunction = new HashingFunction();
             int hashValue = hashFunction.getHash(password);
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO USERS (username, email, password, active_user) VALUES (?, ?, ?, ?)");
             ps.setString(1, username);
             ps.setString(2, email);
             ps.setInt(3, hashValue);
+            ps.setBoolean(4, true);
             ps.executeUpdate();
 
             data.put("status", "200");

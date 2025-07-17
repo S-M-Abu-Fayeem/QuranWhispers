@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS USERS (
                                      username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password INT NOT NULL,
+    active_user BOOLEAN DEFAULT TRUE,
     token INT DEFAULT -1,
     total_saved_verse INT DEFAULT 0,
     total_received_verse INT DEFAULT 0,
@@ -118,3 +119,17 @@ CREATE TABLE IF NOT EXISTS Recitations (
     audio_data BLOB,
     approved_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+CREATE TABLE IF NOT EXISTS CHATS(
+                       id IDENTITY PRIMARY KEY,
+                       sender_username VARCHAR(255) NOT NULL,
+                       receiver_username VARCHAR(255),         -- NULL for broadcast/system messages
+                       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       body TEXT NOT NULL,
+                       type VARCHAR(50) NOT NULL,
+                       reply_chat_id BIGINT,                   -- for replies, optional
+                       surah VARCHAR(50),
+                       ayah INTEGER,
+                       FOREIGN KEY (reply_chat_id) REFERENCES CHATS(id) ON DELETE SET NULL
+);
+

@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 public class LogOut {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
 
-    public String Logout(String email, int token) {
+    public synchronized String Logout(String email, int token) {
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
         json.addProperty("email", email);

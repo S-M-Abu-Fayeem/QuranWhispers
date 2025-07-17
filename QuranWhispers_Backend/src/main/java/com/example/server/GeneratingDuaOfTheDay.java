@@ -42,6 +42,7 @@ public class GeneratingDuaOfTheDay {
                 data.addProperty("title", randomDua.getString("title"));
                 data.addProperty("english", randomDua.getString("body_english"));
                 data.addProperty("arabic", randomDua.getString("body_arabic"));
+                data.addProperty("status", "200");
             }
 
         } catch (Exception e) {
