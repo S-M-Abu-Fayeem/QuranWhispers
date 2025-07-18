@@ -19,7 +19,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminForumController">
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
-        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay"/>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
         <Label layoutX="96.0" layoutY="218.0" prefHeight="84.0" prefWidth="353.0" styleClass="learnMoreSubtitle" text="Take full charge of the conversation flow with powerful and exclusive admin commands." textFill="#4f4f4f" wrapText="true">
             <font>
                 <Font name="Century Gothic" size="16.0" />
@@ -56,39 +56,39 @@
         </Rectangle>
         <VBox layoutX="211.0" layoutY="396.0" spacing="5.0">
             <children>
-            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/delete(msg_id)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand1" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/delete(msg_id)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/ban(username)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand2" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/ban(username)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/unban(username)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand3" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/unban(username)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/clearHistory/" wrapText="true">
+            <Label onMouseClicked="#handleCommand4" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/clearHistory/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" text="/removeLatest(num)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand5" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/removeLatest(num)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
             </children>
         </VBox>
-        <TextArea styleClass="text-area-admin" fx:id="promptArea" layoutX="535.0" layoutY="556.0" prefHeight="84.0" prefWidth="559.0" wrapText="true">
+        <TextArea fx:id="promptArea" layoutX="535.0" layoutY="556.0" prefHeight="84.0" prefWidth="559.0" styleClass="text-area-admin" wrapText="true">
             <font>
                 <Font name="Century Gothic" size="14.0" />
             </font>
         </TextArea>
-        <ScrollPane styleClass="scroll-pane-admin" layoutX="535.0" layoutY="188.0" prefHeight="354.0" prefWidth="643.0">
+        <ScrollPane layoutX="535.0" layoutY="188.0" prefHeight="354.0" prefWidth="643.0" styleClass="scroll-pane-admin">
             <content>
                 <VBox fx:id="containerVBox" prefHeight="346.0" prefWidth="630.0" />
             </content>
@@ -109,24 +109,24 @@
             <Font name="Segoe UI Black" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="copyrightText" alignment="CENTER" layoutX="407.0" layoutY="708.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE" translateX="-10.0" translateY="-10.0">
+      <Label fx:id="copyrightText" alignment="CENTER" layoutX="407.0" layoutY="708.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" styleClass="navlink" text="Copyright © QuranWhispers2025" textFill="WHITE" translateX="-10.0" translateY="-10.0">
          <font>
             <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
       <HBox layoutX="692.0" layoutY="75.0" spacing="25.0" translateX="-20.0" translateY="-20.0">
          <children>
-            <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="#8e8e8e">
+            <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" styleClass="navlink" text="View" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" text="Insert" textFill="#8e8e8e">
+            <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" styleClass="navlink" text="Insert" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" text="Approve" textFill="#8e8e8e">
+            <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" styleClass="navlink" text="Approve" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -134,17 +134,17 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="WHITE">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1041.0" layoutY="80.0" onMouseClicked="#handleLogoutBtn" translateX="-20.0" translateY="-20.0">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1041.0" layoutY="80.0" onMouseClicked="#handleLogoutBtn" styleClass="nav-btn-wrapper" translateX="-20.0" translateY="-20.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" layoutY="-12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" text="Logout">
+            <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" styleClass="nav-btn" text="Logout">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>

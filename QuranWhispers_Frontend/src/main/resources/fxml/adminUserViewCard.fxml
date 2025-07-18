@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="44.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminUserViewCardController">
    <children>
@@ -35,10 +35,14 @@
             <Font name="Century Gothic" size="15.0" />
          </font>
       </Label>
-      <ImageView fx:id="deleteBtn" fitHeight="24.0" fitWidth="24.0" layoutX="711.0" layoutY="11.0" onMouseClicked="#handleDeleteBtn" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/delete.png" />
-         </image>
-      </ImageView>
+      <Group layoutX="711.0" layoutY="11.0" styleClass="nav-btn-wrapper">
+         <children>
+            <ImageView fx:id="deleteBtn" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleDeleteBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+               <image>
+                  <Image url="@../images/delete.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
    </children>
 </AnchorPane>

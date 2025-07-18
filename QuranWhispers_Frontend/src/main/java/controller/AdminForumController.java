@@ -63,4 +63,39 @@ public class AdminForumController extends BaseControllerAdmin{
         extractMessageCommandAndArgs(promptArea.getText());
         promptArea.clear();
     }
+
+    public void handleCommand1() {
+        playClickSound();
+        System.out.println("Command 1 button pressed");
+        promptArea.clear();
+        promptArea.setText("/delete(msg_id)/");
+    }
+
+    public void handleCommand2() {
+        playClickSound();
+        System.out.println("Command 2 button pressed");
+        promptArea.clear();
+        promptArea.setText("/ban(username)/");
+    }
+
+    public void handleCommand3() {
+        playClickSound();
+        System.out.println("Command 3 button pressed");
+        promptArea.clear();
+        promptArea.setText("/unban(username)/");
+    }
+
+    public void handleCommand4() {
+        playClickSound();
+        System.out.println("Command 4 button pressed");
+        promptArea.clear();
+        promptArea.setText("/clearHistory/");
+    }
+
+    public void handleCommand5() {
+        playClickSound();
+        System.out.println("Command 5 button pressed");
+        promptArea.clear();
+        promptArea.setText("/removeLatest(num)/");
+    }
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -19,11 +20,26 @@
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
         <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
-        <Label alignment="CENTER" layoutX="466.0" layoutY="317.0" prefHeight="58.0" prefWidth="348.0" text="Favourite Verses">
-            <font>
-                <Font name="Segoe UI Black" size="35.0" />
-            </font>
-        </Label>
+              <TextField fx:id="filterField" layoutX="998.0" layoutY="338.0" prefHeight="30.0" prefWidth="155.0" promptText="search" styleClass="form-field-black" translateY="-1.0">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </TextField>
+              <Group fx:id="favouritesBtn1" layoutX="1162.0" layoutY="340.0" onMouseClicked="#handleFilterBtn" styleClass="nav-btn-wrapper" translateY="-3.0">
+                 <children>
+                    <Rectangle fx:id="filterRectangle" arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="30.0" />
+                    <ImageView fx:id="filterImageView" fitHeight="20.0" fitWidth="20.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+                       <image>
+                          <Image url="@../images/search.png" />
+                       </image>
+                    </ImageView>
+                 </children>
+              </Group>
+          <Label alignment="CENTER" layoutX="93.0" layoutY="317.0" prefHeight="58.0" prefWidth="348.0" text="Favourite Verses">
+              <font>
+                  <Font name="Segoe UI Black" size="40.0" />
+              </font>
+          </Label>
       <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="350.0" layoutX="79.0" layoutY="382.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1139.0">
          <effect>
             <DropShadow height="10.75" radius="7.4375">
@@ -72,14 +88,14 @@
         </Group>
         <Group layoutX="771.0" layoutY="157.0">
            <children>
-              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="WHITE" height="138.0" stroke="#ff6ec7" strokeType="INSIDE" width="200.0" />
-              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#ff70c8cc" height="63.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
-              <Label alignment="CENTER" layoutX="47.0" layoutY="17.0" prefHeight="30.0" prefWidth="105.0" text="Verse Saved">
+              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="WHITE" height="110.0" stroke="#ff6ec7" strokeType="INSIDE" width="200.0" />
+              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#ff70c8cc" height="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
+              <Label alignment="CENTER" layoutX="48.0" layoutY="10.0" prefHeight="30.0" prefWidth="105.0" text="Verse Saved">
                  <font>
                     <Font name="Century Gothic Bold" size="16.0" />
                  </font>
               </Label>
-              <Label fx:id="verseSaved" alignment="CENTER" layoutX="48.0" layoutY="73.0" prefHeight="30.0" prefWidth="105.0" text="0">
+              <Label fx:id="verseSaved" alignment="CENTER" layoutX="48.0" layoutY="55.0" prefHeight="30.0" prefWidth="105.0" text="0">
                  <font>
                     <Font name="Century Gothic" size="40.0" />
                  </font>
@@ -88,14 +104,14 @@
         </Group>
         <Group layoutX="991.0" layoutY="157.0">
            <children>
-              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="WHITE" height="138.0" stroke="#ff6ec7" strokeType="INSIDE" width="200.0" />
-              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#ff70c8cc" height="63.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
-              <Label alignment="CENTER" layoutX="39.0" layoutY="17.0" prefHeight="30.0" prefWidth="124.0" text="Verse Received">
+              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="WHITE" height="110.0" stroke="#ff6ec7" strokeType="INSIDE" width="200.0" />
+              <Rectangle arcHeight="7.0" arcWidth="7.0" fill="#ff70c8cc" height="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
+              <Label alignment="CENTER" layoutX="38.0" layoutY="10.0" prefHeight="30.0" prefWidth="124.0" text="Verse Received">
                  <font>
                     <Font name="Century Gothic Bold" size="16.0" />
                  </font>
               </Label>
-              <Label fx:id="verseReceived" alignment="CENTER" layoutX="48.0" layoutY="73.0" prefHeight="30.0" prefWidth="105.0" text="0">
+              <Label fx:id="verseReceived" alignment="CENTER" layoutX="48.0" layoutY="50.0" prefHeight="61.0" prefWidth="105.0" text="0">
                  <font>
                     <Font name="Century Gothic" size="40.0" />
                  </font>

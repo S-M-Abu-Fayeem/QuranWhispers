@@ -184,6 +184,10 @@
   -fx-background-color: transparent;
 }
 
+.sidebar-wrapper:hover .sidebar {
+  -fx-fill: #000000;
+}
+
 /* Apply animation to the hero image */
 .hero-img {
   -fx-cursor: hand;

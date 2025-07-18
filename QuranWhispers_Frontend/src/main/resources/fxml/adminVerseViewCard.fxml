@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -29,11 +30,15 @@
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <ImageView fx:id="deleteBtn" fitHeight="24.0" fitWidth="24.0" layoutX="711.0" layoutY="11.0" onMouseClicked="#handleDeleteBtn" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/delete.png" />
-         </image>
-      </ImageView>
+      <Group layoutX="711.0" layoutY="11.0" styleClass="nav-btn-wrapper">
+         <children>
+            <ImageView fx:id="deleteBtn" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleDeleteBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+               <image>
+                  <Image url="@../images/delete.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
       <Label fx:id="emotionField" alignment="CENTER" layoutX="262.0" layoutY="14.0" prefHeight="19.0" prefWidth="188.0" text="Emotion" textFill="WHITE">
          <font>
             <Font name="Century Gothic" size="14.0" />

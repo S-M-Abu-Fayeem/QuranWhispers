@@ -1,0 +1,7 @@
+@use '../config/variables';
+
+.sidebar-wrapper:hover {
+  .sidebar {
+    -fx-fill: variables.$secondary-color;
+  }
+}

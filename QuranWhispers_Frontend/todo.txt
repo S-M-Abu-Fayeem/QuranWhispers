@@ -2,15 +2,13 @@ SCSS command
 sass --watch scss/main.scss:main.css --no-source-map
 
 CSS Design
-- Search Page
-    - catagoryListView
 - UI Enhancement
 
 Features
+- Custom Alerts and Status Messages
 - Database Connect
     - Recitation Management
     - Forum Management
 
-- verse filter in profile / notification
 - Audio Player for Recitations
 - Spinners, Loaders

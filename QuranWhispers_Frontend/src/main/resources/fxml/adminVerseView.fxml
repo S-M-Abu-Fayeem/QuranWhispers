@@ -72,9 +72,9 @@
                   </DropShadow>
                </effect>
             </Rectangle>
-            <Group fx:id="userViewBtn" layoutX="113.0" layoutY="283.0" onMouseClicked="#handleUserViewBtn">
+            <Group fx:id="userViewBtn" layoutX="113.0" layoutY="283.0" onMouseClicked="#handleUserViewBtn" styleClass="sidebar-wrapper">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="sidebar" width="184.0" />
                   <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/user.png" />
@@ -87,9 +87,9 @@
                   </Label>
                </children>
             </Group>
-      <Group fx:id="verseViewBtn" layoutX="113.0" layoutY="348.0" onMouseClicked="#handleVerseViewBtn">
+      <Group fx:id="verseViewBtn" layoutX="113.0" layoutY="348.0" onMouseClicked="#handleVerseViewBtn" styleClass="sidebar-wrapper">
          <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#1e1e1e" height="49.0" onMouseClicked="#handleVerseViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#1e1e1e" height="49.0" onMouseClicked="#handleVerseViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="sidebar" width="184.0" />
                   <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/verse.png" />
@@ -102,9 +102,9 @@
                   </Label>
          </children>
       </Group>
-            <Group fx:id="duaViewBtn" layoutX="113.0" layoutY="412.0" onMouseClicked="#handleDuaViewBtn">
+            <Group fx:id="duaViewBtn" layoutX="113.0" layoutY="412.0" onMouseClicked="#handleDuaViewBtn" styleClass="sidebar-wrapper">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" onMouseClicked="#handleDuaViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" onMouseClicked="#handleDuaViewBtn" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="sidebar" width="184.0" />
                   <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/dua.png" />
@@ -117,9 +117,9 @@
                   </Label>
                </children>
             </Group>
-            <Group fx:id="recitationViewBtn" layoutX="113.0" layoutY="477.0" onMouseClicked="#handleRecitationViewBtn">
+            <Group fx:id="recitationViewBtn" layoutX="113.0" layoutY="477.0" onMouseClicked="#handleRecitationViewBtn" styleClass="sidebar-wrapper">
                <children>
-                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="184.0" />
+                  <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#7c7c7c" height="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="sidebar" width="184.0" />
                   <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="16.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/speaker.png" />
@@ -139,24 +139,24 @@
                 <Font name="Segoe UI Black" size="50.0" />
             </font>
         </Label>
-        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" text="Copyright © QuranWhispers2025" textFill="WHITE">
+        <Label fx:id="copyrightText" alignment="CENTER" layoutX="397.0" layoutY="698.0" onMouseClicked="#handleCopyrightText" prefHeight="40.0" prefWidth="444.0" styleClass="navlink" text="Copyright © QuranWhispers2025" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="16.0" />
             </font>
         </Label>
       <HBox layoutX="692.0" layoutY="75.0" spacing="25.0" translateX="-20.0" translateY="-20.0">
          <children>
-            <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" text="View" textFill="WHITE">
+            <Label fx:id="viewNavlink" alignment="CENTER" onMouseClicked="#handleViewNavlink" styleClass="navlink" text="View" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" text="Insert" textFill="#8e8e8e">
+            <Label fx:id="insertNavlink" alignment="CENTER" onMouseClicked="#handleInsertNavlink" styleClass="navlink" text="Insert" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" text="Approve" textFill="#8e8e8e">
+            <Label fx:id="approveNavlink" alignment="CENTER" onMouseClicked="#handleApproveNavlink" styleClass="navlink" text="Approve" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -164,17 +164,17 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" text="Forum" textFill="#8e8e8e">
+            <Label fx:id="forumNavlink" alignment="CENTER" onMouseClicked="#handleForumNavlink" styleClass="navlink" text="Forum" textFill="#8e8e8e">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1041.0" layoutY="80.0" onMouseClicked="#handleLogoutBtn" translateX="-20.0" translateY="-20.0">
+      <Group fx:id="logoutBtn" accessibleRole="BUTTON" layoutX="1041.0" layoutY="80.0" onMouseClicked="#handleLogoutBtn" styleClass="nav-btn-wrapper" translateX="-20.0" translateY="-20.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="WHITE" height="40.0" layoutY="-12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="165.0" />
-            <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" text="Logout">
+            <Label alignment="CENTER" layoutX="49.0" layoutY="-4.0" styleClass="nav-btn" text="Logout">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
