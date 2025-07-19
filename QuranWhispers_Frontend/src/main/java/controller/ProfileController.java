@@ -38,6 +38,7 @@ public class ProfileController extends BaseController {
         System.out.println("Filter button pressed");
         playClickSound();
         filterOn = !filterOn;
+        filterField.setEditable(!filterOn);
 
         if (!filterOn) {
             filterField.clear();
@@ -56,6 +57,7 @@ public class ProfileController extends BaseController {
         if (filterText.isEmpty()) {
             System.out.println("Empty filter text");
             filterOn = !filterOn;
+            filterField.setEditable(!filterOn);
             return;
         }
 

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -155,47 +156,6 @@
             </font>
         </Text>
         <ListView fx:id="categoryListView" layoutX="96.0" layoutY="429.0" prefHeight="225.0" prefWidth="346.0" visible="false" />
-        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlayUpper" />
-        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="411.0" layoutX="375.0" layoutY="175.0" smooth="false" stroke="#ff6ec7" strokeType="INSIDE" width="530.0" />
-        <Label alignment="CENTER" layoutX="450.0" layoutY="202.0" prefHeight="94.0" prefWidth="378.0" text="SEARCH USING GEMINI AI">
-           <font>
-              <Font name="Segoe UI Black" size="25.0" />
-           </font>
-        </Label>
-        <Group fx:id="searchBtn" layoutX="422.0" layoutY="469.0" onMouseClicked="#handleSearchBtn" styleClass="btn-pink-wrapper">
-           <children>
-              <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="50.0" layoutY="25.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
-              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" styleClass="btn-pink" text="Search" textFill="WHITE">
-                 <font>
-                    <Font name="Segoe UI Black" size="20.0" />
-                 </font>
-              </Label>
-           </children>
-        </Group>
-      <Group layoutX="870.0" layoutY="190.0" styleClass="nav-btn-wrapper">
-         <children>
-              <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
-                 <image>
-                    <Image url="@../images/cross.png" />
-                 </image>
-              </ImageView>
-         </children>
-      </Group>
-      <TextArea fx:id="promptTextArea" layoutX="422.0" layoutY="325.0" prefHeight="150.0" prefWidth="434.0" styleClass="form-field-black" text="Tell us your story, share your thoughts, or express how you're feeling today—let's hear it in detail!" wrapText="true">
-         <font>
-            <Font name="Century Gothic" size="14.0" />
-         </font>
-      </TextArea>
-      <Label alignment="CENTER" layoutX="400.0" layoutY="260.0" prefHeight="30.0" prefWidth="331.0" text="Struggling to find the right emotion/theme?">
-         <font>
-            <Font name="Century Gothic" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="695.0" layoutY="260.0" prefHeight="30.0" prefWidth="143.0" text="We've got you covered" textFill="#ff6ec7">
-         <font>
-            <Font name="Century Gothic" size="12.0" />
-         </font>
-      </Label>
       <HBox layoutX="596.0" layoutY="86.0" spacing="25.0" translateX="-30.0" translateY="-30.0">
          <children>
             <Label fx:id="homeNavlink" alignment="CENTER" onMouseClicked="#handleHomeNavlink" text="Home" textFill="WHITE">
@@ -253,5 +213,52 @@
             </Label>
          </children>
       </Group>
-    </children>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlayUpper" />
+        <Rectangle arcHeight="14.0" arcWidth="14.0" fill="WHITE" height="411.0" layoutX="375.0" layoutY="175.0" smooth="false" stroke="#ff6ec7" strokeType="INSIDE" width="530.0" />
+        <Label alignment="CENTER" layoutX="450.0" layoutY="202.0" prefHeight="94.0" prefWidth="378.0" text="SEARCH USING GEMINI AI">
+           <font>
+              <Font name="Segoe UI Black" size="25.0" />
+           </font>
+        </Label>
+        <Group fx:id="searchBtn" layoutX="422.0" layoutY="469.0" onMouseClicked="#handleSearchBtn" styleClass="btn-pink-wrapper">
+           <children>
+              <Rectangle arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="50.0" layoutY="25.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="0.0" width="434.0" />
+              <Label alignment="CENTER" layoutX="162.0" layoutY="35.0" prefHeight="30.0" prefWidth="110.0" styleClass="btn-pink" text="Search" textFill="WHITE">
+                 <font>
+                    <Font name="Segoe UI Black" size="20.0" />
+                 </font>
+              </Label>
+           </children>
+        </Group>
+      <Group layoutX="870.0" layoutY="190.0" styleClass="nav-btn-wrapper">
+         <children>
+              <ImageView fx:id="closeBtn" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleCloseBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+                 <image>
+                    <Image url="@../images/cross.png" />
+                 </image>
+              </ImageView>
+         </children>
+      </Group>
+      <TextArea fx:id="promptTextArea" layoutX="422.0" layoutY="325.0" prefHeight="150.0" prefWidth="434.0" styleClass="form-field-black" text="Tell us your story, share your thoughts, or express how you're feeling today—let's hear it in detail!" wrapText="true">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </TextArea>
+      <Label alignment="CENTER" layoutX="400.0" layoutY="260.0" prefHeight="30.0" prefWidth="331.0" text="Struggling to find the right emotion/theme?">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="695.0" layoutY="260.0" prefHeight="30.0" prefWidth="143.0" text="We've got you covered" textFill="#ff6ec7">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <Pane fx:id="loadingOverlay" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="loading-overlay" translateX="-10.0" translateY="-10.0" />
+        <StackPane layoutX="623.0" layoutY="358.0">
+           <children>
+              <Rectangle fx:id="loaderRectangle" fill="transparent" height="30.0" stroke="#ff6ec7" strokeWidth="4.0" width="30.0" />
+           </children>
+        </StackPane>
+     </children>
 </AnchorPane>

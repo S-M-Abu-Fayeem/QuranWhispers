@@ -107,6 +107,7 @@ public class ReadThread implements Runnable {
                             int token = json.get("token").getAsInt();
                             String emotion = json.get("emotion").getAsString();
                             response = randomizedSelection.generateMoodBased(email, token, emotion);
+                            System.out.println(response.toString());
                         }
                         case "generatethemebasedverse" -> {
                             int token = json.get("token").getAsInt();

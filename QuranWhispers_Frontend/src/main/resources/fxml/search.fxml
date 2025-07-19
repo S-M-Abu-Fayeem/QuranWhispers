@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -225,5 +226,11 @@
             </Label>
          </children>
       </Group>
+      <Pane fx:id="loadingOverlay" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="loading-overlay" translateX="-20.0" translateY="-20.0" />
+      <StackPane layoutX="633.0" layoutY="368.0" translateX="-20.0" translateY="-20.0">
+         <children>
+            <Rectangle fx:id="loaderRectangle" fill="transparent" height="30.0" stroke="#ff6ec7" strokeWidth="4.0" width="30.0" />
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

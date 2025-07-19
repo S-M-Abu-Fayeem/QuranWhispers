@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +10,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,6 +50,42 @@ public class SearchController extends BaseController implements Initializable {
     String [] themeArray; // = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
 
     String posterPath;
+
+    boolean isGenerateAIloading = false;
+    @FXML
+    Pane loadingOverlay;
+    @FXML private Rectangle loaderRectangle;
+    private double angle = 0;
+    private double speedFactor = 3;
+
+    public void setupLoaderAnimation() {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                angle += speedFactor;
+                if (angle >= 360) {
+                    angle = 0;
+                }
+                loaderRectangle.setRotate(angle);
+            }
+        };
+        animationTimer.start();
+    }
+
+    public void toggleLoadingOverlay(boolean show) {
+        if (show) {
+            loadingOverlay.setVisible(true);
+            loaderRectangle.setVisible(true);
+            setupLoaderAnimation();
+        } else {
+            loadingOverlay.setVisible(false);
+            loaderRectangle.setVisible(false);
+        }
+    }
+
+    public void setCategoryListViewVisible(boolean categoryListViewVisible) {
+        this.categoryListViewVisible = categoryListViewVisible;
+    }
 
     public void setupListView() {
         Task<Void> getListBackendAPITask= new Task<Void>() {
@@ -90,6 +129,7 @@ public class SearchController extends BaseController implements Initializable {
     }
 
     public void setupDua() {
+        toggleLoadingOverlay(isGenerateAIloading);
         Task<Void> getDuaBackendAPITask= new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -153,6 +193,8 @@ public class SearchController extends BaseController implements Initializable {
         Task<Void> posterGenerationTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                isGenerateAIloading = true;
+                toggleLoadingOverlay(isGenerateAIloading);
                 File posterFile = new File(posterPath);
                 if (!posterFile.exists()) {
                     PosterGenerator.generatePosterAndSave(surahNum, ayahNum);
@@ -181,6 +223,8 @@ public class SearchController extends BaseController implements Initializable {
                 } else {
                     System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
                 }
+                isGenerateAIloading =  false;
+                toggleLoadingOverlay(isGenerateAIloading);
             });
         });
         new Thread(posterGenerationTask).start();

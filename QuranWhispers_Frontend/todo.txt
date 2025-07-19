@@ -10,5 +10,5 @@ Features
     - Recitation Management
     - Forum Management
 
+- fix verse poster text
 - Audio Player for Recitations
-- Spinners, Loaders
