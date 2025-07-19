@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="135.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ForumCardController">
+   <children>
+      <Rectangle fx:id="msgCard" arcHeight="30.0" arcWidth="30.0" fill="#ffffff00" height="135.0" stroke="#ff6ec7" strokeType="INSIDE" strokeWidth="3.0" width="550.0" />
+      <Group layoutX="16.0" layoutY="14.0">
+         <children>
+            <Rectangle fx:id="senderUsernameWrapper" arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="127.0" />
+            <Label fx:id="senderUsername" alignment="CENTER" layoutX="24.0" prefHeight="30.0" prefWidth="79.0" text="Sender">
+               <font>
+                  <Font name="Segoe UI Black" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Group layoutX="154.0" layoutY="14.0">
+         <children>
+            <Rectangle fx:id="receiverUsernameWrapper" arcHeight="14.0" arcWidth="14.0" fill="#1e1e1ecc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="127.0" />
+            <Label fx:id="receiverUsername" alignment="CENTER" layoutX="24.0" prefHeight="30.0" prefWidth="79.0" text="Receiver" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Black" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Text fx:id="msgBody" layoutX="16.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. " wrappingWidth="518.311279296875">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Text>
+      <Group layoutX="164.0" layoutY="24.0" translateX="-10.0" translateY="-10.0">
+         <children>
+            <Rectangle fx:id="replyMsgIDWrapper" arcHeight="14.0" arcWidth="14.0" fill="#a5ff64cc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="127.0" />
+            <Label fx:id="replyMsgID" alignment="CENTER" layoutX="24.0" prefHeight="30.0" prefWidth="79.0" text="Msg ID">
+               <font>
+                  <Font name="Segoe UI Black" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Group layoutX="409.0" layoutY="14.0">
+         <children>
+            <Rectangle fx:id="tagNameWrapper" arcHeight="14.0" arcWidth="14.0" fill="#ff70c8cc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="127.0" />
+            <Label fx:id="tagName" alignment="CENTER" layoutX="24.0" prefHeight="30.0" prefWidth="79.0" text="Question">
+               <font>
+                  <Font name="Segoe UI Black" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+   </children>
+</AnchorPane>

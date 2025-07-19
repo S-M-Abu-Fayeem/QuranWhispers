@@ -49,6 +49,10 @@ import controller.AdminRecitationViewController;
 import controller.AdminRecitationViewCardController;
 
 import controller.GlobalShareController;
+
+import controller.ForumCardController;
+import controller.ForumCardVerseController;
+
 import controller.ForumController;
 import controller.AdminForumController;
 
@@ -110,6 +114,7 @@ public class MainApp extends Application {
         initController(GlobalState.NOTIFICATION_CARD_FILE, NotificationCardController.class, sceneController);
         initController(GlobalState.PROFILE_FILE, ProfileController.class, sceneController);
         initController(GlobalState.PROFILE_CARD_FILE, ProfileCardController.class, sceneController);
+
         initController(GlobalState.GLOBAL_SHARE_FILE, GlobalShareController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
@@ -124,6 +129,10 @@ public class MainApp extends Application {
 
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
+
+        initController(GlobalState.FORUM_CARD_FILE, ForumCardController.class, sceneController);
+        initController(GlobalState.FORUM_CARD_VERSE_FILE, ForumCardVerseController.class, sceneController);
+
         initController(GlobalState.FORUM_FILE, ForumController.class, sceneController);
         initController(GlobalState.ADMIN_FORUM_FILE, AdminForumController.class, sceneController);
 

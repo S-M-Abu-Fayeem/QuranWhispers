@@ -5,6 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import util.BackendAPI;
+import util.GlobalState;
+
 import java.net.URL;
 import java.util.HashMap;
 
@@ -36,6 +39,10 @@ public class SceneController {
 
     // Switch to a scene by name, and set the key event handler if available
     public Object switchTo(String name) {
+        if (name.equals(GlobalState.FORUM_FILE) || name.equals(GlobalState.ADMIN_FORUM_FILE)) {
+            BackendAPI.continuousFetch("stop");
+        }
+
         Scene scene = sceneMap.get(name);
         if (scene == null) {
             throw new RuntimeException("Scene not registered: " + name);

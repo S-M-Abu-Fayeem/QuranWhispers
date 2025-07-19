@@ -6,6 +6,104 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class BackendAPI {
+    private static Thread fetchThread = null;
+    private static boolean running = false;
+
+    public static void continuousFetch(String command) {
+        if ("start".equalsIgnoreCase(command)) {
+            if (!running) {
+                running = true;
+
+                fetchThread = new Thread(() -> {
+                    Socket socket = null;
+                    InputStreamReader inputStreamReader = null;
+                    OutputStreamWriter outputStreamWriter = null;
+                    BufferedReader bufferedReader = null;
+                    BufferedWriter bufferedWriter = null;
+
+                    try {
+                        socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
+                        System.out.println("Database Connected Successfully");
+
+                        inputStreamReader = new InputStreamReader(socket.getInputStream());
+                        outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+
+                        bufferedReader = new BufferedReader(inputStreamReader);
+                        bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+                        // Send initial request
+                        HashMap<String, String> data = new HashMap<>();
+                        String json = new JSONObject(data).toString();
+                        bufferedWriter.write(json);
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
+
+                        // Continuous fetch loop
+                        while (!Thread.currentThread().isInterrupted() && running) {  // Check if the thread is interrupted or stopped
+                            try {
+                                String response = bufferedReader.readLine(); // This will block until data is available
+
+                                if (response != null) {
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    System.out.println("Response received: " + jsonResponse.toString()); // Print the response
+                                } else {
+                                    // Handle the case when the response is null (server closed the connection or no data)
+                                    System.out.println("No data received, server may have closed the connection.");
+                                    break; // Exit the loop
+                                }
+                            } catch (Exception e) {
+                                // Handle exception during read
+                                e.printStackTrace();
+                                break; // Exit the loop on error
+                            }
+
+                            try {
+                                Thread.sleep(500); // Sleep for 1 second before checking for more data (optional)
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt(); // Restore interrupt flag
+                                break; // Exit the loop if interrupted
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        // Clean up resources
+                        try {
+                            if (socket != null) socket.close();
+                            if (inputStreamReader != null) inputStreamReader.close();
+                            if (outputStreamWriter != null) outputStreamWriter.close();
+                            if (bufferedReader != null) bufferedReader.close();
+                            if (bufferedWriter != null) bufferedWriter.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                fetchThread.start(); // Start the thread
+            } else {
+                System.out.println("Thread is already running.");
+            }
+        } else if ("stop".equalsIgnoreCase(command)) {
+            if (running) {  // Stop the thread if it's running
+                running = false;
+                if (fetchThread != null) {
+                    fetchThread.interrupt();  // Interrupt the thread
+                    try {
+                        fetchThread.join();  // Wait for the thread to finish
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Thread stopped.");
+            } else {
+                System.out.println("No thread is running.");
+            }
+        } else {
+            System.out.println("Invalid command. Use 'start' or 'stop'.");
+        }
+    }
+
+
     public static JSONObject fetch(String action, JSONObject request) {
         Socket socket = null;
         InputStreamReader inputStreamReader = null;

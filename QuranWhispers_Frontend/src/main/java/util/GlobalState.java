@@ -48,6 +48,8 @@ public class GlobalState {
     public static final String ADMIN_APPROVE_FILE = "adminApprove";
     public static final String ADMIN_APPROVE_CARD_FILE = "adminApproveCard";
 
+    public static final String FORUM_CARD_FILE = "forumCard";
+    public static final String FORUM_CARD_VERSE_FILE = "forumCardVerse";
     public static final String FORUM_FILE = "forum";
     public static final String ADMIN_FORUM_FILE = "adminForum";
 }

@@ -1,17 +1,21 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextArea;
 import org.json.JSONObject;
+import util.BackendAPI;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class ForumController extends BaseController{
+public class ForumController extends BaseController {
     @FXML TextArea promptArea;
     @FXML VBox containerVBox;
 
@@ -24,6 +28,10 @@ public class ForumController extends BaseController{
     public void sendReply(String messageId, String message) {}
     public void sendToUser(String username, String message) {}
     public void sendAboutMessage(String message) {}
+
+    public void setupForum() {
+        BackendAPI.continuousFetch("start");
+    }
 
     public void extractMessageCommandAndArgs(String input) {
         String message = null;

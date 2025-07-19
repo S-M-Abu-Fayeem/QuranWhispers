@@ -62,7 +62,7 @@ public abstract class BaseController {
         System.out.println("Forum navlink button pressed");
         playClickSound();
         ForumController forumController = (ForumController) sceneController.switchTo(GlobalState.FORUM_FILE);
-//        forumController.setupForum();
+        forumController.setupForum();
     }
 
     public void handleFavouritesBtn(MouseEvent e) throws IOException {
