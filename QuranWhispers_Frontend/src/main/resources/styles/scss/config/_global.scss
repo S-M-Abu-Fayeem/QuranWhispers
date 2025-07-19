@@ -10,6 +10,11 @@
 }
 
 .overlayUpper {
-  -fx-background-color: rgba(255, 255, 255, 1);
-  -fx-opacity: 0.1;
+  -fx-background-color: rgba(255, 255, 255, 0.8);
+  -fx-opacity: 0.3;
+}
+
+.loading-overlay {
+  -fx-background-color: rgba(0, 0, 0, 0.8);
+  -fx-opacity: 0.8;
 }

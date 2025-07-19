@@ -75,12 +75,12 @@
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label onMouseClicked="#handleCommand5" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/verse(emotion)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand5" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/verseEmotion(name)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
             </Label>
-            <Label onMouseClicked="#handleCommand6" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/verse(theme)/" wrapText="true">
+            <Label onMouseClicked="#handleCommand6" prefHeight="32.0" prefWidth="158.0" styleClass="text-black" text="/verseTheme(name)/" wrapText="true">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
