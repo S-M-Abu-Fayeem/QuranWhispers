@@ -34,15 +34,11 @@ public class RandomizedSelection {
                 }
 
                 PreparedStatement ps = connection.prepareStatement(
-                        "SELECT * FROM MOOD_VERSES mv " +
-                                "WHERE mv.emotion = ? " +
-                                "AND NOT EXISTS (SELECT 1 FROM FAV_VERSE fv WHERE fv.user_id = ? AND fv.surah = mv.surah AND fv.ayah = mv.ayah) " +
-                                "AND NOT EXISTS (SELECT 1 FROM REC_VERSE_DETAIL rd JOIN REC_VERSE rv ON rd.rec_verse_id = rv.id WHERE rv.user_id = ? AND rd.surah = mv.surah AND rd.ayah = mv.ayah) " +
-                                "ORDER BY RAND() LIMIT 1"
+                        "SELECT * FROM MOOD_VERSES WHERE emotion = ? ORDER BY RAND() LIMIT 1"
                 );
                 ps.setString(1, emotion);
-                ps.setInt(2, userId);
-                ps.setInt(3, userId);
+                //ps.setInt(2, userId);
+                //ps.setInt(3, userId);
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
@@ -84,17 +80,12 @@ public class RandomizedSelection {
                     data.addProperty("status", "404");
                     return gson.toJson(data);
                 }
-
                 PreparedStatement ps = connection.prepareStatement(
-                        "SELECT * FROM MOOD_VERSES mv " +
-                                "WHERE mv.theme = ? " +
-                                "AND NOT EXISTS (SELECT 1 FROM FAV_VERSE fv WHERE fv.user_id = ? AND fv.surah = mv.surah AND fv.ayah = mv.ayah) " +
-                                "AND NOT EXISTS (SELECT 1 FROM REC_VERSE_DETAIL rd JOIN REC_VERSE rv ON rd.rec_verse_id = rv.id WHERE rv.user_id = ? AND rd.surah = mv.surah AND rd.ayah = mv.ayah) " +
-                                "ORDER BY RAND() LIMIT 1"
+                        "SELECT * FROM MOOD_VERSES WHERE theme = ? ORDER BY RAND() LIMIT 1"
                 );
                 ps.setString(1, theme);
-                ps.setInt(2, userId);
-                ps.setInt(3, userId);
+               // ps.setInt(2, userId);
+               // ps.setInt(3, userId);
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {

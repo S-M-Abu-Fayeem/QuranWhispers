@@ -4,6 +4,7 @@ module com.example.server {
     requires com.google.gson;
     requires java.sql;
     requires google.genai;
+    requires com.h2database;
 
 
     opens com.example.server to javafx.fxml;

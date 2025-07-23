@@ -3,6 +3,8 @@ package com.example.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.h2.util.json.JSONArray;
+import org.h2.util.json.JSONObject;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -174,16 +176,16 @@ public class AdminController {
                     delete.setString(4, fileName);
                     delete.executeUpdate();
 
-                    res.addProperty("status", "approved");
+                    res.addProperty("status", "200");
                 } else {
-                    res.addProperty("status", "not_found");
+                    res.addProperty("status", "404");
                 }
             } else {
-                res.addProperty("status", "unauthorized");
+                res.addProperty("status", "401");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            res.addProperty("status", "error");
+            res.addProperty("status", "500");
         }
 
         return gson.toJson(res);
@@ -355,7 +357,7 @@ public class AdminController {
 
         return gson.toJson(res);
     }
-    public synchronized String DISAPPROVE_RECITATION(String email, int token, String reciterName, String surah, String ayah) {
+    public synchronized String disapproveRecitations(String email, int token, String reciterName, String surah, String ayah) {
         //TokenValidator tokenValidator = new TokenValidator();
         //IsAdmin isAdmin = new IsAdmin();
         Gson gson = new Gson();
@@ -387,4 +389,128 @@ public class AdminController {
 
         return gson.toJson(res);
     }
+
+
+    public synchronized String getAyahRecitations(String email, int token, String surah, String ayah) {
+        Gson gson = new Gson();
+        JsonObject res = new JsonObject();
+        res.addProperty("email", email);
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            if (tokenValidator.VALIDATE(email, token)) {
+                PreparedStatement stmt = conn.prepareStatement(
+                        "SELECT reciter_name FROM Recitations WHERE surah = ? AND ayah = ?"
+                );
+                stmt.setString(1, surah);
+                stmt.setString(2, ayah);
+
+                ResultSet rs = stmt.executeQuery();
+                JsonArray reciters = new JsonArray();
+
+                while (rs.next()) {
+                    reciters.add(rs.getString("reciter_name"));
+                }
+
+                res.add("recitations", reciters);
+                res.addProperty("status", "200");
+            } else {
+                res.addProperty("status", "401");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.addProperty("status", "500");
+        }
+
+        return gson.toJson(res);
+    }
+
+    public synchronized String getPendingRecitations(String email, int token) {
+        Gson gson = new Gson();
+        JsonObject res = new JsonObject();
+        res.addProperty("email", email);
+
+        if (!new TokenValidator().VALIDATE(email, token)) {
+            res.addProperty("status", "401");
+            res.addProperty("message", "Unauthorized");
+            return gson.toJson(res);
+        }
+
+        JsonArray recitationsArray = new JsonArray();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            String query = """
+            SELECT p.surah, p.ayah, p.reciter_name, u.username
+            FROM PendingRecitations p
+            JOIN users u ON p.uploader_email = u.email
+        """;
+
+            try (PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    JsonObject rec = new JsonObject();
+                    rec.addProperty("surah", rs.getString("surah"));
+                    rec.addProperty("ayah", rs.getString("ayah"));
+                    rec.addProperty("reciter_name", rs.getString("reciter_name"));
+                    rec.addProperty("username", rs.getString("username"));
+                    recitationsArray.add(rec);
+                }
+            }
+
+            res.addProperty("status", "200");
+            res.add("pendingrecitations", recitationsArray);
+
+        } catch (SQLException e) {
+            res.addProperty("status", "500");
+            res.addProperty("message", e.getMessage());
+        }
+
+        return gson.toJson(res);
+    }
+    public synchronized String getApprovedRecitations(String email, int token) {
+        Gson gson = new Gson();
+        JsonObject res = new JsonObject();
+        res.addProperty("email", email);
+
+        if (!new TokenValidator().VALIDATE(email, token)) {
+            res.addProperty("status", "401");
+            res.addProperty("message", "Unauthorized");
+            return gson.toJson(res);
+        }
+
+        JsonArray recitationsArray = new JsonArray();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            String query = """
+            SELECT p.surah, p.ayah, p.reciter_name, u.username
+            FROM Recitations p
+            JOIN users u ON p.uploader_email = u.email
+        """;
+
+            try (PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    JsonObject rec = new JsonObject();
+                    rec.addProperty("surah", rs.getString("surah"));
+                    rec.addProperty("ayah", rs.getString("ayah"));
+                    rec.addProperty("reciter_name", rs.getString("reciter_name"));
+                    rec.addProperty("username", rs.getString("username"));
+                    recitationsArray.add(rec);
+                }
+            }
+
+            res.addProperty("status", "200");
+            res.add("approvedrecitations", recitationsArray);
+
+        } catch (SQLException e) {
+            res.addProperty("status", "500");
+            res.addProperty("message", e.getMessage());
+        }
+
+        return gson.toJson(res);
+    }
+
+
+
 }
