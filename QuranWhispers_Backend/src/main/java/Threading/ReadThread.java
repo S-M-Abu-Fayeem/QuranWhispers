@@ -4,6 +4,7 @@ import com.example.server.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import shared.FilePacket;
 
 import java.io.*;
 import java.net.Socket;
@@ -107,7 +108,6 @@ public class ReadThread implements Runnable {
                             int token = json.get("token").getAsInt();
                             String emotion = json.get("emotion").getAsString();
                             response = randomizedSelection.generateMoodBased(email, token, emotion);
-                            System.out.println(response.toString());
                         }
                         case "generatethemebasedverse" -> {
                             int token = json.get("token").getAsInt();
@@ -134,21 +134,21 @@ public class ReadThread implements Runnable {
                         }
                         case "approverecitation" -> {
                             int token = json.get("token").getAsInt();
-                            String reciterName = json.get("recitername").getAsString();
+                            String reciterName = json.get("reciter_name").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
                             response = adminController.approveRecitation(email, token, reciterName, surah, ayah);
                         }
                         case "disapproverecitation" -> {
                             int token = json.get("token").getAsInt();
-                            String reciterName = json.get("recitername").getAsString();
+                            String reciterName = json.get("reciter_name").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
-                            response = adminController.DISAPPROVE_RECITATION(email, token, reciterName, surah, ayah);
+                            response = adminController.disapproveRecitations(email, token, reciterName, surah, ayah);
                         }
                         case "deleteapprovedrecitation" -> {
                             int token = json.get("token").getAsInt();
-                            String reciterName = json.get("recitername").getAsString();
+                            String reciterName = json.get("reciter_name").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
                             response = adminController.DELETE_APPROVED_RECITATION(email, token, reciterName, surah, ayah);
@@ -177,162 +177,63 @@ public class ReadThread implements Runnable {
                         case "getallpendingrecitations" -> response = adminController.getAllPendingRecitations(email, json.get("token").getAsInt());
                         case "uploadmp3" -> {
                             TokenValidator tokenValidator = new TokenValidator();
-                            IsAdmin isAdmin = new IsAdmin();
                             JsonObject res = new JsonObject();
                             res.addProperty("email", email);
 
                             int token = json.get("token").getAsInt();
                             String filename = json.get("filename").getAsString();
-                            long filesize = json.get("filesize").getAsLong();
                             String reciterName = json.get("reciter_name").getAsString();
                             String surah = json.get("surah").getAsString();
                             String ayah = json.get("ayah").getAsString();
 
-                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketWrapper.getSocket().getOutputStream()));
                             Socket socket = socketWrapper.getSocket();
+                            PrintWriter writer = socketWrapper.getWriter();
 
                             if (tokenValidator.VALIDATE(email, token)) {
-                                writer.write("READY_TO_RECEIVE");
-                                writer.newLine();
-                                writer.flush();
-
                                 try {
-                                    DataInputStream dis = new DataInputStream(socket.getInputStream());
-                                    long fileSize = dis.readLong();
+                                    // Step 1: Send acknowledgment
+                                    writer.println("READY_TO_RECEIVE");
+                                    writer.flush();
 
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    byte[] buffer = new byte[4096];
-                                    long bytesReceived = 0;
-                                    int read;
-                                    while (bytesReceived < fileSize && (read = dis.read(buffer, 0, (int) Math.min(buffer.length, fileSize - bytesReceived))) != -1) {
-                                        baos.write(buffer, 0, read);
-                                        bytesReceived += read;
-                                    }
+                                    // Step 2: Receive FilePacket
+                                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                                    Object obj = ois.readObject();
 
-                                    try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                        PreparedStatement stmt = conn.prepareStatement(
-                                                "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
-                                        );
-                                        stmt.setString(1, email);
-                                        stmt.setString(2, reciterName);
-                                        stmt.setString(3, surah);
-                                        stmt.setString(4, ayah);
-                                        stmt.setString(5, filename);
-                                        stmt.setBinaryStream(6, new ByteArrayInputStream(baos.toByteArray()), baos.size());
-                                        stmt.executeUpdate();
-                                        res.addProperty("status", "200");
-                                    } catch (Exception e) {
-                                        res.addProperty("status", "db_error");
-                                        res.addProperty("error", e.getMessage());
-                                    }
+                                    if (obj instanceof FilePacket packet) {
+                                        System.out.println("📦 Received file from " + packet.getEmail());
 
-                                } catch (IOException e) {
-                                    res.addProperty("status", "io_error");
-                                    res.addProperty("error", e.getMessage());
-                                }
-                            } else {
-                                res.addProperty("status", "unauthorized");
-                            }
-
-                            writer.write(res.toString());
-                            writer.newLine();
-                            writer.flush();
-                        }
-                        case "listenapporvedrecitation" -> {
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            JsonObject res = new JsonObject();
-                            int token = json.get("token").getAsInt();
-                            Socket socket = socketWrapper.getSocket();
-
-                            if (new TokenValidator().VALIDATE(email, token)) {
-                                try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                    PreparedStatement ps = conn.prepareStatement(
-                                            "SELECT audio_data FROM Recitations WHERE surah = ? AND ayah = ? ORDER BY RAND() LIMIT 1"
-                                    );
-                                    ps.setString(1, surah);
-                                    ps.setString(2, ayah);
-                                    ResultSet rs = ps.executeQuery();
-
-                                    if (rs.next()) {
-                                        InputStream audioStream = rs.getBinaryStream("audio_data");
-                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                        byte[] buffer = new byte[4096];
-                                        int read;
-                                        while ((read = audioStream.read(buffer)) != -1) {
-                                            baos.write(buffer, 0, read);
+                                        // Step 3: Save to DB
+                                        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                                            PreparedStatement stmt = conn.prepareStatement(
+                                                    "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
+                                            );
+                                            stmt.setString(1, packet.getEmail());
+                                            stmt.setString(2, packet.getReciterName());
+                                            stmt.setString(3, packet.getSurah());
+                                            stmt.setString(4, packet.getAyah());
+                                            stmt.setString(5, packet.getFilename());
+                                            stmt.setBinaryStream(6, new ByteArrayInputStream(packet.getFileData()), packet.getFileData().length);
+                                            stmt.executeUpdate();
                                         }
 
-                                        byte[] audioBytes = baos.toByteArray();
-                                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                                        dos.writeLong(audioBytes.length); // first send length
-                                        dos.write(audioBytes);            // then send actual audio
-                                        dos.flush();
-                                        System.out.println("Audio sent: " + audioBytes.length + " bytes");
+                                        socketWrapper.write("{\"status\":\"200\",\"message\":\"Upload successful\"}");
                                     } else {
-                                        res.addProperty("status", "404");
-                                        socketWrapper.write(res.toString());
+                                        socketWrapper.write("{\"status\":\"400\",\"error\":\"Invalid object received\"}");
                                     }
 
                                 } catch (Exception e) {
-                                    res.addProperty("status", "500");
-                                    res.addProperty("error", e.getMessage());
-                                    socketWrapper.write(res.toString());
+                                    e.printStackTrace();
+                                    socketWrapper.write("{\"status\":\"500\",\"error\":\"" + e.getMessage() + "\"}");
                                 }
+
                             } else {
-                                res.addProperty("status", "401");
-                                socketWrapper.write(res.toString());
+                                JsonObject err = new JsonObject();
+                                err.addProperty("status", "unauthorized");
+                                writer.println(err.toString());
+                                writer.flush();
                             }
                         }
-                        case  "listenpendingrecitation" ->{
-                            String surah = json.get("surah").getAsString();
-                            String ayah = json.get("ayah").getAsString();
-                            String recitername = json.get("recitername").getAsString();
-                            JsonObject res = new JsonObject();
-                            int token = json.get("token").getAsInt();
-                            Socket socket = socketWrapper.getSocket();
 
-                            if (new TokenValidator().VALIDATE(email, token)) {
-                                try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                    PreparedStatement ps = conn.prepareStatement(
-                                            "SELECT audio_data FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ? ORDER BY RAND() LIMIT 1"
-                                    );
-                                    ps.setString(1, recitername);
-                                    ps.setString(2, surah);
-                                    ps.setString(3, ayah);
-                                    ResultSet rs = ps.executeQuery();
-
-                                    if (rs.next()) {
-                                        InputStream audioStream = rs.getBinaryStream("audio_data");
-                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                        byte[] buffer = new byte[4096];
-                                        int read;
-                                        while ((read = audioStream.read(buffer)) != -1) {
-                                            baos.write(buffer, 0, read);
-                                        }
-
-                                        byte[] audioBytes = baos.toByteArray();
-                                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                                        dos.writeLong(audioBytes.length); // first send length
-                                        dos.write(audioBytes);            // then send actual audio
-                                        dos.flush();
-                                        System.out.println("Audio sent: " + audioBytes.length + " bytes");
-                                    } else {
-                                        res.addProperty("status", "404");
-                                        socketWrapper.write(res.toString());
-                                    }
-
-                                } catch (Exception e) {
-                                    res.addProperty("status", "500");
-                                    res.addProperty("error", e.getMessage());
-                                    socketWrapper.write(res.toString());
-                                }
-                            } else {
-                                res.addProperty("status", "401");
-                                socketWrapper.write(res.toString());
-                            }
-
-                        }
                         case "banuser" -> {
                             String username = json.get("username").getAsString();
                             int token = json.get("token").getAsInt();
@@ -383,7 +284,179 @@ public class ReadThread implements Runnable {
                             String question = json.get("question").getAsString();
                             response = forumMaintenance.askAI(email, token, question);
                         }
+                        case "getayahrecitations" -> {
+                            String token = json.get("token").getAsString();
+                            int valueOfToken = Integer.parseInt(token);
+                            String surah = json.get("surah").getAsString();
+                            String ayah = json.get("ayah").getAsString();
+                            response = adminController.getAyahRecitations(email,valueOfToken,surah,ayah);
+                        }
+                        case "getpendingrecitations" -> {
+                            String token = json.get("token").getAsString();
+                            int valueOfToken = Integer.parseInt(token);
+                            response = adminController.getPendingRecitations(email,valueOfToken);
+                        }
+                        case "getapprovedrecitations" -> {
+                            String token = json.get("token").getAsString();
+                            int valueOfToken = Integer.parseInt(token);
+                            response = adminController.getApprovedRecitations(email, valueOfToken);
+                        }
+                        case "listenpendingrecitation" -> {
+                            String surah = json.get("surah").getAsString();
+                            String ayah = json.get("ayah").getAsString();
+                            String reciterName = json.get("reciter_name").getAsString();
+                            int token = json.get("token").getAsInt();
+                            Socket socket = socketWrapper.getSocket();
+                            PrintWriter writer = socketWrapper.getWriter();
 
+                            if (!new TokenValidator().VALIDATE(email, token)) {
+                                JsonObject res = new JsonObject();
+                                res.addProperty("status", "401");
+                                writer.println(res.toString());
+                                writer.flush();
+                                break;
+                            }
+
+                            try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                                PreparedStatement ps = conn.prepareStatement(
+                                        "SELECT file_name, audio_data, uploader_email, reciter_name, surah, ayah " +
+                                                "FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ? LIMIT 1"
+                                );
+                                ps.setString(1, reciterName);
+                                ps.setString(2, surah);
+                                ps.setString(3, ayah);
+                                ResultSet rs = ps.executeQuery();
+
+                                if (rs.next()) {
+                                    // Step 1: Acknowledge ready to send
+                                    writer.println("READY_TO_RECEIVE");
+                                    writer.flush();
+
+                                    // Step 2: Send the FilePacket
+                                    String filename = rs.getString("file_name");
+                                    String uploaderEmail = rs.getString("uploader_email");
+                                    byte[] fileBytes;
+
+                                    try (InputStream is = rs.getBinaryStream("audio_data");
+                                         ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                                        byte[] buffer = new byte[4096];
+                                        int read;
+                                        while ((read = is.read(buffer)) != -1) {
+                                            baos.write(buffer, 0, read);
+                                        }
+                                        fileBytes = baos.toByteArray();
+                                    }
+
+                                    FilePacket packet = new FilePacket(
+                                            uploaderEmail, reciterName, surah, ayah, filename, fileBytes
+                                    );
+
+                                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                                    oos.writeObject(packet);
+                                    oos.flush();
+                                    System.out.println("✅ FilePacket sent to client.");
+
+                                    // Step 3: Send final confirmation JSON
+                                    JsonObject finalAck = new JsonObject();
+                                    finalAck.addProperty("status", "200");
+                                    finalAck.addProperty("message", "File transfer complete");
+                                    writer.println(finalAck.toString());
+                                    writer.flush();
+
+                                } else {
+                                    JsonObject notFound = new JsonObject();
+                                    notFound.addProperty("status", "404");
+                                    writer.println(notFound.toString());
+                                    writer.flush();
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                JsonObject error = new JsonObject();
+                                error.addProperty("status", "500");
+                                error.addProperty("error", e.getMessage());
+                                writer.println(error.toString());
+                                writer.flush();
+                            }
+                        }
+                        case "listenapprovedrecitation" -> {
+                            String surah = json.get("surah").getAsString();
+                            String ayah = json.get("ayah").getAsString();
+                            String reciterName = json.get("reciter_name").getAsString();
+                            int token = json.get("token").getAsInt();
+                            Socket socket = socketWrapper.getSocket();
+                            PrintWriter writer = socketWrapper.getWriter();
+
+                            if (!new TokenValidator().VALIDATE(email, token)) {
+                                JsonObject res = new JsonObject();
+                                res.addProperty("status", "401");
+                                writer.println(res.toString());
+                                writer.flush();
+                                break;
+                            }
+
+                            try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                                PreparedStatement ps = conn.prepareStatement(
+                                        "SELECT file_name, audio_data, uploader_email, reciter_name, surah, ayah " +
+                                                "FROM Recitations WHERE reciter_name = ? AND surah = ? AND ayah = ? LIMIT 1"
+                                );
+                                ps.setString(1, reciterName);
+                                ps.setString(2, surah);
+                                ps.setString(3, ayah);
+                                ResultSet rs = ps.executeQuery();
+
+                                if (rs.next()) {
+                                    // Step 1: Acknowledge ready to send
+                                    writer.println("READY_TO_RECEIVE");
+                                    writer.flush();
+
+                                    // Step 2: Send the FilePacket
+                                    String filename = rs.getString("file_name");
+                                    String uploaderEmail = rs.getString("uploader_email");
+                                    byte[] fileBytes;
+
+                                    try (InputStream is = rs.getBinaryStream("audio_data");
+                                         ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                                        byte[] buffer = new byte[4096];
+                                        int read;
+                                        while ((read = is.read(buffer)) != -1) {
+                                            baos.write(buffer, 0, read);
+                                        }
+                                        fileBytes = baos.toByteArray();
+                                    }
+
+                                    FilePacket packet = new FilePacket(
+                                            uploaderEmail, reciterName, surah, ayah, filename, fileBytes
+                                    );
+
+                                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                                    oos.writeObject(packet);
+                                    oos.flush();
+                                    System.out.println("✅ FilePacket sent to client.");
+
+                                    // Step 3: Send final confirmation JSON
+                                    JsonObject finalAck = new JsonObject();
+                                    finalAck.addProperty("status", "200");
+                                    finalAck.addProperty("message", "File transfer complete");
+                                    writer.println(finalAck.toString());
+                                    writer.flush();
+
+                                } else {
+                                    JsonObject notFound = new JsonObject();
+                                    notFound.addProperty("status", "404");
+                                    writer.println(notFound.toString());
+                                    writer.flush();
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                JsonObject error = new JsonObject();
+                                error.addProperty("status", "500");
+                                error.addProperty("error", e.getMessage());
+                                writer.println(error.toString());
+                                writer.flush();
+                            }
+                        }
 
                         default -> {
                             JsonObject error = new JsonObject();
@@ -391,8 +464,7 @@ public class ReadThread implements Runnable {
                             response = gson.toJson(error);
                         }
                     }
-
-
+                    System.out.println(response);
                     socketWrapper.write(response);
 
                 } catch (Exception innerEx) {
@@ -401,7 +473,7 @@ public class ReadThread implements Runnable {
                 }
             }
             //logOut.Logout(email, json.get("token").getAsInt());
-            System.out.println("Client disconnected.");
+            //System.out.println("Client disconnected.");
 
         } catch (IOException e) {
             System.err.println("I/O error in ReadThread: " + e.getMessage());
