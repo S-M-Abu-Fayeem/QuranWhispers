@@ -2,7 +2,7 @@ package util;
 
 public class GlobalState {
     // CONNECTION CONST
-    public static final String BACKEND_API_IP_ADDRESS = "localhost";//"10.211.213.104";
+    public static final String BACKEND_API_IP_ADDRESS = "10.183.76.228";
     public static final int BACKEND_API_PORT = 42069;
 
     // OTHER CONST

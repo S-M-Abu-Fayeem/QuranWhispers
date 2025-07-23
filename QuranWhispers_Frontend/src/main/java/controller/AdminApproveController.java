@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -7,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.BackendAPI;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminApproveController extends BaseControllerAdmin implements Initializable {
+public class AdminApproveController extends BaseControllerAdmin {
     @FXML VBox containerVBox;
     private List<AdminApproveCardController> cardControllers = new ArrayList<>();
 
@@ -28,44 +31,53 @@ public class AdminApproveController extends BaseControllerAdmin implements Initi
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            InputStream is = getClass().getResourceAsStream("/data/adminApprove_test.json");
-            if (is == null) {
-                System.out.println("JSON file not found in resources!");
-                return;
-            }
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    public void setupApproveTable() {
+        Task<Void> getPendingRecitationsTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
 
-            JSONArray adminApproveArray = new JSONArray(content);
+                JSONObject response = BackendAPI.fetch("getpendingrecitations", request);
 
-            for (int i = 0; i < adminApproveArray.length(); i++) {
-                JSONObject adminApprove = adminApproveArray.getJSONObject(i);
-                int surahNum = adminApprove.getInt("surahNum");
-                int ayahNum = adminApprove.getInt("ayahNum");
-                String requestorUsername = adminApprove.getString("requestorUsername");
-                String reciterName = adminApprove.getString("reciterName");
-                String path = adminApprove.getString("path");
+                if (response != null && response.getString("status").equals("200")) {
+                    System.out.println(response.toString());
+                    Platform.runLater(() -> {
+                        try {
+                            containerVBox.getChildren().clear();
+                            JSONArray recitations = response.getJSONArray("pendingrecitations");
+                            for (int i = 0; i < recitations.length(); i++) {
+                                JSONObject rec = recitations.getJSONObject(i);
+                                String surah = rec.getString("surah");
+                                String ayah = rec.getString("ayah");
+                                String username = rec.getString("username");
+                                String reciterName = rec.getString("reciter_name");
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminApproveCard.fxml"));
-                Parent card = loader.load();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminApproveCard.fxml"));
+                                Parent card = loader.load();
 
-                AdminApproveCardController controller = loader.getController();
-                cardControllers.add(controller);
-                controller.setupAdminApproveInfo(surahNum, ayahNum, requestorUsername, reciterName, path);
-                controller.setupParentController(this);
+                                AdminApproveCardController controller = loader.getController();
+                                cardControllers.add(controller);
+                                controller.setSceneController(sceneController);
+                                controller.setupAdminApproveInfo(surah, ayah, username, reciterName);
+                                controller.setupParentController(AdminApproveController.this);
 
-                if (card != null) {
-                    containerVBox.getChildren().add(card);
+                                if (card != null) {
+                                    containerVBox.getChildren().add(card);
+                                    System.out.println("✅ Added card for: " + reciterName + " [" + surah + ":" + ayah + "]");
+                                }
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            System.out.println("❌ Error setting up recitation cards: " + ex.getMessage());
+                        }
+                    });
+                } else {
+                    System.out.println("❌ Failed to fetch recitations or status not 200");
                 }
+                return null;
             }
+        };
 
-        } catch (IOException e) {
-            System.out.println("Error reading the JSON file: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error loading FXML or setting controller data: " + e.getMessage());
-            e.printStackTrace();
-        }
+        new Thread(getPendingRecitationsTask).start();
     }
 }

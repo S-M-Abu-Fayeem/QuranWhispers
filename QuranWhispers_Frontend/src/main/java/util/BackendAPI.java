@@ -1,8 +1,15 @@
 package util;
 
+import controller.RecitationController;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import shared.FilePacket;
+
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 public class BackendAPI {
@@ -31,43 +38,37 @@ public class BackendAPI {
                         bufferedReader = new BufferedReader(inputStreamReader);
                         bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-                        // Send initial request
                         HashMap<String, String> data = new HashMap<>();
                         String json = new JSONObject(data).toString();
                         bufferedWriter.write(json);
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
 
-                        // Continuous fetch loop
-                        while (!Thread.currentThread().isInterrupted() && running) {  // Check if the thread is interrupted or stopped
+                        while (!Thread.currentThread().isInterrupted() && running) {
                             try {
-                                String response = bufferedReader.readLine(); // This will block until data is available
-
+                                String response = bufferedReader.readLine();
                                 if (response != null) {
                                     JSONObject jsonResponse = new JSONObject(response);
-                                    System.out.println("Response received: " + jsonResponse.toString()); // Print the response
+                                    System.out.println("Response received: " + jsonResponse.toString());
                                 } else {
-                                    // Handle the case when the response is null (server closed the connection or no data)
                                     System.out.println("No data received, server may have closed the connection.");
-                                    break; // Exit the loop
+                                    break;
                                 }
                             } catch (Exception e) {
-                                // Handle exception during read
                                 e.printStackTrace();
-                                break; // Exit the loop on error
+                                break;
                             }
 
                             try {
-                                Thread.sleep(500); // Sleep for 1 second before checking for more data (optional)
+                                Thread.sleep(500);
                             } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt(); // Restore interrupt flag
-                                break; // Exit the loop if interrupted
+                                Thread.currentThread().interrupt();
+                                break;
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        // Clean up resources
                         try {
                             if (socket != null) socket.close();
                             if (inputStreamReader != null) inputStreamReader.close();
@@ -79,17 +80,17 @@ public class BackendAPI {
                         }
                     }
                 });
-                fetchThread.start(); // Start the thread
+                fetchThread.start();
             } else {
                 System.out.println("Thread is already running.");
             }
         } else if ("stop".equalsIgnoreCase(command)) {
-            if (running) {  // Stop the thread if it's running
+            if (running) {
                 running = false;
                 if (fetchThread != null) {
-                    fetchThread.interrupt();  // Interrupt the thread
+                    fetchThread.interrupt();
                     try {
-                        fetchThread.join();  // Wait for the thread to finish
+                        fetchThread.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -103,18 +104,16 @@ public class BackendAPI {
         }
     }
 
-
     public static JSONObject fetch(String action, JSONObject request) {
         Socket socket = null;
         InputStreamReader inputStreamReader = null;
         OutputStreamWriter outputStreamWriter = null;
         BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
-        System.out.println(request.toString());
 
         try {
             socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
-            System.out.println("Database Connected Successfully");
+            System.out.println("📡 Connected to backend");
 
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
@@ -125,160 +124,120 @@ public class BackendAPI {
             action = action.toLowerCase();
             HashMap<String, String> data = new HashMap<>();
 
-            if (action.equals("login")) {
-                data.put("action", action);
-                data.put("email", request.getString("email"));
-                data.put("password", request.getString("password"));
-            } else if (action.equals("register")) {
-                data.put("action", action);
-                data.put("email", request.getString("email"));
-                data.put("password", request.getString("password"));
-                data.put("username", request.getString("username"));
-            } else if (action.equals("getinfo")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("addtofavourites")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("emotion", request.getString("emotion"));
-                data.put("theme", request.getString("theme"));
-                data.put("ayah", request.getString("ayah"));
-                data.put("surah", request.getString("surah"));
-            } else if (action.equals("rmvfavverse")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("emotion", request.getString("emotion"));
-                data.put("theme", request.getString("theme"));
-                data.put("ayah", request.getString("ayah"));
-                data.put("surah", request.getString("surah"));
-            } else if (action.equals("sendtofriend")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("friendusername", request.getString("receiver_username"));
-                data.put("emotion", request.getString("emotion"));
-                data.put("theme", request.getString("theme"));
-                data.put("ayah", request.getString("ayah"));
-                data.put("surah", request.getString("surah"));
-            } else if (action.equals("getduaoftheday")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("generateemotionbasedverse")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("emotion", request.getString("emotion"));
-            } else if (action.equals("generatethemebasedverse")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("theme", request.getString("theme"));
-            } else if (action.equals("getlist")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("getprofileinfo")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("getreceivedinfo")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("getallusers")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("deleteuser")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("useremail", request.getString("useremail"));
-            } else if (action.equals("getallverses")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("deleteverse")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("emotion", request.getString("emotion"));
-                data.put("theme", request.getString("theme"));
-                data.put("surah", request.getString("surah"));
-                data.put("ayah", request.getString("ayah"));
-            } else if (action.equals("getallduas")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            } else if (action.equals("deletedua")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("title", request.getString("title"));
-            } else if (action.equals("addverse")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("emotion", request.getString("emotion"));
-                data.put("theme", request.getString("theme"));
-                data.put("surah", request.getString("surah"));
-                data.put("ayah", request.getString("ayah"));
-            } else if (action.equals("adddua")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-                data.put("title", request.getString("title"));
-                data.put("arabic_body", request.getString("arabic_body"));
-                data.put("english_body", request.getString("english_body"));
-            } else if (action.equals("getallpendingrecitations")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
-            }
-            else if (action.equals("uploadmp3")) {
-                data.put("action", action);
-                data.put("token", SessionManager.getToken());
-                data.put("email", SessionManager.getEmail());
+            if (action.equals("uploadmp3")) {
                 File mp3File = new File(request.getString("mp3file"));
-                if (!mp3File.exists()) {
-                    System.out.println("File not found.");
+
+                if (!mp3File.exists() || !mp3File.isFile()) {
+                    System.out.println("❌ File not found or is not a valid file.");
                     return null;
                 }
+
+                data.put("action", "uploadmp3");
+                data.put("token", SessionManager.getToken());
+                data.put("email", SessionManager.getEmail());
                 data.put("filename", mp3File.getName());
                 data.put("reciter_name", request.getString("reciter_name"));
                 data.put("surah", request.getString("surah"));
-                data.put("ayah",  request.getString("ayah"));
+                data.put("ayah", request.getString("ayah"));
                 data.put("filesize", String.valueOf(mp3File.length()));
 
                 String json = new JSONObject(data).toString();
                 bufferedWriter.write(json);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
+                System.out.println("📤 Metadata sent.");
 
-                try (FileInputStream fis = new FileInputStream(mp3File); DataOutputStream dos = new DataOutputStream(socket.getOutputStream())) {
-                    dos.writeLong(mp3File.length());
-                    byte[] buffer = new byte[4096];
-                    int read;
-                    while ((read = fis.read(buffer)) != -1) {
-                        dos.write(buffer, 0, read);
-                    }
-                    dos.flush();
-                    System.out.println("MP3 file sent.");
-                } catch (IOException e) {
-                    System.out.println("Error sending file: " + e.getMessage());
+                String ack = bufferedReader.readLine();
+                if (!"READY_TO_RECEIVE".equals(ack)) {
+                    System.out.println("❌ Server did not acknowledge. Got: " + ack);
+                    return null;
                 }
+                System.out.println("✅ Server is ready to receive file.");
+
+                byte[] fileBytes = Files.readAllBytes(mp3File.toPath());
+                FilePacket packet = new FilePacket(
+                        SessionManager.getEmail(),
+                        request.getString("reciter_name"),
+                        request.getString("surah"),
+                        request.getString("ayah"),
+                        mp3File.getName(),
+                        fileBytes
+                );
+
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                oos.writeObject(packet);
+                oos.flush();
+                System.out.println("✅ FilePacket sent.");
+
+                String response = bufferedReader.readLine();
+                if (response != null) {
+                    System.out.println("📨 Server: " + response);
+                    return new JSONObject(response);
+                } else {
+                    System.out.println("⚠️ No final response received from server.");
+                }
+
+                return null;
             }
-            else if (action.equals("generateapibasedverse")) {
+
+            if (action.equals("listenpendingrecitation") || action.equals("listenapprovedrecitation")) {
                 data.put("action", action);
                 data.put("token", SessionManager.getToken());
                 data.put("email", SessionManager.getEmail());
-                data.put("text", request.getString("text"));
-            } else {
-                System.out.println("Invalid Action");
+                for (String key : request.keySet()) {
+                    data.put(key, request.getString(key));
+                }
+
+                String json = new JSONObject(data).toString();
+                bufferedWriter.write(json);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+
+                // 🔽 Step 1: Wait for READY_TO_RECEIVE using bufferedReader
+                String ack = bufferedReader.readLine();
+                if (ack == null || !ack.trim().equals("READY_TO_RECEIVE")) {
+                    System.out.println("❌ Server not ready to send file. Got: " + ack);
+                    return null;
+                }
+
+                System.out.println("✅ Server ready to send FilePacket.");
+
+                // 🔽 Step 2: Read FilePacket safely
+                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                FilePacket receivedPacket = (FilePacket) ois.readObject();
+
+                // 🔽 Step 3: Build save path
+                String filename = receivedPacket.getSurah() + "_" + receivedPacket.getAyah() + "_" + receivedPacket.getReciterName() + ".mp3";
+                URL folderURL = RecitationController.class.getResource("/data/recitations_audio/");
+                if (folderURL == null) {
+                    System.out.println("❌ Folder not found in resources. Please create /resources/data/recitations_audio");
+                    return null;
+                }
+                File outputFile = new File(folderURL.toURI().getPath(), filename);
+                Files.write(outputFile.toPath(), receivedPacket.getFileData());
+                System.out.println("💾 Audio saved at: " + outputFile.getAbsolutePath());
+
+                // 🔽 Step 4: Read final JSON response using new reader (safe reuse)
+                BufferedReader finalReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String response = finalReader.readLine();
+                if (response != null) {
+                    System.out.println("📨 Server: " + response);
+                    JSONObject ob = new JSONObject(response);
+                    ob.put("audio_path", outputFile.getAbsolutePath());
+                    return ob;
+                } else {
+                    System.out.println("⚠️ No response after file packet received.");
+                    return null;
+                }
+            }
+
+
+            // 🔽 All other actions
+            data.put("action", action);
+            if (SessionManager.getToken() != null) data.put("token", SessionManager.getToken());
+            if (SessionManager.getEmail() != null) data.put("email", SessionManager.getEmail());
+            for (String key : request.keySet()) {
+                data.put(key, request.getString(key));
             }
 
             String json = new JSONObject(data).toString();
@@ -286,75 +245,18 @@ public class BackendAPI {
             bufferedWriter.newLine();
             bufferedWriter.flush();
 
-
-            while (true) {
-//                else if (action.equals("approverecitation")) {
-//                    data.put("action", "approverecitation");
-//                    data.put("token", SessionManager.getToken());
-//                    data.put("email", SessionManager.getEmail());
-//                    System.out.print("Enter reciter name: ");
-//                    data.put("recitername", scanner.nextLine());
-//                    System.out.print("Enter Surah: ");
-//                    data.put("surah", scanner.nextLine());
-//                    System.out.print("Enter Ayat: ");
-//                    data.put("ayat", scanner.nextLine());
-//                } else if (action.equals("listenrecitation")) {
-//                    data.put("action", "listenrecitation");
-//                    data.put("token", SessionManager.getToken());
-//                    data.put("email", SessionManager.getEmail());
-//                    System.out.print("Enter Reciter Name: ");
-//                    data.put("reciter", scanner.nextLine());
-//                    System.out.print("Enter Surah: ");
-//                    data.put("surah", scanner.nextLine());
-//                    System.out.print("Enter Ayat: ");
-//                    data.put("ayat", scanner.nextLine());
-//
-//                    String json = new JSONObject(data).toString();
-//                    bufferedWriter.write(json);
-//                    bufferedWriter.newLine();
-//                    bufferedWriter.flush();
-//
-//                    DataInputStream dis = new DataInputStream(socket.getInputStream());
-//                    long audioSize = dis.readLong();
-//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                    byte[] buffer = new byte[4096];
-//                    long bytesRead = 0;
-//                    while (bytesRead < audioSize) {
-//                        int read = dis.read(buffer, 0, (int) Math.min(buffer.length, audioSize - bytesRead));
-//                        if (read == -1) break;
-//                        baos.write(buffer, 0, read);
-//                        bytesRead += read;
-//                    }
-//                    byte[] audioBytes = baos.toByteArray();
-//                    File tempMp3 = File.createTempFile("recitation", ".mp3");
-//                    try (FileOutputStream fos = new FileOutputStream(tempMp3)) {
-//                        fos.write(audioBytes);
-//                    }
-//                    String uri = tempMp3.toURI().toString();
-//                    Media media = new Media(uri);
-//                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-//                    mediaPlayer.setOnEndOfMedia(() -> tempMp3.delete());
-//                    mediaPlayer.play();
-//                    System.out.println("🔊 Playing audio using MediaPlayer...");
-//                    continue;
-//                } else if (action.equals("getallinfo")) {
-//                    data.put("action", "getallinfo");
-//                    data.put("token", SessionManager.getToken());
-//                    data.put("email", SessionManager.getEmail());
-//                }
-//
-                if (!bufferedReader.ready()) {
-                    continue;
-                }
-                String response = bufferedReader.readLine();
-
+            String response = bufferedReader.readLine();
+            if (response != null) {
                 JSONObject jsonResponse = new JSONObject(response);
                 if (action.equals("login")) {
                     SessionManager.setToken(jsonResponse.getString("token"));
                     SessionManager.setEmail(jsonResponse.getString("email"));
                 }
                 return jsonResponse;
+            } else {
+                System.out.println("No response received for action: " + action);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -370,4 +272,5 @@ public class BackendAPI {
         }
         return null;
     }
+
 }

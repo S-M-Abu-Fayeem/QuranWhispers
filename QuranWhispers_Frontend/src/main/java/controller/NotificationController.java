@@ -86,7 +86,7 @@ public class NotificationController extends BaseController {
                                         theme.toLowerCase().contains(filterText.toLowerCase()) ||
                                 sender.toLowerCase().contains(filterText.toLowerCase())) {
 
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCardVerse.fxml"));
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/notificationCard.fxml"));
                                     Parent card = loader.load();
 
                                     NotificationCardController controller = loader.getController();
@@ -142,7 +142,7 @@ public class NotificationController extends BaseController {
                                 String theme = received.getString("theme");
                                 String sender = received.getString("sender_username");
 
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCardVerse.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/notificationCard.fxml"));
                                 Parent card = loader.load();
 
                                 NotificationCardController controller = loader.getController();

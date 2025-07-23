@@ -320,6 +320,7 @@ public class SearchController extends BaseController implements Initializable {
         RecitationController recitationController = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
         recitationController.setupPage(posterPath, categoryName, surahNum, ayahNum);
         recitationController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
+        recitationController.setupRecitation();
     };
 
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {

@@ -29,8 +29,6 @@ public class AdminUserViewController extends BaseControllerAdmin {
             @Override
             protected Void call() throws Exception {
                 JSONObject request = new JSONObject();
-                request.put("email", SessionManager.getEmail());
-                request.put("token", SessionManager.getToken());
 
 
                 JSONObject response = BackendAPI.fetch("getallusers", request);

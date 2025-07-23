@@ -130,7 +130,7 @@ public class MainApp extends Application {
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
 
-        initController(GlobalState.FORUM_CARD_FILE, ForumCardController.class, sceneController);
+        initController(GlobalState. FORUM_CARD_FILE, ForumCardController.class, sceneController);
         initController(GlobalState.FORUM_CARD_VERSE_FILE, ForumCardVerseController.class, sceneController);
 
         initController(GlobalState.FORUM_FILE, ForumController.class, sceneController);

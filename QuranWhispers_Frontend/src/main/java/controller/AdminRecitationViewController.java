@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -7,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.BackendAPI;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminRecitationViewController extends BaseControllerAdmin implements Initializable {
-    @FXML
-    VBox containerVBox;
+public class AdminRecitationViewController extends BaseControllerAdmin {
+    @FXML VBox containerVBox;
     private List<AdminRecitationViewCardController> cardControllers = new ArrayList<>();
 
     public void stopAllOtherCards(AdminRecitationViewCardController current) {
@@ -29,43 +31,52 @@ public class AdminRecitationViewController extends BaseControllerAdmin implement
         }
     }
 
+    public void setupRecitationViewTable() {
+        Task<Void> getApprovedRecitationsTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            InputStream is = getClass().getResourceAsStream("/data/adminRecitationView_test.json");
-            if (is == null) {
-                System.out.println("JSON file not found in resources!");
-                return;
-            }
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            JSONArray adminRecitationViewArray = new JSONArray(content);
+                JSONObject response = BackendAPI.fetch("getapprovedrecitations", request);
 
-            for (int i = 0; i < adminRecitationViewArray.length(); i++) {
-                JSONObject adminRecitationView = adminRecitationViewArray.getJSONObject(i);
-                String surah = String.valueOf(adminRecitationView.getInt("surahNum"));
-                String ayah = String.valueOf(adminRecitationView.getInt("ayahNum"));
-                String reciterName = adminRecitationView.getString("reciterName");
-                String path = adminRecitationView.getString("path");
+                if (response != null && response.getString("status").equals("200")) {
+                    System.out.println(response.toString());
+                    Platform.runLater(() -> {
+                        try {
+                            containerVBox.getChildren().clear();
+                            JSONArray recitations = response.getJSONArray("approvedrecitations");
+                            for (int i = 0; i < recitations.length(); i++) {
+                                JSONObject rec = recitations.getJSONObject(i);
+                                String surah = rec.getString("surah");
+                                String ayah = rec.getString("ayah");
+                                String reciterName = rec.getString("reciter_name");
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminRecitationViewCard.fxml"));
-                Parent card = loader.load();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminRecitationViewCard.fxml"));
+                                Parent card = loader.load();
 
-                AdminRecitationViewCardController controller = loader.getController();
-                cardControllers.add(controller);
-                controller.setupAdminRecitationViewInfo(surah, ayah, reciterName, path);
-                controller.setupParentController(this);
+                                AdminRecitationViewCardController controller = loader.getController();
+                                cardControllers.add(controller);
+                                controller.setSceneController(sceneController);
+                                controller.setupAdminRecitationViewInfo(surah, ayah, reciterName);
+                                controller.setupParentController(AdminRecitationViewController.this);
 
-                if (card != null) {
-                    containerVBox.getChildren().add(card);
+                                if (card != null) {
+                                    containerVBox.getChildren().add(card);
+                                    System.out.println("✅ Added card for: " + reciterName + " [" + surah + ":" + ayah + "]");
+                                }
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            System.out.println("❌ Error setting up recitation cards: " + ex.getMessage());
+                        }
+                    });
+                } else {
+                    System.out.println("❌ Failed to fetch recitations or status not 200");
                 }
+                return null;
             }
+        };
 
-        } catch (IOException e) {
-            System.out.println("Error reading the JSON file: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error loading FXML or setting controller data: " + e.getMessage());
-            e.printStackTrace();
-        }
+        new Thread(getApprovedRecitationsTask).start();
     }
 }

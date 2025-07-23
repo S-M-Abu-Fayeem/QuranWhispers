@@ -51,7 +51,8 @@ public abstract class BaseControllerAdmin {
     public void handleApproveNavlink(MouseEvent e) throws IOException {
         playClickSound();
         System.out.println("Approve Navlink Pressed");
-        sceneController.switchTo(GlobalState.ADMIN_APPROVE_FILE);
+        AdminApproveController adminApproveController = (AdminApproveController) sceneController.switchTo(GlobalState.ADMIN_APPROVE_FILE);
+        adminApproveController.setupApproveTable();
     }
 
     public void handleTitleLink(MouseEvent e) throws IOException {
@@ -91,7 +92,8 @@ public abstract class BaseControllerAdmin {
     public void handleRecitationViewBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation View Button Pressed");
         playClickSound();
-        sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
+        AdminRecitationViewController adminRecitationViewController = (AdminRecitationViewController) sceneController.switchTo(GlobalState.ADMIN_RECITATION_VIEW_FILE);
+        adminRecitationViewController.setupRecitationViewTable();
     }
 
     public void handleForumNavlink(MouseEvent e) throws IOException {

@@ -19,7 +19,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NotificationController">
     <children>
         <Pane fx:id="globalBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="pane-background" />
-        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay"/>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" styleClass="overlay" />
         <Label alignment="CENTER" layoutX="90.0" layoutY="147.0" prefHeight="58.0" prefWidth="348.0" text="Received Verses">
             <font>
                 <Font name="Segoe UI Black" size="40.0" />
@@ -107,7 +107,7 @@
             <Font name="Century Gothic" size="14.0" />
          </font>
       </TextField>
-      <Group fx:id="favouritesBtn1" layoutX="1172.0" layoutY="350.0" onMouseClicked="#handleFilterBtn" styleClass="nav-btn-wrapper" translateX="-10.0" translateY="-180.0">
+      <Group layoutX="1172.0" layoutY="350.0" onMouseClicked="#handleFilterBtn" styleClass="nav-btn-wrapper" translateX="-10.0" translateY="-180.0">
          <children>
             <Rectangle fx:id="filterRectangle" arcHeight="6.0" arcWidth="6.0" fill="#1e1e1ecc" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="30.0" />
             <ImageView fx:id="filterImageView" fitHeight="20.0" fitWidth="20.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">

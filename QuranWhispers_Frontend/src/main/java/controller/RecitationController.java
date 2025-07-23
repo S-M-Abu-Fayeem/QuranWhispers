@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -22,24 +21,20 @@ import util.GlobalState;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class RecitationController extends SearchController implements Initializable {
+public class RecitationController extends SearchController {
     @FXML ImageView versePosterView;
     @FXML Label categoryField;
     @FXML TextField recitersNameField;
     @FXML TextField filePathField;
     @FXML VBox containerVBox;
     private List<RecitationCardController> cardControllers = new ArrayList<>();
-    int surahNum;
-    int ayahNum;
+    String surahNum;
+    String ayahNum;
     File selectedFile;
     String recitationPath = "src/main/resources/data/recitations_audio/";
     @FXML Label duaTitle;
@@ -66,42 +61,52 @@ public class RecitationController extends SearchController implements Initializa
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            InputStream is = getClass().getResourceAsStream("/data/recitation_test.json");
-            if (is == null) {
-                System.out.println("JSON file not found in resources!");
-                return;
-            }
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            JSONArray recitersArray = new JSONArray(content);
-
-            for (int i = 0; i < recitersArray.length(); i++) {
-                JSONObject reciter = recitersArray.getJSONObject(i);
-                String recitersName = reciter.getString("recitersName");
-                String path = reciter.getString("path");
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recitationCard.fxml"));
-                Parent card = loader.load();
-
-                RecitationCardController controller = loader.getController();
-                cardControllers.add(controller);
-                controller.setReciterInfo(recitersName, path);
-                controller.setParentController(this);
-
-                if (card != null) {
-                    containerVBox.getChildren().add(card);
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error reading the JSON file: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error loading FXML or setting controller data: " + e.getMessage());
-            e.printStackTrace();
+    public void setupRecitation() {
+        if (sceneController == null) {
+            System.err.println("SceneController is null in RecitationController");
         }
+
+        Task<Void> GetRecitationBackendAPITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject request = new JSONObject();
+                request.put("surah", String.valueOf(surahNum));
+                request.put("ayah", String.valueOf(ayahNum));
+
+                JSONObject response = BackendAPI.fetch("getayahrecitations", request);
+                if (response.getString("status").equals("200")) {
+                    Platform.runLater(() -> {
+                        try {
+                            containerVBox.getChildren().clear();
+                            cardControllers.clear();
+
+                            JSONArray recitersArray = response.getJSONArray("recitations");
+                            System.out.println(recitersArray.toString());
+                            for (int i = 0; i < recitersArray.length(); i++) {
+                                String recitersName = recitersArray.getString(i);
+
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recitationCard.fxml"));
+                                Parent card = loader.load();
+
+                                RecitationCardController controller = loader.getController();
+                                cardControllers.add(controller);
+                                if (sceneController != null) controller.setSceneController(sceneController);
+                                controller.setupRecitationCard(surahNum, ayahNum, recitersName);
+                                controller.setParentController(RecitationController.this);
+
+                                containerVBox.getChildren().add(card);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(GetRecitationBackendAPITask).start();
     }
+
 
     public void setupDuaDetails(String title, String arabicBody, String englishBody) {
         this.duaTitle.setText(title);
@@ -118,8 +123,8 @@ public class RecitationController extends SearchController implements Initializa
             System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
         }
         categoryField.setText(categoryName);
-        this.surahNum = surahNum;
-        this.ayahNum = ayahNum;
+        this.surahNum = String.valueOf(surahNum);
+        this.ayahNum = String.valueOf(ayahNum);
     }
 
     public void handleCloseBtn(MouseEvent e) throws IOException {
@@ -159,8 +164,8 @@ public class RecitationController extends SearchController implements Initializa
                 protected Void call() throws Exception {
                     JSONObject request = new JSONObject();
                     request.put("reciter_name", recitersNameField.getText());
-                    request.put("surah", String.valueOf(surahNum));
-                    request.put("ayah", String.valueOf(ayahNum));
+                    request.put("surah", surahNum);
+                    request.put("ayah", ayahNum);
                     request.put("mp3file", destinationFile.getAbsolutePath());
 
                     JSONObject response = BackendAPI.fetch("uploadmp3", request);
