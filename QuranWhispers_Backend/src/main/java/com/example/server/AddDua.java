@@ -53,8 +53,8 @@ public class AddDua {
                 PreparedStatement qs = connection.prepareStatement(
                         "INSERT INTO MOOD_VERSES (emotion, theme, ayah, surah) VALUES (?, ?, ?, ?)"
                 );
-                qs.setString(1, emotion);
-                qs.setString(2, theme);
+                qs.setString(1, emotion.toLowerCase());
+                qs.setString(2, theme.toLowerCase());
                 qs.setInt(3, ayah);
                 qs.setString(4, surah);
 

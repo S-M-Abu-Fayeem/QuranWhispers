@@ -22,7 +22,7 @@ public class Login {
 
         try (Connection connection = DriverManager.getConnection(DB_URL)) {
             // Fetch hashed password and current token
-            PreparedStatement ps = connection.prepareStatement("SELECT password, token, is_admin FROM USERS WHERE email = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT username, password, token, is_admin FROM USERS WHERE email = ?");
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
 
@@ -42,6 +42,7 @@ public class Login {
                         // Already logged in
                         System.out.println("User " + userName + " already logged in with token " + existingToken);
                         data.put("token", String.valueOf(existingToken));
+                        data.put("username", rs.getString("username"));
                     } else {
                         // Generate new token
                         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -55,6 +56,7 @@ public class Login {
 
                         System.out.println("New token generated for " + userName + ": " + newToken);
                         data.put("token", String.valueOf(newToken));
+                        data.put("username", rs.getString("username"));
                     }
 
                     data.put("admin", isAdmin ? "true" : "false");

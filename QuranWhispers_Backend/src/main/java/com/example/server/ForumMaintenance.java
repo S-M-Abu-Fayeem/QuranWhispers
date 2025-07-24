@@ -23,7 +23,7 @@ import static java.lang.Math.min;
 
 public class ForumMaintenance {
     private static final String DB_URL = "jdbc:h2:file:./data/usersdb;INIT=RUNSCRIPT FROM 'classpath:users.sql'";
-    public synchronized String registerChat(String email, int token,String sender_username, String receiver_username, String text, String type, Integer reply_chat_id, String surah, Integer ayah) {
+    public synchronized String registerChat(String email, int token,String senderusername, String receiver_username, String text, String type, Integer reply_chat_id, String surah, Integer ayah) {
         Gson gson = new Gson();
         JsonObject root = new JsonObject();
         //TokenValidator tokenValidator = new TokenValidator();
@@ -33,17 +33,28 @@ public class ForumMaintenance {
                 root.addProperty("status", "403");
                 return gson.toJson(root);
             }
-
-            /*PreparedStatement getUser = conn.prepareStatement("SELECT username FROM USERS WHERE email = ?");
+            // Use email to fetch actual username and active status
+            PreparedStatement getUser = conn.prepareStatement(
+                    "SELECT username, active_user FROM USERS WHERE email = ?"
+            );
             getUser.setString(1, email);
-            ResultSet userRs = getUser.executeQuery();
+            ResultSet rs = getUser.executeQuery();
 
-            if (!userRs.next()) {
+            if (!rs.next()) {
                 root.addProperty("status", "404");
+                root.addProperty("message", "Sender user not found.");
                 return gson.toJson(root);
             }
 
-            String sender_username = userRs.getString("username");*/
+            String sender_username = rs.getString("username");
+
+            if (!rs.getBoolean("active_user")) {
+                root.addProperty("status", "403");
+                root.addProperty("message", "Sender is not an active user.");
+                return gson.toJson(root);
+            }
+
+
 
 
             PreparedStatement insert = conn.prepareStatement(
@@ -89,41 +100,7 @@ public class ForumMaintenance {
                     deleteStmt.executeUpdate();
                 }
             }
-            //PreparedStatement fetchAll = conn.prepareStatement("SELECT * FROM CHATS ORDER BY timestamp ASC");
-            //ResultSet allChats = fetchAll.executeQuery();
 
-            /*JsonArray chatArray = new JsonArray();
-            while (allChats.next()) {
-                JsonObject chatJson = new JsonObject();
-                chatJson.addProperty("id", allChats.getInt("id"));
-                chatJson.addProperty("sender_username", allChats.getString("sender_username"));
-                chatJson.addProperty("receiver_username", allChats.getString("receiver_username"));
-                chatJson.addProperty("timestamp", allChats.getTimestamp("timestamp").toString());
-                chatJson.addProperty("body", allChats.getString("body"));
-                chatJson.addProperty("type", allChats.getString("type"));
-
-                int replyId = allChats.getInt("reply_chat_id");
-                chatJson.addProperty("reply_chat_id", replyId);
-
-                String surah2 = allChats.getString("surah");
-                chatJson.addProperty("surah", surah2);
-
-                int ayah2 = allChats.getInt("ayah");
-                chatJson.addProperty("ayah", ayah2);
-
-                chatArray.add(chatJson);
-            }
-            JsonObject message = new JsonObject();
-            message.add("chats", chatArray);
-            synchronized (HelloApplication.connectedClients) {
-                for (SocketWrapper client : HelloApplication.connectedClients) {
-                    try {
-                        client.write(message.toString());
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }*/
 
             root.addProperty("status", "200");
         } catch (Exception e) {
@@ -166,32 +143,39 @@ public class ForumMaintenance {
         return gson.toJson(data);
     }
 
-    public synchronized String unbanUser(String email, int valueOfToken, String  username) {
-        //TokenValidator tokenValidator = new TokenValidator();
-        //IsAdmin isAdmin = new IsAdmin();
+    public synchronized String unbanUser(String email, int valueOfToken, String username) {
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
-        try(Connection connection = DriverManager.getConnection(DB_URL)) {
-            if(tokenValidator.VALIDATE(email, valueOfToken) && isAdmin.isAdmin(email)) {
-                PreparedStatement qs = connection.prepareStatement("UPDATE USERS SET active_user =  ? WHERE username = ?");
-                qs.setBoolean(1,true);
-                qs.setString(2, username);
+
+        try (Connection connection = DriverManager.getConnection(DB_URL)) {
+            if (tokenValidator.VALIDATE(email, valueOfToken) && isAdmin.isAdmin(email)) {
+                System.out.println("🔓 Unbanning user: " + username);
+
+                PreparedStatement qs = connection.prepareStatement(
+                        "UPDATE USERS SET active_user = ? WHERE LOWER(username) = LOWER(?)"
+                );
+                qs.setBoolean(1, true);
+                qs.setString(2, username.toLowerCase());
+
                 int count = qs.executeUpdate();
-                if(count > 0) {
+                if (count > 0) {
                     data.addProperty("status", "200");
+                    data.addProperty("message", "User unbanned successfully.");
+                } else {
+                    data.addProperty("status", "404");
+                    data.addProperty("message", "No user found with that username.");
                 }
-                else{
-                    data.addProperty("status", "500");
-                }
-            }
-            else{
+            } else {
                 data.addProperty("status", "401");
+                data.addProperty("message", "Unauthorized.");
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
             data.addProperty("status", "500");
+            data.addProperty("error", e.getMessage());
         }
+
         return gson.toJson(data);
     }
 
@@ -275,7 +259,7 @@ public class ForumMaintenance {
             if (tokenValidator.VALIDATE(email, valueOfToken) && isAdmin.isAdmin(email)) {
                 // Step 1: Get IDs of oldest N messages
                 PreparedStatement selectIds = connection.prepareStatement(
-                        "SELECT id FROM CHATS ORDER BY id ASC LIMIT ?"
+                        "SELECT id FROM CHATS ORDER BY id DESC LIMIT ?"
                 );
                 selectIds.setInt(1, updateCount);
                 ResultSet rs = selectIds.executeQuery();
@@ -319,7 +303,7 @@ public class ForumMaintenance {
         try(Connection connection = DriverManager.getConnection(DB_URL)) {
             if(tokenValidator.VALIDATE(email, valueOfToken) ) {
                 System.out.println("yo");
-                PreparedStatement fetchAll = connection.prepareStatement("SELECT * FROM CHATS ORDER BY timestamp ASC");
+                PreparedStatement fetchAll = connection.prepareStatement("SELECT * FROM CHATS ORDER BY timestamp DESC");
                 ResultSet allChats = fetchAll.executeQuery();
 
                 JsonArray chatArray = new JsonArray();
