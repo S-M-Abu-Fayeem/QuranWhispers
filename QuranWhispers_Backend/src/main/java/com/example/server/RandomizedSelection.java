@@ -67,49 +67,71 @@ public class RandomizedSelection {
     }
 
     public synchronized String generateThemeBased(String email, int valueOfToken, String theme) {
-        //TokenValidator tokenValidator = new TokenValidator();
         Gson gson = new Gson();
         JsonObject data = new JsonObject();
         data.addProperty("email", email);
 
+        // Validate token first
         if (tokenValidator.VALIDATE(email, valueOfToken)) {
             try (Connection connection = DriverManager.getConnection(DB_URL)) {
 
                 int userId = getUserIdByEmail(connection, email);
                 if (userId == -1) {
                     data.addProperty("status", "404");
+                    data.addProperty("message", "User not found.");
                     return gson.toJson(data);
                 }
-                PreparedStatement ps = connection.prepareStatement(
-                        "SELECT * FROM MOOD_VERSES WHERE theme = ? ORDER BY RAND() LIMIT 1"
+
+                // Debug: Check how many matching verses exist
+                PreparedStatement countStmt = connection.prepareStatement(
+                        "SELECT COUNT(*) FROM MOOD_VERSES WHERE LOWER(theme) = LOWER(?)"
                 );
-                ps.setString(1, theme);
-               // ps.setInt(2, userId);
-               // ps.setInt(3, userId);
+                countStmt.setString(1, theme.toLowerCase());
+                ResultSet countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    int count = countRs.getInt(1);
+                    System.out.println("🎯 Matching verses found for theme '" + theme + "': " + count);
+                }
+
+                // Main selection query
+                PreparedStatement ps = connection.prepareStatement(
+                        "SELECT * FROM MOOD_VERSES WHERE LOWER(theme) = LOWER(?) ORDER BY RAND() LIMIT 1"
+                );
+                ps.setString(1, theme.toLowerCase());
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
                     int ayah = rs.getInt("ayah");
                     String surah = rs.getString("surah");
                     String emotion = rs.getString("emotion");
+
+                    System.out.println("✅ Verse selected: [" + surah + ":" + ayah + "] | Emotion: " + emotion);
+
                     data.addProperty("theme", theme);
                     data.addProperty("emotion", emotion);
                     data.addProperty("ayah", ayah);
                     data.addProperty("surah", surah);
                     data.addProperty("status", "200");
+
                 } else {
-                    data.addProperty("status", "204"); // No content
+                    // No verse found for theme
+                    System.out.println("⚠️ No verse found for theme: " + theme);
+                    data.addProperty("status", "204");
                     data.addProperty("message", "No new verse found for this theme.");
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
                 data.addProperty("status", "500");
+                data.addProperty("error", e.getMessage());
             }
+
         } else {
             data.addProperty("status", "401");
+            data.addProperty("message", "Invalid token.");
         }
 
         return gson.toJson(data);
     }
+
 }

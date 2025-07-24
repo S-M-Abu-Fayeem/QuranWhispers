@@ -204,19 +204,41 @@ public class ReadThread implements Runnable {
 
                                         // Step 3: Save to DB
                                         try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                                            PreparedStatement stmt = conn.prepareStatement(
-                                                    "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
+
+                                            // Step 1: Check for duplicate based on reciter_name, surah, and ayah
+                                            PreparedStatement checkStmt = conn.prepareStatement(
+                                                    "SELECT COUNT(*) FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ?"
                                             );
-                                            stmt.setString(1, packet.getEmail());
-                                            stmt.setString(2, packet.getReciterName());
-                                            stmt.setString(3, packet.getSurah());
-                                            stmt.setString(4, packet.getAyah());
-                                            stmt.setString(5, packet.getFilename());
-                                            stmt.setBinaryStream(6, new ByteArrayInputStream(packet.getFileData()), packet.getFileData().length);
-                                            stmt.executeUpdate();
+                                            checkStmt.setString(1, packet.getReciterName());
+                                            checkStmt.setString(2, packet.getSurah());
+                                            checkStmt.setString(3, packet.getAyah());
+                                            ResultSet rs = checkStmt.executeQuery();
+
+                                            if (rs.next() && rs.getInt(1) > 0) {
+                                                System.out.println("⚠️ Duplicate recitation already exists. Skipping insert.");
+                                                socketWrapper.write("{\"status\":\"409\",\"message\":\"Recitation already exists for this reciter, surah, and ayah.\"}");
+                                            } else {
+                                                // Step 2: Insert new record
+                                                PreparedStatement stmt = conn.prepareStatement(
+                                                        "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
+                                                );
+                                                stmt.setString(1, packet.getEmail());
+                                                stmt.setString(2, packet.getReciterName());
+                                                stmt.setString(3, packet.getSurah());
+                                                stmt.setString(4, packet.getAyah());
+                                                stmt.setString(5, packet.getFilename());
+                                                stmt.setBinaryStream(6, new ByteArrayInputStream(packet.getFileData()), packet.getFileData().length);
+                                                stmt.executeUpdate();
+
+                                                System.out.println("✅ Recitation inserted successfully.");
+                                                socketWrapper.write("{\"status\":\"200\",\"message\":\"Upload successful\"}");
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            socketWrapper.write("{\"status\":\"500\",\"error\":\"" + e.getMessage() + "\"}");
                                         }
 
-                                        socketWrapper.write("{\"status\":\"200\",\"message\":\"Upload successful\"}");
                                     } else {
                                         socketWrapper.write("{\"status\":\"400\",\"error\":\"Invalid object received\"}");
                                     }
@@ -250,7 +272,7 @@ public class ReadThread implements Runnable {
                             String body = json.get("body").getAsString();
                             int token = json.get("token").getAsInt();
                             String type = json.get("type").getAsString();
-                            int reply_chat_id = json.get("reply_chat_id").getAsInt();
+                            int reply_chat_id = json.get("reply_chat_id").getAsInt(); // 0
                             String surah = json.get("surah").getAsString();
                             int ayah = json.get("ayah").getAsInt();
                             //String text = json.get("text").getAsString();
