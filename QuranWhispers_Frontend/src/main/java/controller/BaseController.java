@@ -1,12 +1,17 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import org.json.JSONObject;
+import util.BackendAPI;
 import util.GlobalState;
+import util.SessionManager;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -95,8 +100,29 @@ public abstract class BaseController {
     public void handleLogoutBtn(MouseEvent e) throws IOException {
         System.out.println("Logout Pressed");
         playClickSound();
-        LandingController landingController = (LandingController) sceneController.switchTo(GlobalState.LANDING_FILE);
-        landingController.setupLandingPage();
+
+        JSONObject request = new JSONObject();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject response = BackendAPI.fetch("logout", request);
+                if (response.getString("status").equals("200")) {
+                    System.out.println("Logout Successful");
+                    Platform.runLater(() -> {
+                        try {
+                            SessionManager.clearSession();
+                            LandingController landingController = (LandingController) sceneController.switchTo(GlobalState.LANDING_FILE);
+                            landingController.setupLandingPage();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
 
     // ALERT TOASTER GENERATE

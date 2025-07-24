@@ -2,7 +2,7 @@ package util;
 
 public class GlobalState {
     // CONNECTION CONST
-    public static final String BACKEND_API_IP_ADDRESS = "10.183.76.228";
+    public static final String BACKEND_API_IP_ADDRESS = "172.19.84.228";
     public static final int BACKEND_API_PORT = 42069;
 
     // OTHER CONST
@@ -31,6 +31,7 @@ public class GlobalState {
     public static final String PROFILE_CARD_FILE = "profileCard";
     public static final String GLOBAL_SHARE_FILE = "globalShare";
     public static final String GLOBAL_RECITATION_FILE = "globalRecitation";
+    public static final String GLOBAL_RECITATION_CARD_FILE = "globalRecitationCard";
 
     public static final String ADMIN_INSERT_FILE = "adminInsert";
     public static final String ADMIN_USER_VIEW_FILE = "adminUserView";

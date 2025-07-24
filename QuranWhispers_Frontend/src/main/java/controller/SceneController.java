@@ -8,10 +8,12 @@ import javafx.stage.Stage;
 import util.BackendAPI;
 import util.GlobalState;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 
 public class SceneController {
+    private String currentSceneName = null;
     private final Stage stage;
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, Object> controllerMap = new HashMap<>();
@@ -39,7 +41,11 @@ public class SceneController {
 
     // Switch to a scene by name, and set the key event handler if available
     public Object switchTo(String name) {
-        if (name.equals(GlobalState.FORUM_FILE) || name.equals(GlobalState.ADMIN_FORUM_FILE)) {
+        // Only stop fetching if we are LEAVING the forum scenes
+        if (currentSceneName != null &&
+                (currentSceneName.equals(GlobalState.FORUM_FILE) || currentSceneName.equals(GlobalState.ADMIN_FORUM_FILE)) &&
+                !name.equals(currentSceneName)) {
+
             BackendAPI.continuousFetch("stop");
         }
 
@@ -49,6 +55,7 @@ public class SceneController {
         }
 
         stage.setScene(scene);
+        currentSceneName = name; // update the current scene
 
         EventHandler<KeyEvent> keyEventHandler = keyEventHandlers.get(name);
         if (keyEventHandler != null) {
@@ -57,4 +64,5 @@ public class SceneController {
 
         return controllerMap.get(name);
     }
+
 }

@@ -198,7 +198,7 @@ public class RecitationController extends SearchController {
         playClickSound();
 
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter audioFilter = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav");
+        FileChooser.ExtensionFilter audioFilter = new FileChooser.ExtensionFilter("Audio Files","*.mp3");
         fileChooser.getExtensionFilters().add(audioFilter);
 
         Stage stage = (Stage) filePathField.getScene().getWindow();

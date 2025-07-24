@@ -26,6 +26,7 @@ public class RecitationCardController extends BaseController{
         this.parentController = controller;
     }
 
+
     public void setupRecitationCard(String surahNum, String ayahNum, String name) {
         this.surahNum = surahNum;
         this.ayahNum = ayahNum;

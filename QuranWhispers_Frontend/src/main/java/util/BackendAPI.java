@@ -23,8 +23,6 @@ public class BackendAPI {
 
                 fetchThread = new Thread(() -> {
                     Socket socket = null;
-                    InputStreamReader inputStreamReader = null;
-                    OutputStreamWriter outputStreamWriter = null;
                     BufferedReader bufferedReader = null;
                     BufferedWriter bufferedWriter = null;
 
@@ -32,20 +30,22 @@ public class BackendAPI {
                         socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
                         System.out.println("Database Connected Successfully");
 
-                        inputStreamReader = new InputStreamReader(socket.getInputStream());
-                        outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
-
-                        bufferedReader = new BufferedReader(inputStreamReader);
-                        bufferedWriter = new BufferedWriter(outputStreamWriter);
-
-                        HashMap<String, String> data = new HashMap<>();
-                        String json = new JSONObject(data).toString();
-                        bufferedWriter.write(json);
-                        bufferedWriter.newLine();
-                        bufferedWriter.flush();
+                        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
                         while (!Thread.currentThread().isInterrupted() && running) {
                             try {
+                                // Prepare and send retrievechat request
+                                JSONObject data = new JSONObject();
+                                data.put("action", "retrievechat");
+                                data.put("token", SessionManager.getToken());
+                                data.put("email", SessionManager.getEmail());
+
+                                bufferedWriter.write(data.toString());
+                                bufferedWriter.newLine();
+                                bufferedWriter.flush();
+
+                                // Wait for server response
                                 String response = bufferedReader.readLine();
                                 if (response != null) {
                                     JSONObject jsonResponse = new JSONObject(response);
@@ -60,7 +60,7 @@ public class BackendAPI {
                             }
 
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(500); // Adjust polling interval as needed
                             } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
                                 break;
@@ -71,8 +71,6 @@ public class BackendAPI {
                     } finally {
                         try {
                             if (socket != null) socket.close();
-                            if (inputStreamReader != null) inputStreamReader.close();
-                            if (outputStreamWriter != null) outputStreamWriter.close();
                             if (bufferedReader != null) bufferedReader.close();
                             if (bufferedWriter != null) bufferedWriter.close();
                         } catch (Exception e) {
@@ -251,6 +249,7 @@ public class BackendAPI {
                 if (action.equals("login")) {
                     SessionManager.setToken(jsonResponse.getString("token"));
                     SessionManager.setEmail(jsonResponse.getString("email"));
+                    SessionManager.setUsername(jsonResponse.getString("username"));
                 }
                 return jsonResponse;
             } else {
@@ -266,6 +265,44 @@ public class BackendAPI {
                 if (outputStreamWriter != null) outputStreamWriter.close();
                 if (bufferedReader != null) bufferedReader.close();
                 if (bufferedWriter != null) bufferedWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    public static JSONObject sendForumMessage(JSONObject payload) {
+        Socket socket = null;
+        BufferedWriter writer = null;
+        BufferedReader reader = null;
+        try {
+            socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            JSONObject data = new JSONObject();
+            data.put("action", "registerchat");
+            for (String key : payload.keySet()) {
+                data.put(key, payload.get(key));
+            }
+
+            writer.write(data.toString());
+            writer.newLine();
+            writer.flush();
+
+            String response = reader.readLine();
+            if (response != null) {
+                return new JSONObject(response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (socket != null) socket.close();
+                if (writer != null) writer.close();
+                if (reader != null) reader.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

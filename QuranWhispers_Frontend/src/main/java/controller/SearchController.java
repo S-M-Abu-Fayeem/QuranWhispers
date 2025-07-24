@@ -46,8 +46,8 @@ public class SearchController extends BaseController implements Initializable {
     boolean isEmotion = false;
     int surahNum;
     int ayahNum;
-    String [] emotionArray; // = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", ""};
-    String [] themeArray; // = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships"};
+    String [] emotionArray; // = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", "Happy", "Sad", "Angry", "Grateful", "Hopeful", "Confused", "Stressed", "Anxious", "Lost", "Insecure", "Overwhelmed", "Disappointed", "Jealous", "Guilty"};
+    String [] themeArray; // = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships", "Community and Society", "Knowledge and Wisdom", "Charity and Generosity (Sadaqah)", "Forgiveness (Maghfirah)", "Love and Compassion (Rahmah)", "Unity (Wahdah)", "Peace (Salam)", "Trust in Allah (Tawakkul)", "Hope (Raja')", "Courage (Shaja'ah)", "Humility (Tawadu')", "Self-Reflection (Muhasabah)"};
 
     String posterPath;
 

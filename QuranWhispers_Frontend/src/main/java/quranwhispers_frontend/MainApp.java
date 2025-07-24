@@ -29,7 +29,9 @@ import controller.NotificationCardController;
 import controller.ProfileController;
 import controller.ProfileCardController;
 
-//import controller.GlobalRecitationController;
+import controller.GlobalShareController;
+import controller.GlobalRecitationController;
+import controller.GlobalRecitationCardController;
 
 import controller.AdminInsertController;
 
@@ -48,7 +50,6 @@ import controller.AdminDuaViewCardController;
 import controller.AdminRecitationViewController;
 import controller.AdminRecitationViewCardController;
 
-import controller.GlobalShareController;
 
 import controller.ForumCardController;
 import controller.ForumCardVerseController;
@@ -116,6 +117,8 @@ public class MainApp extends Application {
         initController(GlobalState.PROFILE_CARD_FILE, ProfileCardController.class, sceneController);
 
         initController(GlobalState.GLOBAL_SHARE_FILE, GlobalShareController.class, sceneController);
+        initController(GlobalState.GLOBAL_RECITATION_FILE, GlobalRecitationController.class, sceneController);
+        initController(GlobalState.GLOBAL_RECITATION_CARD_FILE, GlobalRecitationCardController.class, sceneController);
 
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
         initController(GlobalState.ADMIN_USER_VIEW_FILE, AdminUserViewController.class, sceneController);
@@ -126,6 +129,7 @@ public class MainApp extends Application {
         initController(GlobalState.ADMIN_DUA_VIEW_CARD_FILE, AdminDuaViewCardController.class, sceneController);
 
         initController(GlobalState.ADMIN_RECITATION_VIEW_FILE, AdminRecitationViewController.class, sceneController);
+        initController(GlobalState.ADMIN_RECITATION_VIEW_CARD_FILE, AdminRecitationViewCardController.class, sceneController);
 
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);

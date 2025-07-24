@@ -110,8 +110,9 @@ public class ProfileCardController extends BaseController {
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
         playClickSound();
-//        RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
-//        recitationControllerObj.setupPage(posterPath, categoryName, surahNum, ayahNum);
+        GlobalRecitationController globalRecitationController = (GlobalRecitationController) sceneController.switchTo(GlobalState.GLOBAL_RECITATION_FILE);
+        globalRecitationController.setupRecitation(surahNum, ayahNum);
+        globalRecitationController.setupParent(GlobalState.PROFILE_FILE);
     };
 
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {

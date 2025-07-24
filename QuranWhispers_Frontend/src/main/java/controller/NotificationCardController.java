@@ -17,6 +17,7 @@ import util.PosterGenerator;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -106,8 +107,9 @@ public class NotificationCardController extends BaseController {
     public void handleRecitationViewerBtn(MouseEvent e) throws IOException {
         System.out.println("Recitation Viewer Button Pressed");
         playClickSound();
-//        RecitationController recitationControllerObj = (RecitationController) sceneController.switchTo(GlobalState.RECITATION_FILE);
-//        recitationControllerObj.setupPage(posterPath, categoryName, surahNum, ayahNum);
+        GlobalRecitationController globalRecitationController = (GlobalRecitationController) sceneController.switchTo(GlobalState.GLOBAL_RECITATION_FILE);
+        globalRecitationController.setupParent(GlobalState.NOTIFICATION_FILE);
+        globalRecitationController.setupRecitation(surahNum, ayahNum);
     };
 
     public void handleDownloadOfflineBtn(MouseEvent e) throws IOException {

@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -13,21 +15,189 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import util.SessionManager;
 
 
 public class ForumController extends BaseController {
     @FXML TextArea promptArea;
     @FXML VBox containerVBox;
 
-    public void sendNormalMessage(String message) {}
-    public void sendQuestion(String message) {}
-    public void sendAskAI(String message) {}
-    public void sendVerse(String surah, String ayah) {}
-    public void sendVerseEmotion(String emotion) {}
-    public void sendVerseTheme(String theme) {}
-    public void sendReply(String messageId, String message) {}
-    public void sendToUser(String username, String message) {}
-    public void sendAboutMessage(String message) {}
+    public void sendNormalMessage(String message) {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", "null");
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", message);
+        payload.put("type", "normal");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", 0);
+        payload.put("surah", "null");
+        payload.put("ayah", 0);
+        BackendAPI.sendForumMessage(payload);
+    }
+
+    public void sendQuestion(String message) {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", "null");
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", message);
+        payload.put("type", "question");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", 0);
+        payload.put("surah", "null");
+        payload.put("ayah", 0);
+        BackendAPI.sendForumMessage(payload);
+    }
+
+    public void sendVerse(String surah, int ayah) {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", "null");
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", "null");
+        payload.put("type", "verse");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", 0);
+        payload.put("surah", surah);
+        payload.put("ayah", ayah);
+        BackendAPI.sendForumMessage(payload);
+    }
+
+    public void sendAskAI(String message) {
+        JSONObject aiRequest = new JSONObject();
+        aiRequest.put("token", SessionManager.getToken());
+        aiRequest.put("email", SessionManager.getEmail());
+        aiRequest.put("question", message);
+
+        Task<Void> askAITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject response = BackendAPI.fetch("askai", aiRequest);
+                if (response != null && response.has("status") && response.getInt("status") == 200) {
+                    String answer = response.optString("answer", "");
+                    JSONObject payload = new JSONObject();
+                    payload.put("receiver_username", SessionManager.getUsername());
+                    payload.put("sender_username", "AI");
+                    payload.put("body", answer);
+                    payload.put("type", "aiAns");
+                    payload.put("token", SessionManager.getToken());
+                    payload.put("email", SessionManager.getEmail());
+                    payload.put("reply_chat_id", 0);
+                    payload.put("surah", "null");
+                    payload.put("ayah", 0);
+                    Platform.runLater(() -> BackendAPI.sendForumMessage(payload));
+                }
+                return null;
+            }
+        };
+        new Thread(askAITask).start();
+    }
+
+    // Repeat similar for sendVerseEmotion and sendVerseTheme:
+    public void sendVerseEmotion(String emotion) {
+        JSONObject emotionRequest = new JSONObject();
+        emotionRequest.put("token", SessionManager.getToken());
+        emotionRequest.put("email", SessionManager.getEmail());
+        emotionRequest.put("emotion", emotion);
+
+        Task<Void> emotionTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject response = BackendAPI.fetch("generateemotionbasedverse", emotionRequest);
+                if (response != null && response.has("status") && response.getInt("status") == 200) {
+                    String surah = response.optString("surah", "null");
+                    int ayah = response.optInt("ayah", 0);
+                    JSONObject payload = new JSONObject();
+                    payload.put("receiver_username", "null");
+                    payload.put("sender_username", SessionManager.getUsername());
+                    payload.put("body", "null");
+                    payload.put("type", "verse");
+                    payload.put("token", SessionManager.getToken());
+                    payload.put("email", SessionManager.getEmail());
+                    payload.put("reply_chat_id", 0);
+                    payload.put("surah", surah);
+                    payload.put("ayah", ayah);
+                    Platform.runLater(() -> BackendAPI.sendForumMessage(payload));
+                }
+                return null;
+            }
+        };
+        new Thread(emotionTask).start();
+    }
+
+    public void sendVerseTheme(String theme) {
+        JSONObject themeRequest = new JSONObject();
+        themeRequest.put("token", SessionManager.getToken());
+        themeRequest.put("email", SessionManager.getEmail());
+        themeRequest.put("theme", theme);
+
+        Task<Void> themeTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject response = BackendAPI.fetch("generatethemebasedverse", themeRequest);
+                if (response != null && response.has("status") && response.getInt("status") == 200) {
+                    String surah = response.optString("surah", "null");
+                    int ayah = response.optInt("ayah", 0);
+                    JSONObject payload = new JSONObject();
+                    payload.put("receiver_username", "null");
+                    payload.put("sender_username", SessionManager.getUsername());
+                    payload.put("body", "null");
+                    payload.put("type", "verse");
+                    payload.put("token", SessionManager.getToken());
+                    payload.put("email", SessionManager.getEmail());
+                    payload.put("reply_chat_id", 0);
+                    payload.put("surah", surah);
+                    payload.put("ayah", ayah);
+                    Platform.runLater(() -> BackendAPI.sendForumMessage(payload));
+                }
+                return null;
+            }
+        };
+        new Thread(themeTask).start();
+    }
+
+    public void sendReply(String messageId, String message) {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", "null");
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", message);
+        payload.put("type", "replyMessage");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", messageId);
+        payload.put("surah", "null");
+        payload.put("ayah", 0);
+        BackendAPI.sendForumMessage(payload);
+    }
+
+    public void sendToUser(String username, String message) {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", username);
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", message);
+        payload.put("type", "replyUser");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", 0);
+        payload.put("surah", "null");
+        payload.put("ayah", 0);
+        BackendAPI.sendForumMessage(payload);
+    }
+
+    public void sendAboutMessage() {
+        JSONObject payload = new JSONObject();
+        payload.put("receiver_username", "null");
+        payload.put("sender_username", SessionManager.getUsername());
+        payload.put("body", "null");
+        payload.put("type", "about");
+        payload.put("token", SessionManager.getToken());
+        payload.put("email", SessionManager.getEmail());
+        payload.put("reply_chat_id", 0);
+        payload.put("surah", "null");
+        payload.put("ayah", 0);
+        BackendAPI.sendForumMessage(payload);
+    }
 
     public void setupForum() {
         BackendAPI.continuousFetch("start");
@@ -36,42 +206,46 @@ public class ForumController extends BaseController {
     public void extractMessageCommandAndArgs(String input) {
         String message = null;
         String command = null;
-        List<String> arguments = null;
+        List<String> arguments = new ArrayList<>();
 
-        String regex = "/([a-zA-Z]+)\\(([^)]+)\\)/";
+        String regex = "^/([a-zA-Z]+)\\(([^)]*)\\)/(.*)?$";
 
         if (input.startsWith("/")) {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(input);
 
-            if (matcher.find()) {
+            if (matcher.matches()) {
                 command = matcher.group(1);
-                arguments = new ArrayList<String>();
-                for (String arg : matcher.group(2).split(",")) {
-                    arguments.add(arg.trim());
+                String argStr = matcher.group(2).trim();
+                message = matcher.group(3) != null ? matcher.group(3).trim() : null;
+
+                if (!argStr.isEmpty()) {
+                    for (String arg : argStr.split(",")) {
+                        arguments.add(arg.trim());
+                    }
                 }
-                message = null;
             } else {
+                // Handle commands without parentheses but maybe with message
                 int endIndex = input.indexOf("/", 1);
                 if (endIndex != -1) {
                     command = input.substring(1, endIndex);
                     message = input.substring(endIndex + 1).trim();
                 } else {
                     command = input.substring(1);
-                    message = null;
                 }
             }
         } else {
-            message = input.trim();
+            message = input.trim(); // Plain message
         }
 
         JSONObject json = new JSONObject();
         json.put("message", message != null ? message : "");
         json.put("command", command != null ? command : "");
-        json.put("arguments", arguments != null && !arguments.isEmpty() ? new ArrayList<>(arguments) : new ArrayList<String>());
+        json.put("arguments", arguments);
 
         msgManager(json);
     }
+
 
     public void msgManager(JSONObject json) {
         String message = json.getString("message");
@@ -147,7 +321,7 @@ public class ForumController extends BaseController {
                     }
 
                     System.out.println("Surah: " + arguments.get(0) + ", Ayah: " + arguments.get(1));
-                    sendVerse(arguments.get(0), arguments.get(1));
+                    sendVerse(arguments.get(0), Integer.parseInt(arguments.get(1)));
                     break;
                 case "verseEmotion":
                     System.out.println("Command: verseEmotion, Arguments: " + arguments);
@@ -200,11 +374,11 @@ public class ForumController extends BaseController {
                     }
 
                     if (message != null && !message.isEmpty()) {
-                        System.out.println("Message: " + message);
-                        sendAboutMessage(message);
-                    } else {
-                        System.out.println("No message provided for about command.");
+                        System.out.println("About command does not require a message, but received: " + message);
+                        break;
                     }
+                    sendAboutMessage();
+
                     break;
                 default:
                     System.out.println("Unknown command: " + command);
