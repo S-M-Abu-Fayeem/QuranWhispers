@@ -3,10 +3,15 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
+import util.GlobalState;
 import util.SessionManager;
 
 import java.util.ArrayList;
@@ -17,6 +22,77 @@ import java.util.regex.Pattern;
 public class AdminForumController extends BaseControllerAdmin{
     @FXML TextArea promptArea;
     @FXML VBox containerVBox;
+    @FXML
+    ScrollPane containerScrollPane;
+    JSONArray latestResponse = new JSONArray();
+
+    public void setupAdminForum() {
+        Task<Void> fetchTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                while (!isCancelled()) {
+                    JSONObject jsonResponse = BackendAPI.continuousFetch("start");
+                    if (jsonResponse != null && jsonResponse.getString("status").equals("200")) {
+                        Platform.runLater(() -> {
+                            try {
+                                JSONArray chats = jsonResponse.getJSONArray("chats");
+                                if (latestResponse.similar(chats)) {
+                                    return;
+                                }
+                                System.out.println("Response received: " + chats.toString());
+                                latestResponse.clear();
+                                containerVBox.getChildren().clear();
+                                for (int i = 0; i < chats.length(); i++) {
+                                    JSONObject chat = chats.getJSONObject(i);
+                                    latestResponse.put(chat);
+                                    String msgID = String.valueOf(chat.getInt("id"));
+                                    String sender = chat.getString("sender_username");
+                                    String receiver = chat.getString("receiver_username");
+                                    String body = chat.getString("body");
+                                    String type = chat.getString("type");
+                                    String replyChatId = String.valueOf(chat.getInt("reply_chat_id"));
+                                    String surah = chat.getString("surah");
+                                    String ayah = String.valueOf(chat.getInt("ayah"));
+                                    Parent card = null;
+
+                                    if (type.equals("verse")) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCardVerse.fxml"));
+                                        card = loader.load();
+
+                                        ForumCardVerseController controller = loader.getController();
+                                        if (sceneController != null) controller.setSceneController(sceneController);
+                                        controller.setupCard(msgID, sender, surah, ayah);
+                                        controller.setParent(GlobalState.ADMIN_FORUM_FILE, AdminForumController.this);
+                                    } else {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCard.fxml"));
+                                        card = loader.load();
+
+                                        ForumCardController controller = loader.getController();
+                                        if (sceneController != null) controller.setSceneController(sceneController);
+                                        controller.setupCard(msgID, body, sender, receiver, replyChatId, type);
+                                        controller.setParent(GlobalState.ADMIN_FORUM_FILE, AdminForumController.this);
+                                    }
+
+                                    if (card != null) {
+                                        containerVBox.getChildren().add(card);
+                                    }
+                                }
+                                Platform.runLater(() -> containerScrollPane.setVvalue(1.0));
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                System.out.println("❌ Error setting up forum cards: " + ex.getMessage());
+                            }
+                        });
+                    }
+                    Thread.sleep(500);
+                }
+                return null;
+            }
+        };
+        Thread thread = new Thread(fetchTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
 
     // Complete admin actions with threading
     public void deleteMessage(String messageId) {
@@ -28,7 +104,13 @@ public class AdminForumController extends BaseControllerAdmin{
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                BackendAPI.fetch("deletechatbyid", request);
+                JSONObject response = BackendAPI.fetch("deletechatbyid", request);
+                if (response != null && response.getString("status").equals("200")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Action Successful", "ACTION: CHAT DELETED", "The specific message with the given ID has been deleted. No client will be able to see this message.", "confirmation", "/images/confirm.png");
+                    });
+                }
+
                 return null;
             }
         };
@@ -44,7 +126,12 @@ public class AdminForumController extends BaseControllerAdmin{
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                BackendAPI.fetch("banuser", request);
+                JSONObject response = BackendAPI.fetch("banuser", request);
+                if (response != null && response.getString("status").equals("200")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Action Successful", "ACTION: BAN USER EXECUTED", "The client with given username will no longer be able to send messages in the forum but they can still view it.", "confirmation", "/images/confirm.png");
+                    });
+                }
                 return null;
             }
         };
@@ -60,7 +147,12 @@ public class AdminForumController extends BaseControllerAdmin{
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                BackendAPI.fetch("unbanuser", request);
+                JSONObject response = BackendAPI.fetch("unbanuser", request);
+                if (response != null && response.getString("status").equals("200")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Action Successful", "ACTION: UNBAN USER EXECUTED", "The client with given username will now be able to send and view messages in the forum.", "confirmation", "/images/confirm.png");
+                    });
+                }
                 return null;
             }
         };
@@ -141,33 +233,52 @@ public class AdminForumController extends BaseControllerAdmin{
     }
 
     public void sendAskAI(String message) {
+        Task<Void> askAITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject payload = new JSONObject();
+                payload.put("receiver_username", "AI");
+                payload.put("sender_username", SessionManager.getUsername());
+                payload.put("body", message);
+                payload.put("type", "askai");
+                payload.put("token", SessionManager.getToken());
+                payload.put("email", SessionManager.getEmail());
+                payload.put("reply_chat_id", 0);
+                payload.put("surah", "null");
+                payload.put("ayah", 0);
+                BackendAPI.sendForumMessage(payload);
+                return null;
+            }
+        };
+        new Thread(askAITask).start();
+
         JSONObject aiRequest = new JSONObject();
         aiRequest.put("token", SessionManager.getToken());
         aiRequest.put("email", SessionManager.getEmail());
         aiRequest.put("question", message);
 
-        Task<Void> askAITask = new Task<Void>() {
+        Task<Void> responseAITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject response = BackendAPI.fetch("askai", aiRequest);
                 if (response != null && response.has("status") && response.getInt("status") == 200) {
                     String answer = response.optString("answer", "");
-                    JSONObject payload = new JSONObject();
-                    payload.put("receiver_username", SessionManager.getUsername());
-                    payload.put("sender_username", "AI");
-                    payload.put("body", answer);
-                    payload.put("type", "aiAns");
-                    payload.put("token", SessionManager.getToken());
-                    payload.put("email", SessionManager.getEmail());
-                    payload.put("reply_chat_id", 0);
-                    payload.put("surah", "null");
-                    payload.put("ayah", 0);
-                    Platform.runLater(() -> BackendAPI.sendForumMessage(payload));
+                    JSONObject new_payload = new JSONObject();
+                    new_payload.put("receiver_username", SessionManager.getUsername());
+                    new_payload.put("sender_username", "AI");
+                    new_payload.put("body", answer);
+                    new_payload.put("type", "aiAns");
+                    new_payload.put("token", SessionManager.getToken());
+                    new_payload.put("email", SessionManager.getEmail());
+                    new_payload.put("reply_chat_id", 0);
+                    new_payload.put("surah", "null");
+                    new_payload.put("ayah", 0);
+                    Platform.runLater(() -> BackendAPI.sendForumMessage(new_payload));
                 }
                 return null;
             }
         };
-        new Thread(askAITask).start();
+        new Thread(responseAITask).start();
     }
 
     // Repeat similar for sendVerseEmotion and sendVerseTheme:
@@ -238,7 +349,7 @@ public class AdminForumController extends BaseControllerAdmin{
         payload.put("receiver_username", "null");
         payload.put("sender_username", SessionManager.getUsername());
         payload.put("body", message);
-        payload.put("type", "replyMessage");
+        payload.put("type", "replyMsg");
         payload.put("token", SessionManager.getToken());
         payload.put("email", SessionManager.getEmail());
         payload.put("reply_chat_id", messageId);
@@ -263,9 +374,9 @@ public class AdminForumController extends BaseControllerAdmin{
 
     public void sendAboutMessage() {
         JSONObject payload = new JSONObject();
-        payload.put("receiver_username", "null");
-        payload.put("sender_username", SessionManager.getUsername());
-        payload.put("body", "null");
+        payload.put("receiver_username", SessionManager.getUsername());
+        payload.put("sender_username", "SERVER");
+        payload.put("body", "QuranWhispers is an emotional companion to the Quran, offering features like verse search by emotion/theme, soothing recitations, daily duas, verse posters, social sharing, admin controls, and an interactive forum to engage users and admins with smart commands.");
         payload.put("type", "about");
         payload.put("token", SessionManager.getToken());
         payload.put("email", SessionManager.getEmail());
@@ -275,10 +386,6 @@ public class AdminForumController extends BaseControllerAdmin{
         BackendAPI.sendForumMessage(payload);
     }
 
-
-    public void setupAdminForum() {
-        BackendAPI.continuousFetch("start");
-    }
 
     public void extractMessageCommandAndArgs(String input) {
         String message = null;
@@ -603,5 +710,14 @@ public class AdminForumController extends BaseControllerAdmin{
         System.out.println("Command 5 button pressed");
         promptArea.clear();
         promptArea.setText("/removeLatest(num)/");
+    }
+
+    public void setPromptArea(String text) {
+        if (promptArea != null) {
+            promptArea.clear();
+            promptArea.setText(text);
+        } else {
+            System.err.println("Prompt area is not initialized.");
+        }
     }
 }

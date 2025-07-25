@@ -3,24 +3,99 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextArea;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import util.GlobalState;
 import util.SessionManager;
 
 
 public class ForumController extends BaseController {
     @FXML TextArea promptArea;
     @FXML VBox containerVBox;
+    @FXML ScrollPane containerScrollPane;
+    JSONArray latestResponse = new JSONArray();
+
+    public void setupForum() {
+        Task<Void> fetchTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                while (!isCancelled()) {
+                    JSONObject jsonResponse = BackendAPI.continuousFetch("start");
+                    if (jsonResponse != null && jsonResponse.getString("status").equals("200")) {
+                        Platform.runLater(() -> {
+                            try {
+                                JSONArray chats = jsonResponse.getJSONArray("chats");
+                                if (latestResponse.similar(chats)) {
+                                    return;
+                                }
+                                System.out.println("Response received: " + chats.toString());
+                                latestResponse.clear();
+                                containerVBox.getChildren().clear();
+                                for (int i = 0; i < chats.length(); i++) {
+                                    JSONObject chat = chats.getJSONObject(i);
+                                    latestResponse.put(chat);
+                                    String msgID = String.valueOf(chat.getInt("id"));
+                                    String sender = chat.getString("sender_username");
+                                    String receiver = chat.getString("receiver_username");
+                                    String body = chat.getString("body");
+                                    String type = chat.getString("type");
+                                    String replyChatId = String.valueOf(chat.getInt("reply_chat_id"));
+                                    String surah = chat.getString("surah");
+                                    String ayah = String.valueOf(chat.getInt("ayah"));
+                                    Parent card = null;
+
+                                    if (type.equals("verse")) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCardVerse.fxml"));
+                                        card = loader.load();
+
+                                        ForumCardVerseController controller = loader.getController();
+                                        if (sceneController != null) controller.setSceneController(sceneController);
+                                        controller.setupCard(msgID, sender, surah, ayah);
+                                        controller.setParent(GlobalState.FORUM_FILE, ForumController.this);
+                                    } else {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/forumCard.fxml"));
+                                        card = loader.load();
+
+                                        ForumCardController controller = loader.getController();
+                                        if (sceneController != null) controller.setSceneController(sceneController);
+                                        controller.setupCard(msgID, body, sender, receiver, replyChatId, type);
+                                        controller.setParent(GlobalState.FORUM_FILE, ForumController.this);
+                                    }
+
+                                    if (card != null) {
+                                        containerVBox.getChildren().add(card);
+                                    }
+                                }
+                                Platform.runLater(() -> containerScrollPane.setVvalue(1.0));
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                System.out.println("❌ Error setting up forum cards: " + ex.getMessage());
+                            }
+                        });
+                    }
+                    Thread.sleep(500);
+                }
+                return null;
+            }
+        };
+        Thread thread = new Thread(fetchTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+
 
     public void sendNormalMessage(String message) {
         JSONObject payload = new JSONObject();
@@ -65,33 +140,52 @@ public class ForumController extends BaseController {
     }
 
     public void sendAskAI(String message) {
+        Task<Void> askAITask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                JSONObject payload = new JSONObject();
+                payload.put("receiver_username", "AI");
+                payload.put("sender_username", SessionManager.getUsername());
+                payload.put("body", message);
+                payload.put("type", "askai");
+                payload.put("token", SessionManager.getToken());
+                payload.put("email", SessionManager.getEmail());
+                payload.put("reply_chat_id", 0);
+                payload.put("surah", "null");
+                payload.put("ayah", 0);
+                BackendAPI.sendForumMessage(payload);
+                return null;
+            }
+        };
+        new Thread(askAITask).start();
+
         JSONObject aiRequest = new JSONObject();
         aiRequest.put("token", SessionManager.getToken());
         aiRequest.put("email", SessionManager.getEmail());
         aiRequest.put("question", message);
 
-        Task<Void> askAITask = new Task<Void>() {
+        Task<Void> responseAITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 JSONObject response = BackendAPI.fetch("askai", aiRequest);
                 if (response != null && response.has("status") && response.getInt("status") == 200) {
                     String answer = response.optString("answer", "");
-                    JSONObject payload = new JSONObject();
-                    payload.put("receiver_username", SessionManager.getUsername());
-                    payload.put("sender_username", "AI");
-                    payload.put("body", answer);
-                    payload.put("type", "aiAns");
-                    payload.put("token", SessionManager.getToken());
-                    payload.put("email", SessionManager.getEmail());
-                    payload.put("reply_chat_id", 0);
-                    payload.put("surah", "null");
-                    payload.put("ayah", 0);
-                    Platform.runLater(() -> BackendAPI.sendForumMessage(payload));
+                    JSONObject new_payload = new JSONObject();
+                    new_payload.put("receiver_username", SessionManager.getUsername());
+                    new_payload.put("sender_username", "AI");
+                    new_payload.put("body", answer);
+                    new_payload.put("type", "aiAns");
+                    new_payload.put("token", SessionManager.getToken());
+                    new_payload.put("email", SessionManager.getEmail());
+                    new_payload.put("reply_chat_id", 0);
+                    new_payload.put("surah", "null");
+                    new_payload.put("ayah", 0);
+                    Platform.runLater(() -> BackendAPI.sendForumMessage(new_payload));
                 }
                 return null;
             }
         };
-        new Thread(askAITask).start();
+        new Thread(responseAITask).start();
     }
 
     // Repeat similar for sendVerseEmotion and sendVerseTheme:
@@ -162,7 +256,7 @@ public class ForumController extends BaseController {
         payload.put("receiver_username", "null");
         payload.put("sender_username", SessionManager.getUsername());
         payload.put("body", message);
-        payload.put("type", "replyMessage");
+        payload.put("type", "replyMsg");
         payload.put("token", SessionManager.getToken());
         payload.put("email", SessionManager.getEmail());
         payload.put("reply_chat_id", messageId);
@@ -187,9 +281,9 @@ public class ForumController extends BaseController {
 
     public void sendAboutMessage() {
         JSONObject payload = new JSONObject();
-        payload.put("receiver_username", "null");
-        payload.put("sender_username", SessionManager.getUsername());
-        payload.put("body", "null");
+        payload.put("receiver_username", SessionManager.getUsername());
+        payload.put("sender_username", "SERVER");
+        payload.put("body", "QuranWhispers is an emotional companion to the Quran, offering features like verse search by emotion/theme, soothing recitations, daily duas, verse posters, social sharing, admin controls, and an interactive forum to engage users and admins with smart commands.");
         payload.put("type", "about");
         payload.put("token", SessionManager.getToken());
         payload.put("email", SessionManager.getEmail());
@@ -199,9 +293,6 @@ public class ForumController extends BaseController {
         BackendAPI.sendForumMessage(payload);
     }
 
-    public void setupForum() {
-        BackendAPI.continuousFetch("start");
-    }
 
     public void extractMessageCommandAndArgs(String input) {
         String message = null;
@@ -264,8 +355,8 @@ public class ForumController extends BaseController {
             }
         }
 
-        if (!command.trim().isEmpty()) {
-            switch (command) {
+        else {
+            switch (command.toLowerCase()) {
                 case "question":
                     System.out.println("Command: question, Arguments: " + arguments);
                     if (!arguments.isEmpty()) {
@@ -450,5 +541,14 @@ public class ForumController extends BaseController {
         System.out.println("Command 8 button pressed");
         promptArea.clear();
         promptArea.setText("/about/");
+    }
+
+    public void setPromptArea(String text) {
+        if (promptArea != null) {
+            promptArea.clear();
+            promptArea.setText(text);
+        } else {
+            System.err.println("Prompt area is not initialized.");
+        }
     }
 }

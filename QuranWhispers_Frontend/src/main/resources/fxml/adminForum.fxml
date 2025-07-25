@@ -88,9 +88,9 @@
                 <Font name="Century Gothic" size="14.0" />
             </font>
         </TextArea>
-        <ScrollPane layoutX="535.0" layoutY="188.0" prefHeight="354.0" prefWidth="643.0" styleClass="scroll-pane-admin">
+        <ScrollPane fx:id="containerScrollPane" layoutX="535.0" layoutY="188.0" prefHeight="354.0" prefWidth="643.0" styleClass="scroll-pane-admin">
             <content>
-                <VBox fx:id="containerVBox" prefHeight="346.0" prefWidth="630.0" />
+                <VBox fx:id="containerVBox" prefHeight="346.0" prefWidth="620.0" spacing="10.0" />
             </content>
         </ScrollPane>
         <Group fx:id="sendBtn" layoutX="1118.0" layoutY="578.0" onMouseClicked="#handleSendBtn">

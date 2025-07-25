@@ -46,7 +46,7 @@ public class ForumMaintenance {
                 return gson.toJson(root);
             }
 
-            String sender_username = rs.getString("username");
+            String sender_username = senderusername;
 
             if (!rs.getBoolean("active_user")) {
                 root.addProperty("status", "403");
@@ -303,7 +303,7 @@ public class ForumMaintenance {
         try(Connection connection = DriverManager.getConnection(DB_URL)) {
             if(tokenValidator.VALIDATE(email, valueOfToken) ) {
                 System.out.println("yo");
-                PreparedStatement fetchAll = connection.prepareStatement("SELECT * FROM CHATS ORDER BY timestamp DESC");
+                PreparedStatement fetchAll = connection.prepareStatement("SELECT * FROM CHATS ORDER BY timestamp ASC");
                 ResultSet allChats = fetchAll.executeQuery();
 
                 JsonArray chatArray = new JsonArray();

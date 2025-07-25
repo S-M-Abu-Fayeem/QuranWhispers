@@ -7,8 +7,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import util.BackendAPI;
 import util.GlobalState;
-
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 

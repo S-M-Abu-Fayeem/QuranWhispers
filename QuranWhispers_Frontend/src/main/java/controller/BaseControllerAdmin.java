@@ -3,6 +3,7 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -127,6 +128,38 @@ public abstract class BaseControllerAdmin {
         playClickSound();
         AdminForumController adminForumController = (AdminForumController) sceneController.switchTo(GlobalState.ADMIN_FORUM_FILE);
         adminForumController.setupAdminForum();
+    }
+
+    // ALERT TOASTER GENERATE
+    public ButtonType alertGenerator(String title, String header, String content, String type, String iconPath) {
+        Alert alert;
+        if (type.equals("error")) {
+            alert = new Alert(Alert.AlertType.ERROR);
+        } else if (type.equals("warning")) {
+            alert = new Alert(Alert.AlertType.WARNING);
+        } else if (type.equals("confirmation")) {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+        } else {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        }
+
+        alert.setTitle(title);
+
+        if (iconPath != null && !iconPath.isEmpty()) {
+            URL iconURL = getClass().getResource(iconPath);
+            if (iconURL != null) {
+                alert.getDialogPane().setGraphic(new ImageView(new Image(iconURL.toExternalForm())));
+            }
+        }
+
+        alert.getDialogPane().setStyle("-fx-font-family: 'Century Gothic'; -fx-font-size: 14px; -fx-text-fill: #000000;");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMinWidth(400);
+        alert.getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMaxWidth(600);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert.showAndWait().get();
     }
 
 

@@ -1,13 +1,11 @@
 package util;
 
 import controller.RecitationController;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import shared.FilePacket;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -16,90 +14,54 @@ public class BackendAPI {
     private static Thread fetchThread = null;
     private static boolean running = false;
 
-    public static void continuousFetch(String command) {
+    public static JSONObject continuousFetch(String command) {
         if ("start".equalsIgnoreCase(command)) {
-            if (!running) {
-                running = true;
+            Socket socket = null;
+            BufferedReader bufferedReader = null;
+            BufferedWriter bufferedWriter = null;
 
-                fetchThread = new Thread(() -> {
-                    Socket socket = null;
-                    BufferedReader bufferedReader = null;
-                    BufferedWriter bufferedWriter = null;
+            try {
+                socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
+                System.out.println("Database Connected Successfully");
 
-                    try {
-                        socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
-                        System.out.println("Database Connected Successfully");
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-                        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                // Prepare and send retrievechat request
+                JSONObject data = new JSONObject();
+                data.put("action", "retrievechat");
+                data.put("token", SessionManager.getToken());
+                data.put("email", SessionManager.getEmail());
 
-                        while (!Thread.currentThread().isInterrupted() && running) {
-                            try {
-                                // Prepare and send retrievechat request
-                                JSONObject data = new JSONObject();
-                                data.put("action", "retrievechat");
-                                data.put("token", SessionManager.getToken());
-                                data.put("email", SessionManager.getEmail());
+                bufferedWriter.write(data.toString());
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
 
-                                bufferedWriter.write(data.toString());
-                                bufferedWriter.newLine();
-                                bufferedWriter.flush();
-
-                                // Wait for server response
-                                String response = bufferedReader.readLine();
-                                if (response != null) {
-                                    JSONObject jsonResponse = new JSONObject(response);
-                                    System.out.println("Response received: " + jsonResponse.toString());
-                                } else {
-                                    System.out.println("No data received, server may have closed the connection.");
-                                    break;
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                break;
-                            }
-
-                            try {
-                                Thread.sleep(500); // Adjust polling interval as needed
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (socket != null) socket.close();
-                            if (bufferedReader != null) bufferedReader.close();
-                            if (bufferedWriter != null) bufferedWriter.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                fetchThread.start();
-            } else {
-                System.out.println("Thread is already running.");
+                // Wait for server response
+                String response = bufferedReader.readLine();
+                if (response != null) {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    return jsonResponse;
+                } else {
+                    System.out.println("No data received, server may have closed the connection.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (socket != null) socket.close();
+                    if (bufferedReader != null) bufferedReader.close();
+                    if (bufferedWriter != null) bufferedWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else if ("stop".equalsIgnoreCase(command)) {
-            if (running) {
-                running = false;
-                if (fetchThread != null) {
-                    fetchThread.interrupt();
-                    try {
-                        fetchThread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("Thread stopped.");
-            } else {
-                System.out.println("No thread is running.");
-            }
+            System.out.println("Stop command received, but no thread to stop in single fetch mode.");
         } else {
             System.out.println("Invalid command. Use 'start' or 'stop'.");
         }
+        return null;
     }
 
     public static JSONObject fetch(String action, JSONObject request) {
@@ -246,6 +208,7 @@ public class BackendAPI {
             String response = bufferedReader.readLine();
             if (response != null) {
                 JSONObject jsonResponse = new JSONObject(response);
+                System.out.println(jsonResponse.toString());
                 if (action.equals("login")) {
                     SessionManager.setToken(jsonResponse.getString("token"));
                     SessionManager.setEmail(jsonResponse.getString("email"));
