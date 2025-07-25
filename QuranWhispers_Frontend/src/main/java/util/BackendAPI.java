@@ -11,9 +11,6 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 public class BackendAPI {
-    private static Thread fetchThread = null;
-    private static boolean running = false;
-
     public static JSONObject continuousFetch(String command) {
         if ("start".equalsIgnoreCase(command)) {
             Socket socket = null;
@@ -22,12 +19,11 @@ public class BackendAPI {
 
             try {
                 socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
-                System.out.println("Database Connected Successfully");
+                System.out.println("Database Connection OK ✅");
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-                // Prepare and send retrievechat request
                 JSONObject data = new JSONObject();
                 data.put("action", "retrievechat");
                 data.put("token", SessionManager.getToken());
@@ -37,7 +33,6 @@ public class BackendAPI {
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
 
-                // Wait for server response
                 String response = bufferedReader.readLine();
                 if (response != null) {
                     JSONObject jsonResponse = new JSONObject(response);
@@ -153,7 +148,6 @@ public class BackendAPI {
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
 
-                // 🔽 Step 1: Wait for READY_TO_RECEIVE using bufferedReader
                 String ack = bufferedReader.readLine();
                 if (ack == null || !ack.trim().equals("READY_TO_RECEIVE")) {
                     System.out.println("❌ Server not ready to send file. Got: " + ack);
@@ -162,11 +156,9 @@ public class BackendAPI {
 
                 System.out.println("✅ Server ready to send FilePacket.");
 
-                // 🔽 Step 2: Read FilePacket safely
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 FilePacket receivedPacket = (FilePacket) ois.readObject();
 
-                // 🔽 Step 3: Build save path
                 String filename = receivedPacket.getSurah() + "_" + receivedPacket.getAyah() + "_" + receivedPacket.getReciterName() + ".mp3";
                 URL folderURL = RecitationController.class.getResource("/data/recitations_audio/");
                 if (folderURL == null) {
@@ -177,7 +169,7 @@ public class BackendAPI {
                 Files.write(outputFile.toPath(), receivedPacket.getFileData());
                 System.out.println("💾 Audio saved at: " + outputFile.getAbsolutePath());
 
-                // 🔽 Step 4: Read final JSON response using new reader (safe reuse)
+
                 BufferedReader finalReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String response = finalReader.readLine();
                 if (response != null) {
@@ -192,7 +184,6 @@ public class BackendAPI {
             }
 
 
-            // 🔽 All other actions
             data.put("action", action);
             if (SessionManager.getToken() != null) data.put("token", SessionManager.getToken());
             if (SessionManager.getEmail() != null) data.put("email", SessionManager.getEmail());

@@ -56,6 +56,7 @@ public class GlobalShareController extends BaseController{
             profileNavlink.setTextFill(Color.WHITE);
             URL profileIconURL = getClass().getResource("/images/heart.png");
             if (profileIconURL != null) {
+
                 profileNavImageView.setImage(new Image(profileIconURL.toExternalForm()));
             }
 

@@ -39,9 +39,9 @@
       </Label>
       <Group layoutX="723.0" layoutY="12.0" styleClass="nav-btn-wrapper">
          <children>
-            <ImageView fx:id="reciteBtn" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleReciteBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
+            <ImageView fx:id="audioImageView" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleReciteBtn" pickOnBounds="true" preserveRatio="true" styleClass="nav-btn">
                <image>
-                  <Image url="@../images/speaker.png" />
+                  <Image url="@../images/play.png" />
                </image>
             </ImageView>
          </children>

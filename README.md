@@ -47,7 +47,7 @@
 
 # 🛠️ Tech Stack
 
-- **Frontend:** JavaFX, FXML, SCSS
+- **Frontend:** JavaFX, FXML, SCSS, Figma
 - **Backend:** Java, H2 Database, Google Gemini AI API
 - **Networking:** Java Sockets
 - **Build Tools:** Maven

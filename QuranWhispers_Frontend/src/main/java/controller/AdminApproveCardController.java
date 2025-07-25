@@ -3,19 +3,19 @@ package controller;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
 import util.GlobalState;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class AdminApproveCardController extends BaseControllerAdmin {
     @FXML Label surahNumField;
@@ -25,6 +25,7 @@ public class AdminApproveCardController extends BaseControllerAdmin {
     String audioPath;
     MediaPlayer mediaPlayer;
     private AdminApproveController parentController;
+    @FXML ImageView audioImageView;
 
     public void setupParentController(AdminApproveController controller) {
         this.parentController = controller;
@@ -79,6 +80,10 @@ public class AdminApproveCardController extends BaseControllerAdmin {
             Media media = new Media(new File(audioPath).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
+            URL pauseIconURL = getClass().getResource("/images/pause.png");
+            if (pauseIconURL != null) {
+                audioImageView.setImage(new Image(pauseIconURL.toExternalForm()));
+            }
         } else {
             stopAudio();
         }
@@ -89,6 +94,11 @@ public class AdminApproveCardController extends BaseControllerAdmin {
             mediaPlayer.stop();
             mediaPlayer.dispose();
             mediaPlayer = null;
+
+            URL playIconURL = getClass().getResource("/images/play.png");
+            if (playIconURL != null) {
+                audioImageView.setImage(new Image(playIconURL.toExternalForm()));
+            }
         }
     }
 

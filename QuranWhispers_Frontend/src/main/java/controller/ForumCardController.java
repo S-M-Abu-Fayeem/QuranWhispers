@@ -60,6 +60,8 @@ public class ForumCardController extends BaseController{
         if (senderUsername.equals(SessionManager.getUsername())) {
             msgCard.setStroke(Color.BLACK);
             wrapperHBox.setAlignment(Pos.CENTER_RIGHT);
+        } else if (senderUsername.equals("AI")) {
+            msgCard.setStroke(Color.DARKBLUE);
         }
     }
 

@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 import util.BackendAPI;
 
 import java.io.File;
+import java.net.URL;
 
 public class RecitationCardController extends BaseController{
     @FXML Label recitersName;
@@ -21,6 +24,7 @@ public class RecitationCardController extends BaseController{
     private RecitationController parentController;
     String surahNum;
     String ayahNum;
+    @FXML ImageView audioImageView;
 
     public void setParentController(RecitationController controller) {
         this.parentController = controller;
@@ -75,6 +79,10 @@ public class RecitationCardController extends BaseController{
             Media media = new Media(new File(audioPath).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
+            URL pauseIconURL = getClass().getResource("/images/pause.png");
+            if (pauseIconURL != null) {
+                audioImageView.setImage(new Image(pauseIconURL.toExternalForm()));
+            }
         } else {
             stopAudio();
         }
@@ -85,6 +93,11 @@ public class RecitationCardController extends BaseController{
             mediaPlayer.stop();
             mediaPlayer.dispose();
             mediaPlayer = null;
+
+            URL playIconURL = getClass().getResource("/images/play.png");
+            if (playIconURL != null) {
+                audioImageView.setImage(new Image(playIconURL.toExternalForm()));
+            }
         }
     }
 

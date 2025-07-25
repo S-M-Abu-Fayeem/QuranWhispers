@@ -116,7 +116,7 @@
       <Group fx:id="favouritesBtn" layoutX="954.0" layoutY="89.0" onMouseClicked="#handleFavouritesBtn" translateX="-40.0" translateY="-40.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profileNavImageView" fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/heart.png" />
                </image>
@@ -126,7 +126,7 @@
       <Group fx:id="notificationBtn" layoutX="1007.0" layoutY="89.0" onMouseClicked="#handleNotificationBtn" translateX="-40.0" translateY="-40.0">
          <children>
             <Rectangle arcHeight="6.0" arcWidth="6.0" fill="#f6faff" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="notificationNavImageView" fitHeight="32.0" fitWidth="32.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/notifications.png" />
                </image>
