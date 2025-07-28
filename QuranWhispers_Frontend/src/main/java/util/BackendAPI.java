@@ -201,9 +201,11 @@ public class BackendAPI {
                 JSONObject jsonResponse = new JSONObject(response);
                 System.out.println(jsonResponse.toString());
                 if (action.equals("login")) {
-                    SessionManager.setToken(jsonResponse.getString("token"));
-                    SessionManager.setEmail(jsonResponse.getString("email"));
-                    SessionManager.setUsername(jsonResponse.getString("username"));
+                    if (jsonResponse.getString("status").equals("200")) {
+                        SessionManager.setToken(jsonResponse.getString("token"));
+                        SessionManager.setEmail(jsonResponse.getString("email"));
+                        SessionManager.setUsername(jsonResponse.getString("username"));
+                    }
                 }
                 return jsonResponse;
             } else {

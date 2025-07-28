@@ -72,7 +72,7 @@ public class ShareController extends SearchController{
                 request.put("theme", themeName);
                 request.put("ayah", String.valueOf(ayahNum));
                 request.put("surah", String.valueOf(surahNum));
-                request.put("receiver_username", receiverUsername.getText());
+                request.put("friendusername", receiverUsername.getText());
                 for (String key : request.keySet()) {
                     System.out.println("Key: " + key + " | Value: " + request.get(key));
                 }
