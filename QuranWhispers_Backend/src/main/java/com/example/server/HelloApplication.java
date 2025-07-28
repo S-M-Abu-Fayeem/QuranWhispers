@@ -2,6 +2,11 @@ package com.example.server;
 
 import Threading.ReadThread;
 import Threading.SocketWrapper;
+import Validators.*;
+import controllers.*;
+import generators.APIBasedVerseGenerator;
+import generators.GeneratingDuaOfTheDay;
+import generators.RandomizedSelection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -11,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelloApplication {
-    // Thread-safe list of all client sockets
     public static final List<SocketWrapper> connectedClients = Collections.synchronizedList(new ArrayList<>());
     public static final ForumMaintenance forumMaintenance = new ForumMaintenance();
     public static final Login login = new Login();
@@ -31,8 +35,11 @@ public class HelloApplication {
     public static final APIBasedVerseGenerator apiBasedVerseGenerator = new APIBasedVerseGenerator();
     public static final TokenValidator tokenValidator = new TokenValidator();
     public static final IsAdmin isAdmin = new IsAdmin();
+    public static final EmailValidator emailValidator = new EmailValidator();
+    public static final PasswordValidator passwordValidator = new PasswordValidator();
+    public static final UserNameValidator userNameValidator = new UserNameValidator();
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(42069)) {
+        try (ServerSocket serverSocket = new ServerSocket(420)) {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();

@@ -1,6 +1,6 @@
 package Threading;
 
-import com.example.server.*;
+import Validators.TokenValidator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -32,8 +32,8 @@ public class ReadThread implements Runnable {
             String line;
             while ((line = socketWrapper.read()) != null) {
                 System.out.println("Client: " + line);
-                System.out.println(Thread.currentThread().getName());
-                System.out.println("Active Threads: " + Thread.activeCount());
+                //System.out.println(Thread.currentThread().getName());
+               // System.out.println("Active Threads: " + Thread.activeCount());
 
                 JsonObject json;
                 try {
@@ -46,7 +46,7 @@ public class ReadThread implements Runnable {
                 String action = json.get("action").getAsString();
                 String email = json.get("email").getAsString();
                 String response="";
-                System.out.println(email);
+               // System.out.println(email);
 
                 try {
                     switch (action.toLowerCase()) {
@@ -191,21 +191,18 @@ public class ReadThread implements Runnable {
 
                             if (tokenValidator.VALIDATE(email, token)) {
                                 try {
-                                    // Step 1: Send acknowledgment
                                     writer.println("READY_TO_RECEIVE");
                                     writer.flush();
 
-                                    // Step 2: Receive FilePacket
+
                                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                                     Object obj = ois.readObject();
 
                                     if (obj instanceof FilePacket packet) {
-                                        System.out.println("📦 Received file from " + packet.getEmail());
+                                        System.out.println("Received file from " + packet.getEmail());
 
-                                        // Step 3: Save to DB
                                         try (Connection conn = DriverManager.getConnection(DB_URL)) {
 
-                                            // Step 1: Check for duplicate based on reciter_name, surah, and ayah
                                             PreparedStatement checkStmt = conn.prepareStatement(
                                                     "SELECT COUNT(*) FROM PendingRecitations WHERE reciter_name = ? AND surah = ? AND ayah = ?"
                                             );
@@ -215,10 +212,8 @@ public class ReadThread implements Runnable {
                                             ResultSet rs = checkStmt.executeQuery();
 
                                             if (rs.next() && rs.getInt(1) > 0) {
-                                                System.out.println("⚠️ Duplicate recitation already exists. Skipping insert.");
-                                                socketWrapper.write("{\"status\":\"409\",\"message\":\"Recitation already exists for this reciter, surah, and ayah.\"}");
+                                                socketWrapper.write("{\"status\":\"409\",\"status_message\":\"Recitation already exists for this reciter, surah, and ayah.\"}");
                                             } else {
-                                                // Step 2: Insert new record
                                                 PreparedStatement stmt = conn.prepareStatement(
                                                         "INSERT INTO PendingRecitations (uploader_email, reciter_name, surah, ayah, file_name, audio_data) VALUES (?, ?, ?, ?, ?, ?)"
                                                 );
@@ -230,27 +225,27 @@ public class ReadThread implements Runnable {
                                                 stmt.setBinaryStream(6, new ByteArrayInputStream(packet.getFileData()), packet.getFileData().length);
                                                 stmt.executeUpdate();
 
-                                                System.out.println("✅ Recitation inserted successfully.");
-                                                socketWrapper.write("{\"status\":\"200\",\"message\":\"Upload successful\"}");
+                                                System.out.println("Recitation inserted successfully.");
+                                                socketWrapper.write("{\"status\":\"200\",\"status_message\":\"Your recitation request has been successfully sent for review.\"}");
                                             }
 
                                         } catch (Exception e) {
                                             e.printStackTrace();
-                                            socketWrapper.write("{\"status\":\"500\",\"error\":\"" + e.getMessage() + "\"}");
+                                            socketWrapper.write("{\"status\":\"500\",\"status_message\":\"" + "It is not your fault , it's our fault . Please contact the developers" + "\"}");
                                         }
 
                                     } else {
-                                        socketWrapper.write("{\"status\":\"400\",\"error\":\"Invalid object received\"}");
+                                        socketWrapper.write("{\"status\":\"500\",\"status_message\":\"It is not your fault , it's our fault . Please contact the developers\"}");
                                     }
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    socketWrapper.write("{\"status\":\"500\",\"error\":\"" + e.getMessage() + "\"}");
+                                    socketWrapper.write("{\"status\":\"500\",\"status_message\":\"" + "It is not your fault , it's our fault . Please contact the developers" + "\"}");
                                 }
 
                             } else {
                                 JsonObject err = new JsonObject();
-                                err.addProperty("status", "unauthorized");
+                                err.addProperty("status", "401");
                                 writer.println(err.toString());
                                 writer.flush();
                             }
@@ -285,7 +280,6 @@ public class ReadThread implements Runnable {
                         }
                         case "deletelatest" -> {
                             int token = Integer.parseInt(json.get("token").getAsString());
-                            System.out.println("token done");
                             int no = Integer.parseInt(json.get("number_of_chats").getAsString());
                             response = forumMaintenance.deleteLatest(email, token, no);
                         }
@@ -350,11 +344,9 @@ public class ReadThread implements Runnable {
                                 ResultSet rs = ps.executeQuery();
 
                                 if (rs.next()) {
-                                    // Step 1: Acknowledge ready to send
                                     writer.println("READY_TO_RECEIVE");
                                     writer.flush();
 
-                                    // Step 2: Send the FilePacket
                                     String filename = rs.getString("file_name");
                                     String uploaderEmail = rs.getString("uploader_email");
                                     byte[] fileBytes;
@@ -376,18 +368,18 @@ public class ReadThread implements Runnable {
                                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                                     oos.writeObject(packet);
                                     oos.flush();
-                                    System.out.println("✅ FilePacket sent to client.");
+                                    System.out.println("FilePacket sent to client.");
 
-                                    // Step 3: Send final confirmation JSON
                                     JsonObject finalAck = new JsonObject();
                                     finalAck.addProperty("status", "200");
-                                    finalAck.addProperty("message", "File transfer complete");
+                                    finalAck.addProperty("status_message", "File transfer complete");
                                     writer.println(finalAck.toString());
                                     writer.flush();
 
                                 } else {
                                     JsonObject notFound = new JsonObject();
                                     notFound.addProperty("status", "404");
+                                    notFound.addProperty("status_message", "File not found");
                                     writer.println(notFound.toString());
                                     writer.flush();
                                 }
@@ -396,6 +388,7 @@ public class ReadThread implements Runnable {
                                 e.printStackTrace();
                                 JsonObject error = new JsonObject();
                                 error.addProperty("status", "500");
+                                error.addProperty("status_message", "It is not your fault , it's our fault . Please contact the developers");
                                 error.addProperty("error", e.getMessage());
                                 writer.println(error.toString());
                                 writer.flush();
@@ -428,11 +421,10 @@ public class ReadThread implements Runnable {
                                 ResultSet rs = ps.executeQuery();
 
                                 if (rs.next()) {
-                                    // Step 1: Acknowledge ready to send
+
                                     writer.println("READY_TO_RECEIVE");
                                     writer.flush();
 
-                                    // Step 2: Send the FilePacket
                                     String filename = rs.getString("file_name");
                                     String uploaderEmail = rs.getString("uploader_email");
                                     byte[] fileBytes;
@@ -454,18 +446,19 @@ public class ReadThread implements Runnable {
                                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                                     oos.writeObject(packet);
                                     oos.flush();
-                                    System.out.println("✅ FilePacket sent to client.");
+                                    System.out.println("FilePacket sent to client.");
 
-                                    // Step 3: Send final confirmation JSON
+
                                     JsonObject finalAck = new JsonObject();
                                     finalAck.addProperty("status", "200");
-                                    finalAck.addProperty("message", "File transfer complete");
+                                    finalAck.addProperty("status_message", "File transfer complete");
                                     writer.println(finalAck.toString());
                                     writer.flush();
 
                                 } else {
                                     JsonObject notFound = new JsonObject();
                                     notFound.addProperty("status", "404");
+                                    notFound.addProperty("status_message", "File not found");
                                     writer.println(notFound.toString());
                                     writer.flush();
                                 }
@@ -483,6 +476,7 @@ public class ReadThread implements Runnable {
                         default -> {
                             JsonObject error = new JsonObject();
                             error.addProperty("status", "401");
+                            error.addProperty("status_message" , "Unauthorized");
                             response = gson.toJson(error);
                         }
                     }
@@ -490,7 +484,7 @@ public class ReadThread implements Runnable {
                     socketWrapper.write(response);
 
                 } catch (Exception innerEx) {
-                    System.err.println("Processing error: " + innerEx.getMessage());
+                    System.out.println("Processing error: " + innerEx.getMessage());
                     innerEx.printStackTrace();
                 }
             }
@@ -498,13 +492,13 @@ public class ReadThread implements Runnable {
             //System.out.println("Client disconnected.");
 
         } catch (IOException e) {
-            System.err.println("I/O error in ReadThread: " + e.getMessage());
+            System.out.println("I/O error in ReadThread: " + e.getMessage());
         } finally {
             try {
                 connectedClients.remove(socketWrapper);
                 socketWrapper.close();
             } catch (IOException e) {
-                System.err.println("Error closing socket: " + e.getMessage());
+                System.out.println("Error closing socket: " + e.getMessage());
             }
         }
     }

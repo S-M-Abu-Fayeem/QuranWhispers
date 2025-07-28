@@ -1,4 +1,4 @@
--- 1. USERS table: stores basic user info and authentication
+
 --DROP TABLE IF EXISTS REC_VERSE_DETAIL;
 --DROP TABLE IF EXISTS REC_VERSE;
 --DROP TABLE IF EXISTS FAV_VERSE;
@@ -15,14 +15,14 @@ CREATE TABLE IF NOT EXISTS USERS (
     is_admin BOOLEAN DEFAULT FALSE
     );
 
--- Safe insert for Admin user (inserts or updates if already exists)
+
 MERGE INTO USERS (username, email, password, is_admin)
     KEY (email)
-    VALUES ('smaf', 'smaf@gmail.com', 264113647, TRUE);
+    VALUES ('smaf', 'smaf@gmail.com', 264113647, TRUE),
+        ('admin', 'admin@gmail.com', 956665074, TRUE);
 
 
--- 2. FAV_VERSE table: user's favorite verses with emotion
---DROP TABLE IF EXISTS FAV_VERSE;
+
 
 CREATE TABLE IF NOT EXISTS FAV_VERSE (
                                          id IDENTITY PRIMARY KEY,
@@ -35,16 +35,16 @@ CREATE TABLE IF NOT EXISTS FAV_VERSE (
     FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
     );
 
--- 3. REC_VERSE table: stores records of verses received from others
+
 CREATE TABLE IF NOT EXISTS REC_VERSE (
                                          id IDENTITY PRIMARY KEY,
-                                         user_id INT, -- who received
+                                         user_id INT,
                                          sender_username VARCHAR(255),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
     );
 
--- 4. REC_VERSE_DETAIL table: verse details for each REC_VERSE record
+
 CREATE TABLE IF NOT EXISTS REC_VERSE_DETAIL (
                                                 id IDENTITY PRIMARY KEY,
                                                 rec_verse_id INT,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS REC_VERSE_DETAIL (
     FOREIGN KEY (rec_verse_id) REFERENCES REC_VERSE(id) ON DELETE CASCADE
     );
 
--- 5. MOOD_VERSES table: admin-curated verses for each emotion and theme
+
 CREATE TABLE IF NOT EXISTS MOOD_VERSES (
                                            id IDENTITY PRIMARY KEY,
                                            emotion VARCHAR(255) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS MOOD_VERSES (
     theme VARCHAR(255) NOT NULL
     );
 
--- 6. VERSE_MESSAGES table: admin-posted messages
+
 CREATE TABLE IF NOT EXISTS VERSE_MESSAGES (
                                               id IDENTITY PRIMARY KEY,
                                               title_arabic VARCHAR(255) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS VERSE_MESSAGES (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
--- 7. DUA table
+
 CREATE TABLE IF NOT EXISTS DUA (
                                    id IDENTITY PRIMARY KEY,
                                    title VARCHAR(255),
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS DUA (
     body_arabic TEXT
     );
 
--- 8. DUA_CACHE table for storing the daily dua reference
+
 CREATE TABLE IF NOT EXISTS DUA_CACHE (
                                          id IDENTITY PRIMARY KEY,
                                          dua_id INT,
@@ -89,14 +89,14 @@ CREATE TABLE IF NOT EXISTS DUA_CACHE (
                                          FOREIGN KEY (dua_id) REFERENCES DUA(id) ON DELETE CASCADE
     );
 
--- Safe insert for sample Duas
+
 MERGE INTO DUA (title, body_english, body_arabic)
     KEY (title)
     VALUES
     ('Morning Supplication', 'O Allah, guide me this day.', 'اللّهُمَّ اهْدِنِي هٰذَا الْيَوْمَ'),
     ('Evening Supplication', 'Protect me from evil this evening.', 'اللّهُمَّ احْفَظْنِي مِنَ الشَّرِّ هٰذَا الْمَسَاءِ');
 
--- 9. PendingRecitations table
+
 CREATE TABLE IF NOT EXISTS PendingRecitations (
                                                   id IDENTITY PRIMARY KEY,
                                                   uploader_email VARCHAR(255),
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS PendingRecitations (
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
--- 10. Recitations table
+
 CREATE TABLE IF NOT EXISTS Recitations (
                                            id IDENTITY PRIMARY KEY,
                                            uploader_email VARCHAR(255),
@@ -123,11 +123,11 @@ CREATE TABLE IF NOT EXISTS Recitations (
 CREATE TABLE IF NOT EXISTS CHATS(
                        id IDENTITY PRIMARY KEY,
                        sender_username VARCHAR(255) NOT NULL,
-                       receiver_username VARCHAR(255),         -- NULL for broadcast/system messages
+                       receiver_username VARCHAR(255),
                        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        body TEXT NOT NULL,
                        type VARCHAR(50) NOT NULL,
-                       reply_chat_id BIGINT,                   -- for replies, optional
+                       reply_chat_id BIGINT,
                        surah VARCHAR(50),
                        ayah INTEGER,
                        FOREIGN KEY (reply_chat_id) REFERENCES CHATS(id) ON DELETE SET NULL
