@@ -120,7 +120,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="209.0" layoutY="346.0" onMouseClicked="#handleShawkiContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="23035067" wrapText="true">
+        <Label layoutX="209.0" layoutY="346.0" onMouseClicked="#handleShawkiContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="2305067" wrapText="true">
            <font>
               <Font name="Century Gothic" size="20.0" />
            </font>
@@ -130,7 +130,7 @@
               <Font name="Century Gothic" size="13.0" />
            </font>
         </Label>
-        <Label layoutX="209.0" layoutY="441.0" onMouseClicked="#handleFayeemContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="23035070" wrapText="true">
+        <Label layoutX="209.0" layoutY="441.0" onMouseClicked="#handleFayeemContact" prefHeight="32.0" prefWidth="158.0" style="-fx-letter-spacing: 20;" styleClass="text-black" text="2305070" wrapText="true">
            <font>
               <Font name="Century Gothic" size="20.0" />
            </font>

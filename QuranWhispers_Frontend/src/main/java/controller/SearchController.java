@@ -46,17 +46,15 @@ public class SearchController extends BaseController implements Initializable {
     boolean isEmotion = false;
     int surahNum;
     int ayahNum;
-    String [] emotionArray; // = {"Afraid", "Depressed", "Feeling Lonely", "Last Hope", "Need Courage", "Seeking Peace", "Need Direction", "Happy", "Sad", "Angry", "Grateful", "Hopeful", "Confused", "Stressed", "Anxious", "Lost", "Insecure", "Overwhelmed", "Disappointed", "Jealous", "Guilty"};
-    String [] themeArray; // = {"Faith and Belief (Iman)", "Guidance (Hidayah)", "Worship (Ibadah)", "Patience (Sabr)", "Gratitude (Shukr)", "Justice (Adl)", "The Afterlife (Akhirah)", "Repentance (Tawbah)", "Family and Relationships", "Community and Society", "Knowledge and Wisdom", "Charity and Generosity (Sadaqah)", "Forgiveness (Maghfirah)", "Love and Compassion (Rahmah)", "Unity (Wahdah)", "Peace (Salam)", "Trust in Allah (Tawakkul)", "Hope (Raja')", "Courage (Shaja'ah)", "Humility (Tawadu')", "Self-Reflection (Muhasabah)"};
-
+    String [] emotionArray;
+    String [] themeArray;
     String posterPath;
 
     boolean isGenerateAIloading = false;
-    @FXML
-    Pane loadingOverlay;
+    @FXML Pane loadingOverlay;
     @FXML private Rectangle loaderRectangle;
     private double angle = 0;
-    private double speedFactor = 3;
+    private double speedFactor = 5;
 
     public void setupLoaderAnimation() {
         AnimationTimer animationTimer = new AnimationTimer() {
@@ -220,6 +218,10 @@ public class SearchController extends BaseController implements Initializable {
                     System.out.println("Category List View Visible (inside trigger): " + categoryListViewVisible);
                     categoryListView.setVisible(categoryListViewVisible);
                     categoryListView.getItems().clear();
+                    this.surahNum = surahNum;
+                    this.ayahNum = ayahNum;
+                    this.emotionName = emotionName;
+                    this.themeName = themeName;
                 } else {
                     System.out.println("Poster file not found: " + posterFile.getAbsolutePath());
                 }
@@ -392,5 +394,7 @@ public class SearchController extends BaseController implements Initializable {
         generateAIController.setupDuaDetails(duaTitle.getText(), duaArabicBody.getText(), duaEnglishBody.getText());
         generateAIController.setupPoster(posterPath, categoryName);
     }
+
+
 
 }

@@ -129,16 +129,16 @@ public class PosterGenerator {
 
         // Wrap Arabic text
         String arabicText = data.getString("arabicTranslationText");
-        drawWrappedText(gc, arabicText, 100, 125, 1200);
+        drawWrappedText(gc, arabicText, 90, 125, 1100);
 
         // Set up font for English text
         gc.setFont(javafx.scene.text.Font.font(40));
         String englishText = data.getString("englishTranslationText");
-        drawWrappedText(gc, englishText, 250, 400, 1200);
+        drawWrappedText(gc, englishText, 250, 420, 1200);
 
         // Set up font for Bengali text
         String bengaliText = data.getString("bengaliTranslationText");
-        drawWrappedText(gc, bengaliText, 400, 600, 1200);
+        drawWrappedText(gc, bengaliText, 400, 610, 1100);
 
         // Footer (verse number)
         gc.setFill(Color.WHITE);
