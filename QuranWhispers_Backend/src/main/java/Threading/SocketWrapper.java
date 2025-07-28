@@ -23,7 +23,7 @@ public class SocketWrapper {
     }
 
     public void write(String msg) {
-        writer.println(msg); // println() automatically adds newline + flushes
+        writer.println(msg);
     }
 
     public void close() throws IOException {
