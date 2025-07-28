@@ -191,9 +191,22 @@ public class GlobalRecitationController extends BaseController {
                                 selectedFile = null;
                                 filePathField.setText("");
                                 sceneController.switchTo(parent);
+                                alertGenerator("Action successful", "ACTION: REQUEST RECITATION", response.getString("status_message"), "confirmation", "/images/confrim.png");
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
+                        });
+                    } else if (response.getString("status").equals("409")) {
+                        Platform.runLater(() -> {
+                            alertGenerator("Request failed", "INVALID USERNAME", response.getString("status_message"), "error", "/images/denied.png");
+                        });
+                    } else if (response.getString("status").equals("500")) {
+                        Platform.runLater(() -> {
+                            alertGenerator("Request failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
                         });
                     }
                     return null;

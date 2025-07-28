@@ -5,7 +5,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import util.BackendAPI;
 import util.GlobalState;
 import java.net.URL;
 import java.util.HashMap;
@@ -44,7 +43,10 @@ public class SceneController {
                 (currentSceneName.equals(GlobalState.FORUM_FILE) || currentSceneName.equals(GlobalState.ADMIN_FORUM_FILE)) &&
                 !name.equals(currentSceneName)) {
 
-            BackendAPI.continuousFetch("stop");
+            GlobalState.RUN_CONTINUOUS_FETCH = false;
+            System.out.println("Stopped continuous fetch for forum data.");
+        } else {
+            GlobalState.RUN_CONTINUOUS_FETCH = true;
         }
 
         Scene scene = sceneMap.get(name);

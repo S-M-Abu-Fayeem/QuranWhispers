@@ -4,20 +4,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class AdminRecitationViewController extends BaseControllerAdmin {
     @FXML VBox containerVBox;

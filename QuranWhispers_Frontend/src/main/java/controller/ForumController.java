@@ -31,8 +31,8 @@ public class ForumController extends BaseController {
         Task<Void> fetchTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                while (!isCancelled()) {
-                    JSONObject jsonResponse = BackendAPI.continuousFetch("start");
+                while (GlobalState.RUN_CONTINUOUS_FETCH) {
+                    JSONObject jsonResponse = BackendAPI.continuousFetch();
                     if (jsonResponse != null && jsonResponse.getString("status").equals("200")) {
                         Platform.runLater(() -> {
                             try {
@@ -188,7 +188,6 @@ public class ForumController extends BaseController {
         new Thread(responseAITask).start();
     }
 
-    // Repeat similar for sendVerseEmotion and sendVerseTheme:
     public void sendVerseEmotion(String emotion) {
         JSONObject emotionRequest = new JSONObject();
         emotionRequest.put("token", SessionManager.getToken());
@@ -316,7 +315,6 @@ public class ForumController extends BaseController {
                     }
                 }
             } else {
-                // Handle commands without parentheses but maybe with message
                 int endIndex = input.indexOf("/", 1);
                 if (endIndex != -1) {
                     command = input.substring(1, endIndex);
@@ -326,7 +324,7 @@ public class ForumController extends BaseController {
                 }
             }
         } else {
-            message = input.trim(); // Plain message
+            message = input.trim();
         }
 
         JSONObject json = new JSONObject();
@@ -373,7 +371,6 @@ public class ForumController extends BaseController {
                     break;
                 case "askai":
                     System.out.println("Command: askai, Arguments: " + arguments);
-                    // Handle askai command
                     if (!arguments.isEmpty()) {
                         System.out.println("AskAI command does not require arguments, but received: " + arguments);
                         break;
@@ -387,7 +384,6 @@ public class ForumController extends BaseController {
                     break;
                 case "reply":
                     System.out.println("Command: reply, Arguments: " + arguments);
-                    // Handle reply command
                     if (arguments.isEmpty()) {
                         System.out.println("Reply command requires a message ID argument.");
                         break;
@@ -401,7 +397,6 @@ public class ForumController extends BaseController {
                     break;
                 case "verse":
                     System.out.println("Command: verse, Arguments: " + arguments);
-                    // Handle verse command
                     if (arguments.size() < 2) {
                         System.out.println("Verse command requires surah and ayah arguments.");
                         break;
@@ -414,9 +409,8 @@ public class ForumController extends BaseController {
                     System.out.println("Surah: " + arguments.get(0) + ", Ayah: " + arguments.get(1));
                     sendVerse(arguments.get(0), Integer.parseInt(arguments.get(1)));
                     break;
-                case "verseEmotion":
+                case "verseemotion":
                     System.out.println("Command: verseEmotion, Arguments: " + arguments);
-                    // Handle verseEmotion command
                     if (arguments.isEmpty()) {
                         System.out.println("VerseEmotion command requires an emotion argument.");
                         break;
@@ -426,11 +420,10 @@ public class ForumController extends BaseController {
                         break;
                     }
                     System.out.println("Emotion: " + arguments.get(0));
-                    sendVerseEmotion(arguments.get(0));
+                    sendVerseEmotion(arguments.get(0).toLowerCase());
                     break;
-                case "verseTheme":
+                case "versetheme":
                     System.out.println("Command: verseTheme, Arguments: " + arguments);
-                    // Handle verseTheme command
                     if (arguments.isEmpty()) {
                         System.out.println("VerseTheme command requires a theme argument.");
                         break;
@@ -440,11 +433,10 @@ public class ForumController extends BaseController {
                         break;
                     }
                     System.out.println("Theme: " + arguments.get(0));
-                    sendVerseTheme(arguments.get(0));
+                    sendVerseTheme(arguments.get(0).toLowerCase());
                     break;
                 case "send":
                     System.out.println("Command: send, Arguments: " + arguments);
-                    // Handle send command
                     if (arguments.isEmpty()) {
                         System.out.println("Send command requires a username argument.");
                         break;
@@ -458,7 +450,6 @@ public class ForumController extends BaseController {
                     break;
                 case "about":
                     System.out.println("Command: about");
-                    // Handle about command
                     if (!arguments.isEmpty()) {
                         System.out.println("About command does not require arguments, but received: " + arguments);
                         break;

@@ -1,6 +1,12 @@
 package util;
 
 import controller.RecitationController;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import org.json.JSONObject;
 import shared.FilePacket;
 
@@ -11,12 +17,10 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 public class BackendAPI {
-    public static JSONObject continuousFetch(String command) {
-        if ("start".equalsIgnoreCase(command)) {
+    public static JSONObject continuousFetch() {
             Socket socket = null;
             BufferedReader bufferedReader = null;
             BufferedWriter bufferedWriter = null;
-
             try {
                 socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
                 System.out.println("Database Connection OK ✅");
@@ -51,11 +55,6 @@ public class BackendAPI {
                     e.printStackTrace();
                 }
             }
-        } else if ("stop".equalsIgnoreCase(command)) {
-            System.out.println("Stop command received, but no thread to stop in single fetch mode.");
-        } else {
-            System.out.println("Invalid command. Use 'start' or 'stop'.");
-        }
         return null;
     }
 
@@ -248,10 +247,29 @@ public class BackendAPI {
             writer.newLine();
             writer.flush();
 
-            String response = reader.readLine();
-            if (response != null) {
-                return new JSONObject(response);
+            String temp = reader.readLine();
+            JSONObject response = null;
+            if (temp != null) {
+                response = new JSONObject(temp);
             }
+            if (response != null && response.getString("status").equals("200")) {
+                return response;
+            } else if (response != null && response.getString("status").equals("403")) {
+                final JSONObject finalResponse = response;
+                Platform.runLater(() -> {
+                    BackendAPI.alertGenerator("Send failed", "ACCESS DENIED", finalResponse.getString("status_message"), "error", "/images/denied.png");
+                });
+            } else if (response != null && response.getString("status").equals("500")) {
+                final JSONObject finalResponse = response;
+                Platform.runLater(() -> {
+                    BackendAPI.alertGenerator("Send failed", "SERVER ERROR", finalResponse.getString("status_message"), "error", "/images/denied.png");
+                });
+            } else {
+                Platform.runLater(() -> {
+                    BackendAPI.alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                });
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -264,6 +282,37 @@ public class BackendAPI {
             }
         }
         return null;
+    }
+
+    public static ButtonType alertGenerator(String title, String header, String content, String type, String iconPath) {
+        Alert alert;
+        if ("error".equals(type)) {
+            alert = new Alert(Alert.AlertType.ERROR);
+        } else if ("warning".equals(type)) {
+            alert = new Alert(Alert.AlertType.WARNING);
+        } else if ("confirmation".equals(type)) {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+        } else {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        }
+
+        alert.setTitle(title);
+
+        if (iconPath != null && !iconPath.isEmpty()) {
+            URL iconURL = BackendAPI.class.getResource(iconPath);
+            if (iconURL != null) {
+                alert.getDialogPane().setGraphic(new ImageView(new Image(iconURL.toExternalForm())));
+            }
+        }
+
+        alert.getDialogPane().setStyle("-fx-font-family: 'Century Gothic'; -fx-font-size: 14px; -fx-text-fill: #000000;");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMinWidth(400);
+        alert.getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMaxWidth(600);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert.showAndWait().get();
     }
 
 }

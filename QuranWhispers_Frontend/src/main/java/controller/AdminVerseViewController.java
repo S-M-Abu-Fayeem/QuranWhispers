@@ -24,7 +24,6 @@ public class AdminVerseViewController extends BaseControllerAdmin {
             System.err.println("SceneController is null in AdminUserViewController");
         }
 
-        // Proceed with the rest of your setup
         Task<Void> getAdminVerseViewBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -45,8 +44,8 @@ public class AdminVerseViewController extends BaseControllerAdmin {
                                 JSONObject adminVerseView = adminVerseViewArray.getJSONObject(i);
                                 String surah = adminVerseView.getString("surah");
                                 String ayah = adminVerseView.getString("ayah");
-                                String emotion = adminVerseView.getString("emotion");
-                                String theme = adminVerseView.getString("theme");
+                                String emotion = toTitleCase(adminVerseView.getString("emotion"));
+                                String theme = toTitleCase(adminVerseView.getString("theme"));
 
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminVerseViewCard.fxml"));
                                 Parent card = loader.load();

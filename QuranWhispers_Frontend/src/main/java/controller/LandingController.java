@@ -12,12 +12,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class LandingController extends BaseController{
-    @FXML
-    private Label heroTitle1;
+    @FXML private Label heroTitle1;
     @FXML private Label heroTitle2;
     @FXML private Label heroSubtitle;
-    @FXML private Group searchBtn;
-    @FXML private Group learnMoreBtn;
     @FXML private ImageView heroImg;
 
     public void setupLandingPage() {

@@ -16,8 +16,6 @@ public class HomePageController extends BaseController {
     @FXML private Label heroTitle1;
     @FXML private Label heroTitle2;
     @FXML private Label heroSubtitle;
-    @FXML private Group searchBtn;
-    @FXML private Group learnMoreBtn;
     @FXML private ImageView heroImg;
 
     public void setupHomePage() {

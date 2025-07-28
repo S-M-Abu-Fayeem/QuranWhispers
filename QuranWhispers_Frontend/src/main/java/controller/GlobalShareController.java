@@ -84,7 +84,7 @@ public class GlobalShareController extends BaseController{
                 request.put("theme", themeName);
                 request.put("ayah", String.valueOf(ayahNum));
                 request.put("surah", String.valueOf(surahNum));
-                request.put("receiver_username", receiverUsername.getText());
+                request.put("friendusername", receiverUsername.getText());
                 for (String key : request.keySet()) {
                     System.out.println("Key: " + key + " | Value: " + request.get(key));
                 }
@@ -96,12 +96,23 @@ public class GlobalShareController extends BaseController{
                     Platform.runLater(() -> {
                         try {
                             sceneController.switchTo(parent);
+                            alertGenerator("Action successful", "ACTION: SEND TO FRIEND", response.getString("status_message"), "confirmation", "/images/confrim.png");
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     });
+                } else if (response.getString("status").equals("404")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Send failed", "INVALID USERNAME", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Send failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
                 } else {
-                    System.out.println("Fetch failed: " + response.getString("message"));
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                    });
                 }
                 return null;
             }

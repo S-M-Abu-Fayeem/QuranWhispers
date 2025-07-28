@@ -12,8 +12,7 @@ import util.SessionManager;
 import java.io.IOException;
 
 public class AdminInsertController extends BaseControllerAdmin {
-    @FXML
-    TextField duaTitleField;
+    @FXML TextField duaTitleField;
     @FXML TextField duaArabicBodyField;
     @FXML TextField duaEnglishBodyField;
     @FXML TextField surahNumField;
@@ -40,6 +39,7 @@ public class AdminInsertController extends BaseControllerAdmin {
                             duaTitleField.clear();
                             duaArabicBodyField.clear();
                             duaEnglishBodyField.clear();
+                            alertGenerator("Action successful", "ACTION: ADD DUA", response.getString("status_message"), "confirmation", "/images/confrim.png");
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -74,9 +74,22 @@ public class AdminInsertController extends BaseControllerAdmin {
                             ayahNumField.clear();
                             emotionField.clear();
                             themeField.clear();
+                            alertGenerator("Action successful", "ACTION: ADD VERSE", response.getString("status_message"), "confirmation", "/images/confrim.png");
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                    });
+                } else if (response.getString("status").equals("404")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "INVALID ACTION", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
                     });
                 }
                 return null;

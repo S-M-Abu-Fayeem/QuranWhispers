@@ -17,7 +17,6 @@ import util.PosterGenerator;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -95,8 +94,18 @@ public class NotificationCardController extends BaseController {
                             ex.printStackTrace();
                         }
                     });
+                } else if (response.getString("status").equals("409")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "INVALID OPERATION", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
                 } else {
-                    System.out.println("Fetch failed: " + response.getString("message"));
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                    });
                 }
                 return null;
             }

@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.BackendAPI;
-import util.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,6 @@ public class AdminUserViewController extends BaseControllerAdmin {
             System.err.println("SceneController is null in AdminUserViewController");
         }
 
-        // Proceed with the rest of your setup
         Task<Void> getAdminUserViewBackendAPITask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {

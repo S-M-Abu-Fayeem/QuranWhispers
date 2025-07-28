@@ -104,7 +104,7 @@ public class SearchController extends BaseController implements Initializable {
 
                     for (int i = 0; i < jsonArrayEmotion.length(); i++) {
                         if (!(jsonArrayEmotion.isNull(i) || jsonArrayEmotion.getString(i).isEmpty() || jsonArrayEmotion.getString(i).equals(""))) {
-                            emotionArray[i] = jsonArrayEmotion.getString(i);  // Get each string from JSONArray
+                            emotionArray[i] = toTitleCase(jsonArrayEmotion.getString(i));  // Get each string from JSONArray
                         }
                     }
                     emotionArray = Arrays.stream(emotionArray).filter(Objects::nonNull).toArray(String[]::new);
@@ -114,7 +114,7 @@ public class SearchController extends BaseController implements Initializable {
 
                     for (int i = 0; i < jsonArrayTheme.length(); i++) {
                         if (!(jsonArrayTheme.isNull(i) || jsonArrayTheme.getString(i).isEmpty() || jsonArrayTheme.getString(i).equals(""))) {
-                            themeArray[i] = jsonArrayTheme.getString(i);  // Get each string from JSONArray
+                            themeArray[i] = toTitleCase(jsonArrayTheme.getString(i));  // Get each string from JSONArray
                         }
                     }
                     themeArray = Arrays.stream(themeArray).filter(Objects::nonNull).toArray(String[]::new);
@@ -215,7 +215,7 @@ public class SearchController extends BaseController implements Initializable {
                         categoryName = themeName;
                     }
                     System.out.println("Category Name: " + categoryName);
-                    categoryField.setText(categoryName);
+                    categoryField.setText(toTitleCase(categoryName));
                     categoryListViewVisible = !categoryListViewVisible;
                     System.out.println("Category List View Visible (inside trigger): " + categoryListViewVisible);
                     categoryListView.setVisible(categoryListViewVisible);
@@ -305,8 +305,18 @@ public class SearchController extends BaseController implements Initializable {
                             ex.printStackTrace();
                         }
                     });
+                } else if (response.getString("status").equals("409")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "INVALID OPERATION", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Add failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
                 } else {
-                    System.out.println("Fetch failed: " + response.getString("message"));
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                    });
                 }
                 return null;
             }

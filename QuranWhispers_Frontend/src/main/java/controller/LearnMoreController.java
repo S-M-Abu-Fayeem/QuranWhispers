@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import util.GlobalState;

@@ -28,32 +28,22 @@ import controller.NotificationController;
 import controller.NotificationCardController;
 import controller.ProfileController;
 import controller.ProfileCardController;
-
 import controller.GlobalShareController;
 import controller.GlobalRecitationController;
 import controller.GlobalRecitationCardController;
-
 import controller.AdminInsertController;
-
 import controller.AdminApproveController;
 import controller.AdminApproveCardController;
-
 import controller.AdminUserViewController;
 import controller.AdminUserViewCardController;
-
 import controller.AdminVerseViewController;
 import controller.AdminVerseViewCardController;
-
 import controller.AdminDuaViewController;
 import controller.AdminDuaViewCardController;
-
 import controller.AdminRecitationViewController;
 import controller.AdminRecitationViewCardController;
-
-
 import controller.ForumCardController;
 import controller.ForumCardVerseController;
-
 import controller.ForumController;
 import controller.AdminForumController;
 
@@ -115,11 +105,9 @@ public class MainApp extends Application {
         initController(GlobalState.NOTIFICATION_CARD_FILE, NotificationCardController.class, sceneController);
         initController(GlobalState.PROFILE_FILE, ProfileController.class, sceneController);
         initController(GlobalState.PROFILE_CARD_FILE, ProfileCardController.class, sceneController);
-
         initController(GlobalState.GLOBAL_SHARE_FILE, GlobalShareController.class, sceneController);
         initController(GlobalState.GLOBAL_RECITATION_FILE, GlobalRecitationController.class, sceneController);
         initController(GlobalState.GLOBAL_RECITATION_CARD_FILE, GlobalRecitationCardController.class, sceneController);
-
         initController(GlobalState.ADMIN_INSERT_FILE, AdminInsertController.class, sceneController);
         initController(GlobalState.ADMIN_USER_VIEW_FILE, AdminUserViewController.class, sceneController);
         initController(GlobalState.ADMIN_USER_VIEW_CARD_FILE, AdminUserViewCardController.class, sceneController);
@@ -127,16 +115,12 @@ public class MainApp extends Application {
         initController(GlobalState.ADMIN_VERSE_VIEW_CARD_FILE, AdminVerseViewCardController.class, sceneController);
         initController(GlobalState.ADMIN_DUA_VIEW_FILE, AdminDuaViewController.class, sceneController);
         initController(GlobalState.ADMIN_DUA_VIEW_CARD_FILE, AdminDuaViewCardController.class, sceneController);
-
         initController(GlobalState.ADMIN_RECITATION_VIEW_FILE, AdminRecitationViewController.class, sceneController);
         initController(GlobalState.ADMIN_RECITATION_VIEW_CARD_FILE, AdminRecitationViewCardController.class, sceneController);
-
         initController(GlobalState.ADMIN_APPROVE_FILE, AdminApproveController.class, sceneController);
         initController(GlobalState.ADMIN_APPROVE_CARD_FILE, AdminApproveCardController.class, sceneController);
-
         initController(GlobalState. FORUM_CARD_FILE, ForumCardController.class, sceneController);
         initController(GlobalState.FORUM_CARD_VERSE_FILE, ForumCardVerseController.class, sceneController);
-
         initController(GlobalState.FORUM_FILE, ForumController.class, sceneController);
         initController(GlobalState.ADMIN_FORUM_FILE, AdminForumController.class, sceneController);
 

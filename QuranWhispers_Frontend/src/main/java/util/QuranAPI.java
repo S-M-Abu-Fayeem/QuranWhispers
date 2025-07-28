@@ -7,8 +7,6 @@ import java.net.URL;
 import org.json.JSONObject;
 
 public class QuranAPI {
-
-    // Method to generate the verse JSON object with translations
     public static JSONObject generateVerse(int surahNum, int ayahNum) {
         JSONObject result = new JSONObject();
         result.put("surahNum", surahNum);
@@ -18,7 +16,6 @@ public class QuranAPI {
         String englishData = fetchDataFromAPI(GlobalState.QURAN_ENGLISH_EDITION_NAME, surahNum, ayahNum);
         String arabicData = fetchDataFromAPI(GlobalState.QURAN_ARABIC_EDITION_NAME, surahNum, ayahNum);
 
-        // Process and add the data to the JSON object
         if (bengaliData != null) {
             populateJSON(bengaliData, "Bengali", result);
         } else {
@@ -40,7 +37,7 @@ public class QuranAPI {
         return result;
     }
 
-    // Method to fetch data from the API
+
     public static String fetchDataFromAPI(String editionName, int surahNumber, int ayahNumber) {
         try {
             String urlString = GlobalState.QURAN_API_URL + editionName + "/" + surahNumber + "/" + ayahNumber + ".json";
@@ -69,13 +66,11 @@ public class QuranAPI {
         return null;
     }
 
-    // Method to process the response and populate the JSON object
     public static void populateJSON(String data, String language, JSONObject result) {
         try {
             JSONObject jsonResponse = new JSONObject(data);
             String verseText = jsonResponse.getString("text");
 
-            // Update the JSON object with the translation text
             if (language.equals("Bengali")) {
                 result.put("bengaliTranslationText", verseText);
             } else if (language.equals("English")) {

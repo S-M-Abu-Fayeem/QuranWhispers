@@ -84,12 +84,23 @@ public class ShareController extends SearchController{
                     Platform.runLater(() -> {
                         try {
                             sceneController.switchTo(GlobalState.SEARCH_FILE);
+                            alertGenerator("Action successful", "ACTION: SEND TO FRIEND", response.getString("status_message"), "confirmation", "/images/confrim.png");
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     });
+                } else if (response.getString("status").equals("404")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Send failed", "INVALID USERNAME", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Send failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
                 } else {
-                    System.out.println("Fetch failed: " + response.getString("message"));
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                    });
                 }
                 return null;
             }

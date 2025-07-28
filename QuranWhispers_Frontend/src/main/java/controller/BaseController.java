@@ -167,4 +167,22 @@ public abstract class BaseController {
             ex.printStackTrace();
         }
     }
+
+    // HELPER METHODS
+    public static String toTitleCase(String sentence) {
+        String[] words = sentence.split(" ");
+        StringBuilder titleCasedSentence = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                // Capitalize the first letter and make the rest lowercase
+                titleCasedSentence.append(word.substring(0, 1).toUpperCase())
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+
+        return titleCasedSentence.toString().trim();
+    }
+
 }

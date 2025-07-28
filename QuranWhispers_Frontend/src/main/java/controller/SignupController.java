@@ -62,8 +62,18 @@ public class SignupController extends BaseController{
                             ex.printStackTrace();
                         }
                     });
+                } else if (response.getString("status").equals("401")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Registration failed", "INVALID OPERATION", response.getString("status_message"), "error", "/images/denied.png");
+                    });
+                } else if (response.getString("status").equals("500")) {
+                    Platform.runLater(() -> {
+                        alertGenerator("Registration failed", "SERVER ERROR", response.getString("status_message"), "error", "/images/denied.png");
+                    });
                 } else {
-                    System.out.println("Registration failed: " + response.getString("message"));
+                    Platform.runLater(() -> {
+                        alertGenerator("Error", "UNKNOWN PROBLEM", "Something went wrong :(", "error", "/images/denied.png");
+                    });
                 }
                 return null;
             }
