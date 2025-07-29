@@ -2,8 +2,8 @@ package util;
 
 public class GlobalState {
     // CONNECTION CONST
-    public static final String BACKEND_API_IP_ADDRESS = "localhost"; //"10.105.59.228";
-    public static final int BACKEND_API_PORT = 420;
+    public static final String BACKEND_API_IP_ADDRESS = "10.105.59.105"; //"10.105.59.228";
+    public static final int BACKEND_API_PORT = 4444;
     public static boolean RUN_CONTINUOUS_FETCH = true;
 
     // OTHER CONST

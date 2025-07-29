@@ -54,7 +54,7 @@ public class Register {
             }
             if(!passwordValidator.isValidPassword(password)) {
                 data.put("status", "401");
-                data.put("status_message", "Invalid Password: Must be at least 6 characters long and include at least one letter and one digit.");
+                data.put("status_message", "Invalid Password: Must be at least 6 characters long and include at least one alphabet and one digit.");
                 return gson.toJson(data);
 
             }

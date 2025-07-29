@@ -23,7 +23,7 @@ public class BackendAPI {
             BufferedWriter bufferedWriter = null;
             try {
                 socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
-                System.out.println("Database Connection OK ✅");
+                System.out.println("Database Connection OK");
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -67,7 +67,7 @@ public class BackendAPI {
 
         try {
             socket = new Socket(GlobalState.BACKEND_API_IP_ADDRESS, GlobalState.BACKEND_API_PORT);
-            System.out.println("📡 Connected to backend");
+            System.out.println("Connected to backend");
 
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
@@ -82,7 +82,7 @@ public class BackendAPI {
                 File mp3File = new File(request.getString("mp3file"));
 
                 if (!mp3File.exists() || !mp3File.isFile()) {
-                    System.out.println("❌ File not found or is not a valid file.");
+                    System.out.println("File not found or is not a valid file.");
                     return null;
                 }
 
@@ -99,14 +99,14 @@ public class BackendAPI {
                 bufferedWriter.write(json);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
-                System.out.println("📤 Metadata sent.");
+                System.out.println("Metadata sent.");
 
                 String ack = bufferedReader.readLine();
                 if (!"READY_TO_RECEIVE".equals(ack)) {
-                    System.out.println("❌ Server did not acknowledge. Got: " + ack);
+                    System.out.println("Server did not acknowledge. Got: " + ack);
                     return null;
                 }
-                System.out.println("✅ Server is ready to receive file.");
+                System.out.println("Server is ready to receive file.");
 
                 byte[] fileBytes = Files.readAllBytes(mp3File.toPath());
                 FilePacket packet = new FilePacket(
@@ -121,14 +121,14 @@ public class BackendAPI {
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 oos.writeObject(packet);
                 oos.flush();
-                System.out.println("✅ FilePacket sent.");
+                System.out.println("FilePacket sent.");
 
                 String response = bufferedReader.readLine();
                 if (response != null) {
-                    System.out.println("📨 Server: " + response);
+                    System.out.println("Server: " + response);
                     return new JSONObject(response);
                 } else {
-                    System.out.println("⚠️ No final response received from server.");
+                    System.out.println("No final response received from server.");
                 }
 
                 return null;
@@ -149,11 +149,11 @@ public class BackendAPI {
 
                 String ack = bufferedReader.readLine();
                 if (ack == null || !ack.trim().equals("READY_TO_RECEIVE")) {
-                    System.out.println("❌ Server not ready to send file. Got: " + ack);
+                    System.out.println("Server not ready to send file. Got: " + ack);
                     return null;
                 }
 
-                System.out.println("✅ Server ready to send FilePacket.");
+                System.out.println("Server ready to send FilePacket.");
 
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 FilePacket receivedPacket = (FilePacket) ois.readObject();
@@ -161,23 +161,23 @@ public class BackendAPI {
                 String filename = receivedPacket.getSurah() + "_" + receivedPacket.getAyah() + "_" + receivedPacket.getReciterName() + ".mp3";
                 URL folderURL = RecitationController.class.getResource("/data/recitations_audio/");
                 if (folderURL == null) {
-                    System.out.println("❌ Folder not found in resources. Please create /resources/data/recitations_audio");
+                    System.out.println("Folder not found in resources. Please create /resources/data/recitations_audio");
                     return null;
                 }
                 File outputFile = new File(folderURL.toURI().getPath(), filename);
                 Files.write(outputFile.toPath(), receivedPacket.getFileData());
-                System.out.println("💾 Audio saved at: " + outputFile.getAbsolutePath());
+                System.out.println("Audio saved at: " + outputFile.getAbsolutePath());
 
 
                 BufferedReader finalReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String response = finalReader.readLine();
                 if (response != null) {
-                    System.out.println("📨 Server: " + response);
+                    System.out.println("Server: " + response);
                     JSONObject ob = new JSONObject(response);
                     ob.put("audio_path", outputFile.getAbsolutePath());
                     return ob;
                 } else {
-                    System.out.println("⚠️ No response after file packet received.");
+                    System.out.println("No response after file packet received.");
                     return null;
                 }
             }

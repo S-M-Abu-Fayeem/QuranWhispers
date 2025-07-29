@@ -39,7 +39,7 @@ public class HelloApplication {
     public static final PasswordValidator passwordValidator = new PasswordValidator();
     public static final UserNameValidator userNameValidator = new UserNameValidator();
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(420)) {
+        try (ServerSocket serverSocket = new ServerSocket(4444)) {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
